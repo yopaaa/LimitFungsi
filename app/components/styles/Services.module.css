@@ -1,0 +1,65 @@
+.services {
+  background: var(--yellow);
+  padding: 100px 40px;
+}
+
+.servicesGridContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.serviceCard {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 32px;
+  text-decoration: none;
+  color: var(--black);
+  position: relative;
+  transition: all 0.15s;
+}
+
+.serviceCard:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0px var(--black);
+}
+
+/* Pseudo-element untuk border atas warna-warni */
+.serviceCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+}
+
+/* Dinamis Class dari JS */
+.c1::before { background: var(--blue); }
+.c2::before { background: var(--pink); }
+.c3::before { background: var(--green); }
+.c4::before { background: var(--orange); }
+
+.serviceIcon {
+  width: 54px;
+  height: 54px;
+  border: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  background: var(--white);
+}
+
+@media (max-width: 708px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

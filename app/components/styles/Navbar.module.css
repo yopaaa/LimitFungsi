@@ -1,0 +1,45 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--yellow);
+  border-bottom: var(--border);
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navLogo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+
+.navLinks a {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--black);
+  padding: 6px 14px;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.navLinks a:hover {
+  border: 2px solid var(--black);
+  background: var(--black);
+  color: var(--yellow);
+}
+
+.contactBtn {
+  background: var(--black) !important;
+  color: var(--yellow) !important;
+}
