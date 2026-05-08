@@ -6,6 +6,23 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${username} | Profile`,
+    description: `Halaman profil untuk pengguna ${username}. Temukan informasi, proyek, dan kontak terkait ${username} di sini.`,
+    openGraph: {
+      title: `${username} | Profile`,
+      description: `Halaman profil untuk pengguna ${username}. Temukan informasi, proyek, dan kontak terkait ${username} di sini.`,
+      url: `https://yopaaa.xyz/${username}`,
+      siteName: 'Yopaaa.xyz',
+      images: [
+        {
+          url: `https://yopaaa.xyz/images/${username}.jpeg`,
+          width: 1200,
+          height: 630,
+          alt: `${username}'s profile picture`,
+        },
+      ],
+      locale: 'id_ID',
+      type: 'profile',
+    },
   };
 }
 
