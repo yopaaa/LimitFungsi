@@ -14,7 +14,7 @@ export default async function UserLayout({ children, params }) {
 
   return (
     <div
-    style={{backgroundImage: `url(/images/${username}.jpeg)`}}
+    // style={{backgroundImage: `url(/images/${username}.jpeg)`}}
     className="containers" 
     >
       {/* <nav>

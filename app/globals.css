@@ -1,15 +1,42 @@
-/* @import "tailwindcss"; */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+.flex {
+  display: flex;
+  flex: 1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+:root {
+  --black: #0a0a0a;
+  --white: #f5f0e8;
+  --yellow: #FFE500;
+  --pink: #FF3F6C;
+  --blue: #1E3FFF;
+  --green: #00C44F;
+  --orange: #FF6B00;
+  --border: 3px solid #0a0a0a;
+  --shadow: 6px 6px 0px #0a0a0a;
+  --shadow-lg: 10px 10px 0px #0a0a0a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+}
+
+/* Noise Texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,27 +46,31 @@
   }
 }
 
-body {
-  height: 100vh;
-  /* width: 100%; */
-  display: flex;
-  justify-content: center;
-  /* width: 110vw; */
-  /* background: var(--background); */
-  /* color: var(--foreground); */
-  font-family: Arial, Helvetica, sans-serif;
-  /* backdrop-filter: blur(8px); */
-  /* background-position: center; */
-  /* background-size: cover; */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.12s;
+  box-shadow: var(--shadow);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.btnPrimary { background: var(--black); color: var(--yellow); }
+.btnSecondary { background: var(--white); color: var(--black); }
+
+.btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px var(--black);
 }
 
-.flex {
-  display: flex;
-  flex: 1;
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px var(--black);
 }
