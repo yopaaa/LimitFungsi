@@ -8,10 +8,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 100vw;
+  overflow: visible;
 }
 
 .navLogo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: 28px;
   letter-spacing: 2px;
 }
@@ -42,4 +44,87 @@
 .contactBtn {
   background: var(--black) !important;
   color: var(--yellow) !important;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: var(--black);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active .line1 {
+  transform: rotate(45deg) translate(4px, 8px);
+}
+
+.hamburger.active .line2 {
+  opacity: 0;
+}
+
+.hamburger.active .line3 {
+  transform: rotate(-45deg) translate(4px, -7px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .nav {
+    padding: 14px 20px;
+    position: relative;
+  }
+
+  .hamburger {
+    display: flex !important;
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--yellow);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-bottom: var(--border);
+  }
+
+  .navLinks.menuOpen {
+    max-height: 400px;
+  }
+
+  .navLinks li {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .navLinks a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+
+  .navLinks a:hover {
+    background: var(--black);
+    color: var(--yellow);
+    border: none;
+  }
+
+  .contactBtn {
+    background: var(--black) !important;
+    color: var(--yellow) !important;
+  }
 }

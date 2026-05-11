@@ -1,6 +1,8 @@
 .articles {
   background: var(--white);
   padding: 100px 40px;
+  background-image: radial-gradient(#bcbcbc 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .articlesGridContainer {
@@ -14,8 +16,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border: var(--border);
- /* / padding: 100px; */
-    gap: 24px;
+  /* / padding: 100px; */
+  gap: 24px;
 }
 
 .articleCard {
@@ -27,7 +29,9 @@
   background: var(--white);
 }
 
-.articleCard:last-child { border-right: none; }
+.articleCard:last-child {
+  border-right: none;
+}
 
 .articleCard:hover {
   background: var(--black);
@@ -50,7 +54,7 @@
 }
 
 .articleTitle {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: 26px;
   line-height: 1.1;
   margin-bottom: 14px;
@@ -63,10 +67,19 @@
   margin-bottom: 20px;
 }
 
-.articleCard:hover .articleExcerpt { color: #bbb; }
+.articleCard:hover .articleExcerpt {
+  color: #bbb;
+}
 
 .articleMeta {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   color: #888;
+}
+
+@media (max-width: 768px) {
+  .articlesGrid {
+    grid-template-columns: repeat(1, 1fr);
+    /* gap: 10px; */
+  }
 }

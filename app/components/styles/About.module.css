@@ -92,3 +92,15 @@
   color: var(--black);
   border-color: var(--yellow);
 }
+
+@media (max-width: 768px) {
+  .about {
+    padding: 40px 10px;
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sectionTitle {
+    font-size: 32px;
+  }
+}

@@ -58,8 +58,12 @@
   background: var(--white);
 }
 
-@media (max-width: 708px) {
+@media (max-width: 768px) {
+   .services {
+    /* padding: 60px 20px; */
+  }
+   
   .servicesGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }

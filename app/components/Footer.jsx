@@ -1,6 +1,38 @@
 "use client";
 
+import React from 'react';
 import styles from './styles/Footer.module.css';
+
+// 1. Objek Data untuk Semua Teks Statis
+const footerData = {
+  brand: {
+    logo: "RP",
+    tagline: `Building things for the web.
+Based in Batam, Indonesia.
+hello@yopaaa.dev`,
+  },
+  navigation: {
+    title: "Navigasi",
+    links: [
+      { name: "Tentang Saya", href: "#about" },
+      { name: "Artikel", href: "#articles" },
+      { name: "Servis & Proyek", href: "#services" },
+      { name: "Media Sosial", href: "#social" },
+    ],
+  },
+  contact: {
+    title: "Kontak",
+    links: [
+      { name: "hello@yopaaa.dev", href: "mailto:hello@yopaaa.dev" },
+      { name: "Jadwalkan Meeting", href: "https://cal.com/rizkypratama", target: "_blank", rel: "noreferrer" },
+      { name: "Download CV", href: "#", download: "CV.pdf" }, // Tambahkan atribut download jika perlu
+    ],
+  },
+  bottom: {
+    copyText: "© 2025 Yopa Pitra R. — Dibuat dengan ☕ & terlalu banyak caffeine",
+    scrollToTopAnchor: "↑",
+  },
+};
 
 export default function Footer() {
   const scrollToTop = (e) => {
@@ -13,32 +45,45 @@ export default function Footer() {
       <div className={styles.footerInner}>
         {/* Kolom 1: Brand */}
         <div className={styles.footerBrand}>
-          <span className={styles.footerLogo}>RP</span>
+          <span className={styles.footerLogo}>{footerData.brand.logo}</span>
           <p className={styles.footerTagline}>
-            Building things for the web.<br />
-            Based in Batam, Indonesia.<br />
-            hello@yopaaa.dev
+            {footerData.brand.tagline.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index < footerData.brand.tagline.split('\n').length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </p>
         </div>
 
         {/* Kolom 2: Navigasi */}
         <div className={styles.footerCol}>
-          <h4>Navigasi</h4>
+          <h4 className={styles.footerTitle}>{footerData.navigation.title}</h4>
           <ul className={styles.footerLinks}>
-            <li><a href="#about">Tentang Saya</a></li>
-            <li><a href="#articles">Artikel</a></li>
-            <li><a href="#services">Servis & Proyek</a></li>
-            <li><a href="#social">Media Sosial</a></li>
+            {footerData.navigation.links.map((link) => (
+              <li key={link.name}>
+                <a href={link.href}>{link.name}</a>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* Kolom 3: Kontak */}
         <div className={styles.footerCol}>
-          <h4>Kontak</h4>
+          <h4 className={styles.footerTitle}>{footerData.contact.title}</h4>
           <ul className={styles.footerLinks}>
-            <li><a href="mailto:hello@yopaaa.dev">hello@yopaaa.dev</a></li>
-            <li><a href="https://cal.com/rizkypratama" target="_blank" rel="noreferrer">Jadwalkan Meeting</a></li>
-            <li><a href="#">Download CV</a></li>
+            {footerData.contact.links.map((link, index) => (
+              <li key={index}>
+                <a 
+                  href={link.href} 
+                  target={link.target || undefined} 
+                  rel={link.rel || undefined}
+                  // Jika Anda ingin menambahkan logika khusus untuk download, Anda bisa menambahkannya di sini
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -46,7 +91,7 @@ export default function Footer() {
       {/* Bagian Bawah */}
       <div className={styles.footerBottom}>
         <p className={styles.footerCopy}>
-          © 2025 <span>Yopa Pitra R.</span> — Dibuat dengan ☕ & terlalu banyak caffeine
+          {footerData.bottom.copyText}
         </p>
         <a 
           href="#hero" 
@@ -54,7 +99,7 @@ export default function Footer() {
           onClick={scrollToTop}
           title="Scroll ke atas"
         >
-          ↑
+          {footerData.bottom.scrollToTopAnchor}
         </a>
       </div>
     </footer>

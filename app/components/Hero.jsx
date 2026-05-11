@@ -7,7 +7,9 @@ const data = {
   availability: "Available for work",
   description: "Full-stack developer & UI designer yang suka membangun produk digital bermakna. Spesialis React, Node.js, dan pengalaman pengguna yang bersih tapi berkarakter.",
   projectsUrl: "#services",
-  articlesUrl: "#articles"
+  articlesUrl: "#articles",
+  experience: "4+ Years XP",
+  status: "🟢 Open to collab"
 };
 
 export default function Hero() {
@@ -33,13 +35,13 @@ export default function Hero() {
           </div>
         </div>
         <div className={styles.heroImageBox}>
-          <div className={`${styles.floatingBadge} ${styles.badgeExp}`}>4+ Years XP</div>
+          <div className={`${styles.floatingBadge} ${styles.badgeExp}`}>{data.experience}</div>
           <div className={styles.heroImgWrapper}>
             <div className={styles.avatarPlaceholder}>
               <img src="/images/yopa.jpeg" alt="Avatar" className={styles.heroImage} />
             </div>
           </div>
-          <div className={`${styles.floatingBadge} ${styles.badgeStatus}`}>🟢 Open to collab</div>
+          <div className={`${styles.floatingBadge} ${styles.badgeStatus}`}>{data.status}</div>
         </div>
       </div>
     </section>

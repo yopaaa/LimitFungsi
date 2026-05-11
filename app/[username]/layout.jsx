@@ -1,6 +1,5 @@
 import "./globals.css";
 
-
 export async function generateMetadata({ params }) {
   const { username } = await params;
 

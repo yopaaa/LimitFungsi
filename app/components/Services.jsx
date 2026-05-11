@@ -1,33 +1,37 @@
 import styles from "./styles/Services.module.css";
 
-const projects = [
-  {
-    id: "c1",
-    icon: "⚡",
-    name: "KATALIS",
-    desc: "URL shortener dengan analitik real-time.",
-    url: "katalis.rizkypratama.dev",
-  },
-  {
-    id: "c2",
-    icon: "🧾",
-    name: "KASIR",
-    desc: "Sistem kasir berbasis web untuk UMKM.",
-    url: "kasir.rizkypratama.dev",
-  },
-];
+const data = {
+  page_number: "03", 
+  title: "PROYEK & SERVIS",
+  data: [
+    {
+      id: "c1",
+      icon: "⚡",
+      name: "KATALIS",
+      desc: "URL shortener dengan analitik real-time.",
+      url: "katalis.rizkypratama.dev",
+    },
+    {
+      id: "c2",
+      icon: "🧾",
+      name: "KASIR",
+      desc: "Sistem kasir berbasis web untuk UMKM.",
+      url: "kasir.rizkypratama.dev",
+    },
+  ],
+};
 
 export default function Services() {
   return (
     <section id="services" className={styles.services}>
       <div className={styles.sectionInner}>
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionNumber}>03</span>
-          <h2 className={styles.sectionTitle}>PROYEK & SERVIS</h2>
+          <span className={styles.sectionNumber}>{data.page_number}</span>
+          <h2 className={styles.sectionTitle}>{data.title}</h2>
         </div>
         <div className={styles.servicesGridContainer}>
           <div className={styles.servicesGrid}>
-            {projects.map((p) => (
+            {data.data.map((p) => (
               <a
                 key={p.id}
                 href={`https://${p.url}`}

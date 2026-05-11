@@ -7,6 +7,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  background-image: radial-gradient(#bcbcbc 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .heroGrid {

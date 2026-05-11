@@ -27,6 +27,7 @@ body {
   background: var(--white);
   color: var(--black);
   overflow-x: hidden;
+  width: 100vw;
 }
 
 /* Noise Texture */
