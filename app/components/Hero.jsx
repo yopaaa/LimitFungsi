@@ -3,7 +3,7 @@ import styles from './styles/Hero.module.css';
 const data = {
   name: "Yopa-Pitra R.",
   title: "Full-stack Developer & UI Designer",
-  location: "Batam, Indonesia",
+  location: "Bangka, Indonesia",
   availability: "Available for work",
   description: "Full-stack developer & UI designer yang suka membangun produk digital bermakna. Spesialis React, Node.js, dan pengalaman pengguna yang bersih tapi berkarakter.",
   projectsUrl: "#services",
