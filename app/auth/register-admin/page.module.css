@@ -1,8 +1,7 @@
-/*  */
 .card {
   width: 100%;
   max-width: 448px;
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border: 4px solid #000000;
   box-shadow: 6px 6px 0px 0px #000000;
   padding: 32px;
@@ -19,13 +18,13 @@
   font-size: 32px;
   font-weight: 700;
   line-height: 1.2;
-  color: #1a1c1c;
+  color: var(--text-main);
   margin-bottom: 4px;
 }
 
 .subtitle {
   font-size: 16px;
-  color: #5e5e5e;
+  color: var(--text-muted);
 }
 
 .formSpace {
@@ -36,7 +35,7 @@
 /* Blok Alert Status */
 .successBlock {
   background-color: #d8e2ff;
-  border: 2px solid #0058be;
+  border: 2px solid var(--primary);
   padding: 12px;
   font-weight: 700;
   margin-bottom: 16px;
@@ -45,7 +44,7 @@
 
 .errorBlock {
   background-color: #ffdad6;
-  border: 2px solid #ba1a1a;
+  border: 2px solid var(--error);
   color: #93000a;
   padding: 12px;
   font-weight: 700;
@@ -53,7 +52,6 @@
   font-size: 14px;
 }
 
-/* Pengaturan Tombol Navigasi Step 2 */
 .actionWrapper {
   margin-top: 8px;
 }
@@ -65,7 +63,6 @@
   margin-top: 16px;
 }
 
-/* Syarat & Ketentuan Checkbox */
 .policyContainer {
   margin-bottom: 16px;
 }
@@ -82,24 +79,24 @@
   width: 18px;
   height: 18px;
   border: 2px solid #000000;
-  accent-color: #0058be;
+  accent-color: var(--primary);
   cursor: pointer;
   margin-top: 2px;
 }
 
 .policyText {
-  color: #1a1c1c;
+  color: var(--text-main);
   line-height: 1.4;
 }
 
 .policyLink {
   text-decoration: underline;
   font-weight: 700;
-  color: #0058be;
+  color: var(--primary);
 }
 
 .errorText {
-  color: #ba1a1a;
+  color: var(--error);
   font-size: 12px;
   font-weight: 700;
   margin-top: 4px;
@@ -109,11 +106,11 @@
   margin-top: 24px;
   text-align: center;
   font-size: 16px;
-  color: #424754;
+  color: var(--text-muted);
 }
 
 .link {
-  color: #0058be;
+  color: var(--primary);
   font-weight: 700;
   text-decoration: underline;
   text-decoration-thickness: 2px;

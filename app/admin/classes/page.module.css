@@ -1,5 +1,7 @@
 .container {
   padding: 2rem;
+  background-color: var(--bg-main);
+  min-height: 100vh;
 }
 
 .content {
@@ -13,12 +15,12 @@
 .title {
   font-size: 2.25rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-main);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
-  color: #4b5563;
+  color: var(--text-muted);
   margin-bottom: 2rem;
 }
 
@@ -30,9 +32,9 @@
 }
 
 .card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
   padding: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -43,7 +45,7 @@
 }
 
 .cardLabel {
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
@@ -52,25 +54,25 @@
 .cardValue {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-main);
 }
 
 .activitySection {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
   overflow: hidden;
 }
 
 .activityHeader {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 
 .activityTitle {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-main);
 }
 
 .activityContent {
@@ -78,7 +80,7 @@
 }
 
 .emptyMessage {
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 /* Responsive Design */

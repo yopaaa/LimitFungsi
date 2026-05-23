@@ -3,75 +3,75 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* background: #f5f6fa; */
+  background-color: var(--bg-main);
 }
 
 .container {
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  padding: 30px;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
   width: 90%;
   max-width: 400px;
-  color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  color: var(--text-main);
+  box-shadow: var(--shadow);
 }
 
 .title {
   text-align: center;
-  margin-bottom: 24px;
-  font-size: 24px;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: black;
+  color: var(--text-main);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .input {
-    font-family: inherit;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
+  font-family: var(--font-geist-sans), sans-serif;
+  padding: 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
 }
 
 .button {
-    font-family: inherit;
-  background-color: #0070f3;
+  font-family: var(--font-geist-sans), sans-serif;
+  background-color: var(--primary);
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 0.625rem;
+  border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background-color 0.2s;
 }
 
 .button:hover {
-  background-color: #0059c1;
+  background-color: var(--primary-hover);
 }
 
 .error {
-  color: red;
-  font-size: 13px;
+  color: var(--error);
+  font-size: 0.8125rem;
 }
 
 .success {
-  color: green;
-  font-size: 13px;
+  color: var(--success);
+  font-size: 0.8125rem;
 }
 
 .linkText {
   text-align: center;
-  margin-top: 12px;
-  font-size: 14px;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 .link {
-  color: #0070f3;
+  color: var(--primary);
   text-decoration: none;
 }

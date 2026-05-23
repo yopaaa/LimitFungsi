@@ -1,6 +1,6 @@
 .header {
-  background-color: #f9f9f9;
-  border-bottom: 4px solid #1a1c1c;
+  background-color: var(--bg-main);
+  border-bottom: 4px solid var(--text-main);
   box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 1);
   width: 100%;
   position: sticky;
@@ -13,22 +13,21 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 16px 24px;
-  /* max-width: 1280px; */
+  padding: 1rem 1.5rem;
   margin: 0 auto;
 }
 
 .logo {
-  font-family: 'Lexend', sans-serif;
-  font-size: 24px;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1.5rem;
   font-weight: 900;
-  color: #1a1c1c;
+  color: var(--text-main);
   text-transform: uppercase;
   letter-spacing: -0.02em;
   text-decoration: none;
   border: 4px solid #000000;
-  padding: 4px 8px;
-  background-color: #f9f9f9;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--bg-main);
   transition: all 0.15s ease;
 }
 
@@ -44,37 +43,39 @@
 
 .nav{
     display: flex;
-    gap: 32px;
+    gap: 2rem;
 }
 
 .navText {
   display: flex;
-    align-items: center;
-    justify-content: center;
-
-  font-family: 'Lexend', sans-serif;
-  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: #1a1c1c;
+  color: var(--text-main);
   text-decoration: none;
   transition: all 0.15s ease;
 }
+
 .navText:hover {
   transform: translateX(4px);
-  color: #0058be;
+  color: var(--primary);
 }
-.navText:active {  transform: translateX(-4px);
-  color: #0058be;
+
+.navText:active {  
+  transform: translateX(-4px);
+  color: var(--primary);
 }
-/* Gaya Tombol Navigasi Dinamis */
+
 .navBtn {
   display: inline-block;
-  background-color: #0058be; /* Biru utama */
+  background-color: var(--primary);
   color: #ffffff;
-  font-family: 'Lexend', sans-serif;
-  font-size: 14px;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.875rem;
   font-weight: 700;
-  padding: 8px 24px;
+  padding: 0.5rem 1.5rem;
   text-decoration: none;
   border: 4px solid #000000;
   box-shadow: 6px 6px 0px 0px #000000;

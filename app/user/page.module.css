@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--bg-main);
   font-family: var(--font-geist-sans), sans-serif;
 }
 
@@ -9,22 +9,22 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar h1 {
   font-size: 1.5rem;
-  color: #1e293b;
+  color: var(--text-main);
   font-weight: 700;
 }
 
 .logoutBtn {
   padding: 0.5rem 1rem;
-  background-color: #ef4444;
+  background-color: var(--error);
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -40,17 +40,17 @@
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 
 .card h2 {
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
-  color: #334155;
-  border-bottom: 2px solid #f1f5f9;
+  color: var(--text-main);
+  border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
 }
 
@@ -61,13 +61,13 @@
 .infoGroup label {
   display: block;
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .infoGroup p {
   font-size: 1rem;
-  color: #1e293b;
+  color: var(--text-main);
   font-weight: 500;
 }
 
@@ -96,17 +96,17 @@
 }
 
 .fullCard {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 
 .fullCard h2 {
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
-  color: #334155;
-  border-bottom: 2px solid #f1f5f9;
+  color: var(--text-main);
+  border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
 }
 
@@ -118,51 +118,51 @@
 
 .input {
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .input:focus {
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 
 .joinBtn {
   padding: 0.75rem;
-  background-color: #3b82f6;
+  background-color: var(--primary);
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .joinBtn:hover {
-  background-color: #2563eb;
+  background-color: var(--primary-hover);
 }
 
 .joinBtn:disabled {
-  background-color: #94a3b8;
+  background-color: var(--secondary);
   cursor: not-allowed;
 }
 
 .errorMsg {
-  color: #ef4444;
+  color: var(--error);
   font-size: 0.875rem;
   margin-bottom: 1rem;
 }
 
 .successMsg {
-  color: #10b981;
+  color: var(--success);
   font-size: 0.875rem;
   margin-bottom: 1rem;
 }
 
 .emptyText {
-  color: #94a3b8;
+  color: var(--text-muted);
   text-align: center;
   padding: 2rem;
 }
@@ -178,41 +178,41 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border: 1px solid #f1f5f9;
-  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   transition: background-color 0.2s;
 }
 
 .classItem:hover {
-  background-color: #f8fafc;
+  background-color: var(--bg-main);
 }
 
 .classInfo h3 {
   font-size: 1.125rem;
-  color: #1e293b;
+  color: var(--text-main);
   margin: 0;
 }
 
 .classInfo code {
   font-size: 0.875rem;
-  color: #64748b;
-  background-color: #f1f5f9;
+  color: var(--text-muted);
+  background-color: var(--bg-main);
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
 }
 
 .viewBtn {
   padding: 0.5rem 1rem;
-  background-color: #f1f5f9;
-  color: #475569;
+  background-color: var(--bg-main);
+  color: var(--text-muted);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .viewBtn:hover {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  background-color: var(--border);
+  color: var(--text-main);
 }

@@ -1,77 +1,36 @@
-
-
-
-.flex {
-  display: flex;
-  flex: 1;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
 
 :root {
-  --black: #0a0a0a;
-  --white: #f5f0e8;
-  --yellow: #FFE500;
-  --pink: #FF3F6C;
-  --blue: #1E3FFF;
-  --green: #00C44F;
-  --orange: #FF6B00;
-  --border: 3px solid #0a0a0a;
-  --shadow: 6px 6px 0px #0a0a0a;
-  --shadow-lg: 10px 10px 0px #0a0a0a;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Space Grotesk', sans-serif;
-  background: var(--white);
-  color: var(--black);
-  overflow-x: hidden;
-  width: 100vw;
-}
-
-/* Noise Texture */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  text-transform: uppercase;
-  border: var(--border);
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.12s;
-  box-shadow: var(--shadow);
-}
-
-.btnPrimary { background: var(--black); color: var(--yellow); }
-.btnSecondary { background: var(--white); color: var(--black); }
-
-.btn:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0px var(--black);
-}
-
-.btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0px var(--black);
+  /* Brand Colors */
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary: #64748b;
+  --accent: #10b981;
+  
+  /* Background Colors */
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  
+  /* Text Colors */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #f1f5f9;
+  
+  /* Status Colors */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  
+  /* Border & Shadow */
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
 }

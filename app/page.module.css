@@ -1,10 +1,9 @@
 .pageWrapper {
   position: relative;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* overflow-x: hidden; */
-  background-color: #f9f9f9;
+  background-color: var(--bg-main);
   background-image: radial-gradient(#bcbcbc 1px, transparent 1px);
   background-size: 20px 20px;
 }
@@ -14,20 +13,116 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 1rem;
   width: 100%;
-  z-index: 2; /* Memastikan form berada di atas dekorasi */
-  height: 90%;
+  z-index: 2;
 }
 
 @media (min-width: 768px) {
   .mainContent {
-    padding: 32px;
+    padding: 2rem;
   }
 }
 
-
-
-.contentWrapper{
+.contentWrapper {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.center {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--bg-card);
+  border: 4px solid #000000;
+  box-shadow: 8px 8px 0px 0px #000000;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.title {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 6rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 2px #000000; 
+}
+
+.heading {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.description {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.button {
+  display: inline-block;
+  width: 100%;
+  background-color: var(--primary);
+  color: #ffffff;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.875rem 1.5rem;
+  border: 4px solid #000000;
+  box-shadow: 6px 6px 0px 0px #000000;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.button:hover {
+  box-shadow: 10px 10px 0px 0px #000000;
+  transform: translate(-4px, -4px);
+}
+
+.button:active {
+  box-shadow: 0px 0px 0px 0px #000000;
+  transform: translate(6px, 6px);
+}
+
+@media (max-width: 480px) {
+  .center {
+    padding: 2rem 1.25rem;
+    margin: 1rem;
+  }
+
+  .title {
+    font-size: 4.5rem;
+  }
+
+  .heading {
+    font-size: 1.25rem;
+  }
+
+  .description {
+    font-size: 0.875rem;
+  }
 }
