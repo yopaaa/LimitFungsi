@@ -69,7 +69,7 @@ export default function SignupPage() {
                 instansi: registerData.instansi,
                 password: registerData.password,
                 passwordConfirm: registerData.confirmPassword,
-                role: "user", // Default role
+                role: "admin", // Default role
             });
 
             setSuccessMessage("Pendaftaran berhasil! Silakan login.");

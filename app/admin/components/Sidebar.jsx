@@ -4,23 +4,29 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.css'; // Import CSS Module
-import Cookie from 'js-cookie';
+import { pb } from '@/utils/db';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const user = Cookie.get('userInfo') ? JSON.parse(Cookie.get('userInfo')) : null;
+  // Mengambil user info dari pb.authStore.model atau localStorage sebagai fallback
+  const user = pb.authStore.model || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo')) : null);
 
   const menuItems = [
     { label: 'Dashboard', href: '/admin' },
-    { label: 'Users', href: '/admin/users' },
-    { label: 'Posts', href: '/admin/posts' },
-    { label: 'Settings', href: '/admin/settings' },
+    { label: 'Classes', href: '/admin/classes' }, // Updated to match context
   ];
 
-  console.log('User Info from Cookie:', user);
+  console.log('User Info:', user);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const handleLogout = () => {
+    pb.authStore.clear();
+    document.cookie = "pb_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem('userInfo');
+    window.location.href = '/auth/login';
+  };
 
   return (
     <>
@@ -54,14 +60,7 @@ export default function Sidebar() {
           })}
 
            <button
-             onClick={() => {
-               fetch('/api/logout', { method: 'POST' })
-                 .then(() => {
-                   Cookie.remove('userInfo');
-                   window.location.href = '/';
-                 })
-                 .catch((error) => console.error('Logout error:', error));
-             }}
+             onClick={handleLogout}
              className={`${styles.link} ${styles.logoutBtn}`}
            >
              Logout

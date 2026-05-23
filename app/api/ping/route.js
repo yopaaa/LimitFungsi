@@ -1,7 +1,7 @@
 // app/api/users/route.js
 
 // Handler untuk method GET
-export async function GET() {
+export const GET = async () => {
   const users = [
     { id: 1, name: 'John Doe', email: 'john@example.com' },
     { id: 2, name: 'Jane Doe', email: 'jane@example.com' },
@@ -13,12 +13,12 @@ export async function GET() {
       'Content-Type': 'application/json',
     },
   });
-}
+};
 
 // app/api/users/route.js
 
 // Handler untuk method POST
-export async function POST(request) {
+export const POST = async (request) => {
   // Ambil data dari body request
   const newUser = await request.json();
 
@@ -29,4 +29,4 @@ export async function POST(request) {
   return new Response(JSON.stringify({ message: 'User berhasil ditambahkan' }), {
     status: 201, // Status 201 Created
   });
-}
+};

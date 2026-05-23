@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 
-export default function LoginPage() {
+const LoginPage = () => {
   const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -40,15 +40,29 @@ export default function LoginPage() {
     }
 
     try {
-      const { data } = await axios.post("/api/login", loginData);
+      // Login langsung menggunakan SDK PocketBase
+      const authData = await pb.collection('limit_users').authWithPassword(
+        loginData.email,
+        loginData.password
+      );
+
       setSuccessMessage("Login berhasil! Mengarahkan ke dashboard...");
       setIsLoading(false);
 
-      console.log(data);
-      // router.push(`/${data.payload.role}`); // contoh: /admin atau /user
-      router.push(`/admin`);
-    } catch {
-      setErrors({ api: "Login gagal! Silakan coba lagi." });
+      // Simpan user info ke localStorage (opsional, karena sudah ada di pb.authStore)
+      localStorage.setItem('userInfo', JSON.stringify(authData.record));
+
+      // Redirect berdasarkan role
+      if (authData.record.role === 'admin') {
+        router.push('/admin');
+      } else {
+        // Redirect ke dashboard user
+        router.push('/user');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      const message = error.response?.message || "Login gagal! Email atau password salah.";
+      setErrors({ api: message });
       setIsLoading(false);
     }
   };
@@ -97,4 +111,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

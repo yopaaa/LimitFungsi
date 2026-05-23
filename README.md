@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Limit Fungsi Kalkulus
+
+Proyek ini adalah aplikasi untuk mempelajari limit fungsi kalkulus menggunakan Next.js.
 
 ## Getting Started
 
