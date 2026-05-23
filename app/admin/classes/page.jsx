@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import axios from "axios";
+import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import authStyles from "../../auth/login/page.module.css";
 
@@ -25,11 +25,36 @@ const CreateClassPage = () => {
     }
 
     try {
-      const { data } = await axios.post("/api/classes/create", classData);
-      setMessage({ type: "success", text: data.message });
+      // 1. Cek apakah kode kelas sudah ada
+      try {
+        const existingClass = await pb.collection('limit_classes').getFirstListItem(`code="${classData.code}"`);
+        if (existingClass) {
+          setMessage({ type: "error", text: "Kode kelas sudah digunakan." });
+          setIsLoading(false);
+          return;
+        }
+      } catch (err) {
+        // Jika 404 berarti belum ada, aman untuk lanjut
+        if (err.status !== 404) throw err;
+      }
+
+      // 2. Buat kelas baru di PocketBase
+      // Pastikan admin sudah terautentikasi
+      if (!pb.authStore.isValid) {
+        throw new Error("Sesi login berakhir. Silakan login kembali.");
+      }
+
+      await pb.collection('limit_classes').create({
+        name: classData.name,
+        code: classData.code,
+        admin_id: pb.authStore.model.id,
+      });
+
+      setMessage({ type: "success", text: "Kelas berhasil dibuat!" });
       setClassData({ name: "", code: "" });
     } catch (error) {
-      const errorMsg = error.response?.data?.message || "Gagal membuat kelas.";
+      console.error("Error creating class:", error);
+      const errorMsg = error.response?.message || error.message || "Gagal membuat kelas.";
       setMessage({ type: "error", text: errorMsg });
     } finally {
       setIsLoading(false);

@@ -2,15 +2,19 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import InputField from "@/components/UI/InputField";
+import Button from "@/components/UI/Button";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 
-const LoginPage = () => {
+export default function LoginForm() {
   const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
+    isNotRobot: false, // State untuk checkbox robot
   });
+
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +37,11 @@ const LoginPage = () => {
       newErrors.password = "Password harus diisi";
     }
 
+    // Validasi robot check
+    if (!loginData.isNotRobot) {
+      newErrors.isNotRobot = "Verifikasi bahwa Anda bukan robot";
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setIsLoading(false);
@@ -41,24 +50,23 @@ const LoginPage = () => {
 
     try {
       // Login langsung menggunakan SDK PocketBase
-      const authData = await pb.collection('limit_users').authWithPassword(
+      const authData = await pb.collection("limit_users").authWithPassword(
         loginData.email,
         loginData.password
       );
 
-      setSuccessMessage("Login berhasil! Mengarahkan ke dashboard...");
+      setSuccessMessage("Login berhasil! Mengarahkan...");
       setIsLoading(false);
 
-      // Simpan user info ke localStorage (opsional, karena sudah ada di pb.authStore)
-      localStorage.setItem('userInfo', JSON.stringify(authData.record));
+      localStorage.setItem("userInfo", JSON.stringify(authData.record));
 
-      // Redirect berdasarkan role
-      if (authData.record.role === 'admin') {
-        router.push('/admin');
-      } else {
-        // Redirect ke dashboard user
-        router.push('/user');
-      }
+      setTimeout(() => {
+        if (authData.record.role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/user");
+        }
+      }, 1200);
     } catch (error) {
       console.error("Login error:", error);
       const message = error.response?.message || "Login gagal! Email atau password salah.";
@@ -68,41 +76,62 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.container}>
-        <h2 className={styles.title}>Masuk ke Akun</h2>
+    <div className={styles.card}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Login ke Akun</h1>
+        <p className={styles.subtitle}>Selamat datang kembali di LIMIT.</p>
+      </div>
 
-        {successMessage && <p className={styles.success}>{successMessage}</p>}
-        {errors.api && <p className={styles.error}>{errors.api}</p>}
+      {successMessage && <div className={styles.successBlock}>{successMessage}</div>}
+      {errors.api && <div className={styles.errorBlock}>{errors.api}</div>}
 
-        <form onSubmit={handleLogin} className={styles.form}>
-          <input
-            className={styles.input}
-            placeholder="Email"
-            value={loginData.email}
-            onChange={(e) =>
-              setLoginData({ ...loginData, email: e.target.value })
-            }
-          />
-          {errors.email && <p className={styles.error}>{errors.email}</p>}
+      <form onSubmit={handleLogin} className={styles.formSpace}>
+        <InputField
+          label="Email"
+          id="email"
+          type="email"
+          placeholder="john@example.com"
+          value={loginData.email}
+          error={errors.email}
+          onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+        />
 
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="Password"
-            value={loginData.password}
-            onChange={(e) =>
-              setLoginData({ ...loginData, password: e.target.value })
-            }
-          />
-          {errors.password && <p className={styles.error}>{errors.password}</p>}
+        <InputField
+          label="Password"
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={loginData.password}
+          error={errors.password}
+          onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+        />
 
-          <button type="submit" className={styles.button} disabled={isLoading}>
-            {isLoading ? "Memproses..." : "Masuk"}
-          </button>
-        </form>
+        {/* Kotak Verifikasi "Saya bukan robot" */}
+        <div className={`${styles.captchaContainer} ${errors.isNotRobot ? styles.captchaError : ''}`}>
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              className={styles.checkbox}
+              checked={loginData.isNotRobot}
+              onChange={(e) => setLoginData({ ...loginData, isNotRobot: e.target.checked })}
+            />
+            <span className={styles.captchaText}>Saya bukan robot</span>
+          </label>
+          <div className={styles.captchaIcon}>
+            <div className={styles.spinner}></div>
+          </div>
+        </div>
+        {errors.isNotRobot && <p className={styles.errorText}>{errors.isNotRobot}</p>}
 
-        <p className={styles.linkText}>
+        <div className={styles.actionWrapper}>
+          <Button type="submit" variant="primary" fullWidth disabled={isLoading}>
+            {isLoading ? "Memproses..." : "Login"}
+          </Button>
+        </div>
+      </form>
+
+      <div className={styles.footerLink}>
+        <p>
           Belum punya akun?{" "}
           <a href="/auth/register" className={styles.link}>
             Daftar di sini
@@ -111,6 +140,4 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}

@@ -1,6 +1,6 @@
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
-import styles from "./page.module.css"; // Memakai layout.module.css
+import styles from "./layout.module.css"; // Memakai layout.module.css
 
 export default function RegisterLayout({ children }) {
   return (
@@ -13,6 +13,7 @@ export default function RegisterLayout({ children }) {
         <Header />
 
         {/* Konten Halaman akan Masuk ke Sini */}
+        <main className={styles.mainContent}>{children}</main>
       </div>
 
       {/* Footer Global */}

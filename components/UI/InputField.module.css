@@ -1,0 +1,44 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.label {
+  font-family: 'Lexend', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #1a1c1c;
+}
+
+.input {
+  width: 100%;
+  background-color: #ffffff;
+  color: #1a1c1c;
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: 4px solid #000000;
+  transition: background-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  background-color: #d8e2ff;
+}
+
+
+/* Tambahkan ini di bagian bawah file InputField.module.css Anda */
+.inputError {
+  border-color: #ba1a1a !important;
+  background-color: #ffdad6;
+}
+
+.errorText {
+  color: #ba1a1a;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 2px;
+}
