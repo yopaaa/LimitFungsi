@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
-import authStyles from "../../auth/login/page.module.css";
+import Button from "@/components/UI/Button";
+import InputField from "@/components/UI/InputField";
 
 const CreateClassPage = () => {
   const [classData, setClassData] = useState({
@@ -34,12 +35,10 @@ const CreateClassPage = () => {
           return;
         }
       } catch (err) {
-        // Jika 404 berarti belum ada, aman untuk lanjut
         if (err.status !== 404) throw err;
       }
 
       // 2. Buat kelas baru di PocketBase
-      // Pastikan admin sudah terautentikasi
       if (!pb.authStore.isValid) {
         throw new Error("Sesi login berakhir. Silakan login kembali.");
       }
@@ -64,53 +63,69 @@ const CreateClassPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Manajemen Kelas</h1>
-        <p className={styles.subtitle}>Buat kelas baru untuk siswa Anda.</p>
+        <h1 className={styles.title} style={{ color: "var(--primary)" }}>Manajemen Kelas</h1>
+        <p className={styles.subtitle}>Buat kelas baru untuk siswa Anda agar mereka dapat bergabung.</p>
       </div>
 
       <div className={styles.gridContainer}>
         <div className={styles.card}>
-          <h2 className={styles.activityTitle} style={{ marginBottom: "1rem" }}>Buat Kelas Baru</h2>
+          <h2 className={styles.activityTitle} style={{ marginBottom: "1.5rem", borderBottom: "2px solid var(--border)", paddingBottom: "0.5rem" }}>
+            Buat Kelas Baru
+          </h2>
           
           {message.text && (
-            <p className={message.type === "error" ? authStyles.error : authStyles.success}>
+            <p style={{ 
+              padding: "10px", 
+              borderRadius: "var(--radius-sm)", 
+              marginBottom: "1rem",
+              backgroundColor: message.type === "error" ? "var(--error)" : "var(--success)",
+              color: "white",
+              fontSize: "14px"
+            }}>
               {message.text}
             </p>
           )}
 
-          <form onSubmit={handleCreateClass} className={authStyles.form}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-              <label className={styles.cardLabel}>Nama Kelas</label>
-              <input
-                className={authStyles.input}
-                placeholder="Contoh: Kalkulus 1 - Teknik Informatika"
-                value={classData.name}
-                onChange={(e) => setClassData({ ...classData, name: e.target.value })}
-              />
-            </div>
+          <form onSubmit={handleCreateClass} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <InputField
+              label="Nama Kelas"
+              placeholder="Contoh: Kalkulus 1 - Teknik Informatika"
+              value={classData.name}
+              onChange={(e) => setClassData({ ...classData, name: e.target.value })}
+            />
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-              <label className={styles.cardLabel}>Kode Kelas</label>
-              <input
-                className={authStyles.input}
-                placeholder="Contoh: KAL101"
-                value={classData.code}
-                onChange={(e) => setClassData({ ...classData, code: e.target.value })}
-              />
-            </div>
+            <InputField
+              label="Kode Kelas"
+              placeholder="Contoh: KAL101"
+              value={classData.code}
+              onChange={(e) => setClassData({ ...classData, code: e.target.value })}
+            />
 
-            <button type="submit" className={authStyles.button} disabled={isLoading}>
-              {isLoading ? "Memproses..." : "Buat Kelas"}
-            </button>
+            <Button 
+              type="submit" 
+              fullWidth 
+              disabled={isLoading}
+            >
+              {isLoading ? "Memproses..." : "Buat Kelas Baru"}
+            </Button>
           </form>
         </div>
 
         <div className={styles.card}>
-          <h2 className={styles.activityTitle}>Informasi</h2>
-          <p className={styles.subtitle} style={{ marginTop: "1rem" }}>
-            Berikan kode kelas kepada siswa Anda agar mereka dapat bergabung. 
-            Setiap kode harus bersifat unik.
-          </p>
+          <h2 className={styles.activityTitle} style={{ color: "var(--primary)" }}>Informasi Bantuan</h2>
+          <div style={{ marginTop: "1rem", color: "var(--text-muted)", lineHeight: "1.6" }}>
+            <p style={{ marginBottom: "1rem" }}>
+              <strong>Langkah-langkah:</strong>
+            </p>
+            <ol style={{ paddingLeft: "1.2rem" }}>
+              <li>Tentukan nama kelas yang deskriptif.</li>
+              <li>Buat kode kelas yang unik (maksimal 10 karakter).</li>
+              <li>Bagikan kode tersebut kepada siswa Anda.</li>
+            </ol>
+            <p style={{ marginTop: "1.5rem", fontSize: "13px", fontStyle: "italic" }}>
+              *Siswa akan memasukkan kode ini pada menu "Gabung Kelas" di dashboard mereka.
+            </p>
+          </div>
         </div>
       </div>
     </div>

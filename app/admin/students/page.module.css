@@ -1,0 +1,133 @@
+.container {
+  padding: 2rem;
+  background-color: var(--bg-main);
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+}
+
+.actionRow {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 2px solid var(--text-main);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  font-size: 14px;
+  box-shadow: 4px 4px 0 var(--text-main);
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: var(--primary);
+}
+
+.tableCard {
+  background: var(--bg-card);
+  border: 2px solid var(--text-main);
+  border-radius: var(--radius-md);
+  box-shadow: 6px 6px 0 var(--text-main);
+  overflow: hidden;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 15px 20px;
+  background-color: var(--border);
+  color: var(--text-main);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-bottom: 2px solid var(--text-main);
+}
+
+.table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.avatarMini {
+  width: 32px;
+  height: 32px;
+  background-color: var(--accent);
+  color: var(--text-main);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid var(--text-main);
+}
+
+.viewBtn {
+  padding: 6px 15px;
+  border: 2px solid var(--text-main);
+  background: var(--bg-main);
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--text-main);
+  transition: all 0.1s ease;
+}
+
+.viewBtn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--text-main);
+}
+
+.viewBtn:hover {
+  background: var(--accent);
+}

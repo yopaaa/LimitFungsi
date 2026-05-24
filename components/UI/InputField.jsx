@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './InputField.module.css';
 
-export default function InputField({ label, id, type = 'text', placeholder, error, ...props }) {
+const InputField = ({ label, id, type = 'text', placeholder, error, ...props }) => {
   return (
     <div className={styles.inputGroup}>
       <label htmlFor={id} className={styles.label}>
@@ -17,4 +17,6 @@ export default function InputField({ label, id, type = 'text', placeholder, erro
       {error && <p className={styles.errorText}>{error}</p>}
     </div>
   );
-}
+};
+
+export default InputField;

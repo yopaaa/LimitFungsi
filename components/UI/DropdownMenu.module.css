@@ -1,0 +1,57 @@
+.dropdownContainer {
+  position: absolute;
+  bottom: 60px; /* Posisi di atas profil karena profil di bawah sidebar */
+  left: 10px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--text-main);
+  border-radius: var(--radius-md);
+  box-shadow: 4px 4px 0 var(--text-main);
+  min-width: 150px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuList {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+}
+
+.menuItem:hover {
+  background-color: var(--primary-hover);
+  color: var(--text-main);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+}
