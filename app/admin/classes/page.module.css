@@ -32,16 +32,22 @@
 }
 
 .card {
+  border: 2px solid #000000;
+  box-shadow: 6px 6px 0px 0px #000000;
+  transition: all 0.2s ease;
+
   background-color: var(--bg-card);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
+  /* box-shadow: var(--shadow); */
   padding: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 10px 10px 0px 0px #000000;
+  transform: translate(-4px, -4px);
 }
 
 .cardLabel {

@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
-import styles from './Footer.module.css';
+import React from "react";
+import styles from "./Footer.module.css";
 
 // 1. Objek Data untuk Semua Teks Statis
 const footerData = {
   brand: {
-    logo: "RP",
+    imgSrc: "/app.png",
+    logo: "LIMIT",
     tagline: `Building things for the web.
 Based in Batam, Indonesia.
 hello@yopaaa.dev`,
@@ -24,12 +25,18 @@ hello@yopaaa.dev`,
     title: "Kontak",
     links: [
       { name: "hello@yopaaa.dev", href: "mailto:hello@yopaaa.dev" },
-      { name: "Jadwalkan Meeting", href: "https://cal.com/yopa", target: "_blank", rel: "noreferrer" },
+      {
+        name: "Jadwalkan Meeting",
+        href: "https://cal.com/yopa",
+        target: "_blank",
+        rel: "noreferrer",
+      },
       { name: "Download CV", href: "#", download: "CV.pdf" }, // Tambahkan atribut download jika perlu
     ],
   },
   bottom: {
-    copyText: "© 2025 Yopa Pitra R. — Dibuat dengan ☕ & terlalu banyak caffeine",
+    copyText:
+      "© 2025 Yopa Pitra R. — Dibuat dengan ☕ & terlalu banyak caffeine",
     scrollToTopAnchor: "↑",
   },
 };
@@ -37,7 +44,7 @@ hello@yopaaa.dev`,
 export default function Footer() {
   const scrollToTop = (e) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -45,12 +52,17 @@ export default function Footer() {
       <div className={styles.footerInner}>
         {/* Kolom 1: Brand */}
         <div className={styles.footerBrand}>
-          <span className={styles.footerLogo}>{footerData.brand.logo}</span>
+          <span className={styles.footerLogoContainer}>
+            <img src={footerData.brand.imgSrc} alt="logo" className={styles.footerLogoImg} />
+            <span className={styles.footerLogo}>{footerData.brand.logo}</span>
+          </span>
           <p className={styles.footerTagline}>
-            {footerData.brand.tagline.split('\n').map((line, index) => (
+            {footerData.brand.tagline.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line}
-                {index < footerData.brand.tagline.split('\n').length - 1 && <br />}
+                {index < footerData.brand.tagline.split("\n").length - 1 && (
+                  <br />
+                )}
               </React.Fragment>
             ))}
           </p>
@@ -74,9 +86,9 @@ export default function Footer() {
           <ul className={styles.footerLinks}>
             {footerData.contact.links.map((link, index) => (
               <li key={index} className={styles.footerLinkItem}>
-                <a 
-                  href={link.href} 
-                  target={link.target || undefined} 
+                <a
+                  href={link.href}
+                  target={link.target || undefined}
                   rel={link.rel || undefined}
                   // Jika Anda ingin menambahkan logika khusus untuk download, Anda bisa menambahkannya di sini
                 >
@@ -90,12 +102,10 @@ export default function Footer() {
 
       {/* Bagian Bawah */}
       <div className={styles.footerBottom}>
-        <p className={styles.footerCopy}>
-          {footerData.bottom.copyText}
-        </p>
-        <a 
-          href="#hero" 
-          className={styles.footerScrollTop} 
+        <p className={styles.footerCopy}>{footerData.bottom.copyText}</p>
+        <a
+          href="#hero"
+          className={styles.footerScrollTop}
           onClick={scrollToTop}
           title="Scroll ke atas"
         >

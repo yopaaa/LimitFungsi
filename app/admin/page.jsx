@@ -1,9 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './page.module.css';
-import { LuUser, LuFileText, LuActivity, LuArrowRight,  } from 'react-icons/lu';
+import { LuUsers, LuFileText, LuActivity, LuArrowRight,  } from 'react-icons/lu';
 import Button from '@/components/UI/Button';
+import { pb } from '@/utils/db';
 
 const Page = () => {
     const [stats, setStats] = React.useState([
@@ -27,7 +28,7 @@ const Page = () => {
         }
     ]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchStats = async () => {
             try {
                 // Ambil jumlah mahasiswa (role=user)
@@ -36,7 +37,9 @@ const Page = () => {
                 });
 
                 // Ambil jumlah kelas
-                const classes = await pb.collection('limit_classes').getList(1, 1);
+                const classes = await pb.collection('limit_classes').getList(1, 1, {
+                    filter: `admin_id = "${pb.authStore.model.id}"`
+                });
 
                 setStats(prev => [
                     { ...prev[0], value: students.totalItems.toLocaleString() },

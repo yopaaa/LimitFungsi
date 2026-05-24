@@ -13,9 +13,6 @@ const StudentsPage = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        // Berdasarkan POCKETBASE_SCHEMA.md:
-        // - Nama koleksi: limit_users
-        // - Filter role: user (untuk mahasiswa)
         const records = await pb.collection('limit_subscriptions').getFullList()
           .then(subscriptions => {
             console.log(subscriptions);

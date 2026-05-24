@@ -15,7 +15,7 @@
 }
 
 .footerBrand .footerLogo {
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: inherit;
   font-size: 2.25rem;
   font-weight: 900;
   color: var(--text-main);
@@ -29,13 +29,13 @@
 .footerTagline {
   font-size: 0.875rem;
   color: var(--text-muted);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: inherit;
   line-height: 1.6;
   max-width: 320px;
 }
 
 .footerCol h4 {
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: inherit;
   font-size: 0.875rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -56,7 +56,7 @@
 .footerLinks a {
   text-decoration: none;
   color: #424754;
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
   transition: color 0.15s ease;
@@ -81,7 +81,7 @@
 .footerCopy {
   font-size: 0.875rem;
   color: var(--text-main);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: inherit;
   font-weight: 500;
 }
 
@@ -124,6 +124,21 @@
 .footerLinkItem:hover {
   transform: translateX(4px);
   color: var(--primary);
+}
+
+.footerLogoContainer{
+  display: flex;
+  align-items: end;
+  margin-bottom: 20px;
+}
+
+.footerLogoImg {
+  width: 100px;
+  height: 100px;
+  margin-right: 0.75rem;
+  border: 4px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  padding: 10px;
 }
 
 /* Keselarasan Responsive */

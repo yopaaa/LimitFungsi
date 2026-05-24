@@ -20,12 +20,17 @@ export default function Header() {
       <div className={styles.container}>
         {/* Link Logo kembali ke halaman utama */}
         <Link href="/" className={styles.logo}>
+          <img src="/app.png" alt="logo" className={styles.logoImg} />
           LIMIT
         </Link>
 
         <div className={styles.nav}>
-          <Link href={buttonLink} className={styles.navText}>
-            About
+          <Link href="/#team" className={styles.navText}>
+            Team
+          </Link>
+
+          <Link href="/#social" className={styles.navText}>
+            Sosmed
           </Link>
 
           {/* Menggunakan Link bawaan Next.js agar navigasi instant / SPA */}

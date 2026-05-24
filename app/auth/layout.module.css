@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   /* overflow-x: hidden; */
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   background-image: radial-gradient(#bcbcbc 1px, transparent 1px);
   background-size: 20px 20px;
 }

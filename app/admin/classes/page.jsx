@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import Button from "@/components/UI/Button";
@@ -13,6 +13,20 @@ const CreateClassPage = () => {
   });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [classCode, setClassCode] = useState("");
+
+  const randomCode = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    setClassCode(randomCode());
+  }, []);
 
   const handleCreateClass = async (e) => {
     e.preventDefault();
@@ -45,7 +59,7 @@ const CreateClassPage = () => {
 
       await pb.collection('limit_classes').create({
         name: classData.name,
-        code: classData.code,
+        code:   classCode,
         admin_id: pb.authStore.model.id,
       });
 
@@ -96,9 +110,8 @@ const CreateClassPage = () => {
 
             <InputField
               label="Kode Kelas"
-              placeholder="Contoh: KAL101"
-              value={classData.code}
-              onChange={(e) => setClassData({ ...classData, code: e.target.value })}
+              value={classData.code || classCode}
+              readOnly={true}
             />
 
             <Button 
