@@ -131,3 +131,91 @@
 .viewBtn:hover {
   background: var(--accent);
 }
+
+/* Modal Content Styles */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modalAvatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px dashed var(--border);
+}
+
+.avatarLarge {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.modalName {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.modalBadge {
+  background-color: var(--warning);
+  color: #000;
+  padding: 4px 12px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border: 2px solid #000;
+  border-radius: 20px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.detailIcon {
+  color: var(--primary);
+  font-size: 1.25rem;
+  margin-top: 4px;
+}
+
+.detailItem label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.detailItem p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-main);
+  word-break: break-all;
+}
+
+@media (max-width: 600px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+}

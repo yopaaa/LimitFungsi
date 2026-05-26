@@ -11,6 +11,7 @@ import {
   LuBookOpen,
   LuUsers,
   LuLogOut,
+  LuBookPlus,
 } from "react-icons/lu";
 import { TbChartBar } from "react-icons/tb";
 import DropdownMenu from "@/components/UI/DropdownMenu";
@@ -73,21 +74,21 @@ const DashboardLayout = ({ children }) => {
 
           <div className={styles.navMenu}>
             {menus.map((menu, index) => (
-              <div
+              <Link
+                href={menu.path}
                 key={index}
                 className={`
                   ${styles.borderMenu}
                   ${pathname === menu.path || (pathname.includes(menu.path) && menu.path !== "/admin") ? styles.activeMenu : ""}
                 `}
               >
-                <Link
-                  href={menu.path}
+                <div
                   className={styles.menu}
                   title={menu.path.split("/").pop() || "Dashboard"}
                 >
                   {menu.icon}
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

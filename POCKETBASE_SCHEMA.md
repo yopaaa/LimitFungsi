@@ -17,6 +17,7 @@ Koleksi ini menyimpan informasi pengguna dan kredensial login.
 | `profile` | Json | Informasi profil tambahan (opsional) |
 | `created` | DateTime | Otomatis diisi oleh PocketBase |
 | `updated` | DateTime | Otomatis diisi oleh PocketBase |
+| `classCode` | Text | class code |
 
 ## Koleksi: `limit_messages` (Base Collection)
 Koleksi untuk menyimpan pesan dari pengguna.
@@ -38,6 +39,7 @@ Koleksi untuk menyimpan data kelas yang dibuat oleh admin.
 | `code` | Text | Kode unik kelas (untuk pendaftaran) |
 | `admin_id` | Relation | ID Admin pembuat kelas (Relation to `users`) |
 | `created` | DateTime | Otomatis |
+| `description` | Text | deskripsi |
 
 ## Koleksi: `limit_subscriptions` (Base Collection)
 Koleksi untuk mencatat user yang mendaftar ke kelas tertentu.

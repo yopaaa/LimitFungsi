@@ -10,7 +10,7 @@ import styles from "./page.module.css";
 export default function RegisterForm() {
   const router = useRouter();
   const [step, setStep] = useState(1); // Tracker halaman: Step 1 atau Step 2
-  
+
   const [registerData, setRegisterData] = useState({
     nama: "",
     email: "",
@@ -30,6 +30,21 @@ export default function RegisterForm() {
   const validatePhone = (nomor) => /^08[0-9]{8,11}$/.test(nomor);
   const validatePassword = (password) => password.length >= 8;
 
+  const randomCode = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const [classCode, setClassCode] = useState("");
+
+  React.useEffect(() => {
+    setClassCode(randomCode());
+  }, []);
+  
   // Handler untuk validasi Step 1 (Data Diri) sebelum masuk ke Step 2
   const handleNextStep = (e) => {
     e.preventDefault();
@@ -56,7 +71,7 @@ export default function RegisterForm() {
     }
 
     setErrors({}); // Bersihkan error jika valid
-    setStep(2);    // Pindah ke step password
+    setStep(2); // Pindah ke step password
   };
 
   // Handler submit akhir ke PocketBase (Step 2)
@@ -98,6 +113,7 @@ export default function RegisterForm() {
         password: registerData.password,
         passwordConfirm: registerData.confirmPassword,
         role: "admin", // Set role sebagai "admin" untuk pendaftaran admin
+        classCode: classCode, // Simpan kode kelas yang dihasilkan untuk admin baru
       });
 
       setSuccessMessage("Pendaftaran berhasil! Mengalihkan...");
@@ -107,7 +123,8 @@ export default function RegisterForm() {
       }, 1500);
     } catch (error) {
       console.error("Register error:", error);
-      const message = error.response?.message || "Pendaftaran gagal! Silakan coba lagi.";
+      const message =
+        error.response?.message || "Pendaftaran gagal! Silakan coba lagi.";
       setErrors({ api: message });
       setIsLoading(false);
     }
@@ -117,10 +134,11 @@ export default function RegisterForm() {
     <div className={styles.card}>
       <div className={styles.header}>
         <h1 className={styles.title}>Daftar Sebagai Pengajar</h1>
-        
       </div>
 
-      {successMessage && <div className={styles.successBlock}>{successMessage}</div>}
+      {successMessage && (
+        <div className={styles.successBlock}>{successMessage}</div>
+      )}
       {errors.api && <div className={styles.errorBlock}>{errors.api}</div>}
 
       {step === 1 ? (
@@ -132,7 +150,9 @@ export default function RegisterForm() {
             placeholder="John Doe"
             value={registerData.nama}
             error={errors.nama}
-            onChange={(e) => setRegisterData({ ...registerData, nama: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, nama: e.target.value })
+            }
           />
           <InputField
             label="Email"
@@ -141,7 +161,9 @@ export default function RegisterForm() {
             placeholder="john@example.com"
             value={registerData.email}
             error={errors.email}
-            onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, email: e.target.value })
+            }
           />
           <InputField
             label="Nomor Telepon"
@@ -150,7 +172,9 @@ export default function RegisterForm() {
             placeholder="0812345678..."
             value={registerData.nomor}
             error={errors.nomor}
-            onChange={(e) => setRegisterData({ ...registerData, nomor: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, nomor: e.target.value })
+            }
           />
           <InputField
             label="Instansi"
@@ -158,7 +182,9 @@ export default function RegisterForm() {
             placeholder="Perusahaan / Kampus Inc."
             value={registerData.instansi}
             error={errors.instansi}
-            onChange={(e) => setRegisterData({ ...registerData, instansi: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, instansi: e.target.value })
+            }
           />
 
           <div className={styles.actionWrapper}>
@@ -177,7 +203,9 @@ export default function RegisterForm() {
             placeholder="••••••••"
             value={registerData.password}
             error={errors.password}
-            onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, password: e.target.value })
+            }
           />
           <InputField
             label="Konfirmasi Password"
@@ -186,7 +214,12 @@ export default function RegisterForm() {
             placeholder="••••••••"
             value={registerData.confirmPassword}
             error={errors.confirmPassword}
-            onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
+            onChange={(e) =>
+              setRegisterData({
+                ...registerData,
+                confirmPassword: e.target.value,
+              })
+            }
           />
 
           {/* Checkbox Kebijakan (Policy) */}
@@ -196,17 +229,32 @@ export default function RegisterForm() {
                 type="checkbox"
                 className={styles.checkbox}
                 checked={registerData.agreePolicy}
-                onChange={(e) => setRegisterData({ ...registerData, agreePolicy: e.target.checked })}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    agreePolicy: e.target.checked,
+                  })
+                }
               />
               <span className={styles.policyText}>
-                Saya menerima <a href="#" className={styles.policyLink}>Syarat & Ketentuan</a> serta Kebijakan Privasi yang berlaku.
+                Saya menerima{" "}
+                <a href="#" className={styles.policyLink}>
+                  Syarat & Ketentuan
+                </a>{" "}
+                serta Kebijakan Privasi yang berlaku.
               </span>
             </label>
-            {errors.agreePolicy && <p className={styles.errorText}>{errors.agreePolicy}</p>}
+            {errors.agreePolicy && (
+              <p className={styles.errorText}>{errors.agreePolicy}</p>
+            )}
           </div>
 
           <div className={styles.actionButtonGroup}>
-            <Button type="button" variant="secondary" onClick={() => setStep(1)}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setStep(1)}
+            >
               Kembali
             </Button>
             <Button type="submit" variant="primary" disabled={isLoading}>

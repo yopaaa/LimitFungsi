@@ -3,26 +3,25 @@
 import React, { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import { pb } from '@/utils/db';
-import { LuSearch, LuUser, LuMail, LuCalendar, LuSchool } from 'react-icons/lu';
+import { LuSearch, LuUser, LuMail, LuCalendar, LuSchool, LuInfo } from 'react-icons/lu';
+import Modal from '@/components/UI/Modal';
 
 const StudentsPage = () => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const records = await pb.collection('limit_subscriptions').getFullList()
           .then(subscriptions => {
-            console.log(subscriptions);
-            
             const userIds = subscriptions.map(sub => sub.user_id);
             return pb.collection('limit_users').getFullList()
               .then(users => users.filter(user => userIds.includes(user.id)));
-
           });
-        console.log("Data mahasiswa yang diambil:", records);
         setStudents(records);
       } catch (error) {
         console.error("Gagal mengambil data mahasiswa:", error);
@@ -33,6 +32,16 @@ const StudentsPage = () => {
 
     fetchStudents();
   }, []);
+
+  const handleOpenModal = (student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedStudent(null);
+  };
 
   const filteredStudents = students.filter(student => 
     student.nama?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -102,7 +111,12 @@ const StudentsPage = () => {
                     <td>{student.email}</td>
                     <td>{new Date(student.created).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
                     <td>
-                      <button className={styles.viewBtn}>Detail</button>
+                      <button 
+                        className={styles.viewBtn}
+                        onClick={() => handleOpenModal(student)}
+                      >
+                        Detail
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -115,6 +129,55 @@ const StudentsPage = () => {
           </table>
         </div>
       </div>
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        title="Detail Mahasiswa"
+      >
+        {selectedStudent && (
+          <div className={styles.modalContent}>
+            <div className={styles.modalAvatarSection}>
+              <div className={styles.avatarLarge}>
+                {selectedStudent.nama?.charAt(0).toUpperCase()}
+              </div>
+              <h3 className={styles.modalName}>{selectedStudent.nama}</h3>
+              <span className={styles.modalBadge}>Mahasiswa</span>
+            </div>
+            
+            <div className={styles.detailGrid}>
+              <div className={styles.detailItem}>
+                <LuInfo className={styles.detailIcon} />
+                <div>
+                  <label>ID Pengguna</label>
+                  <p>{selectedStudent.id}</p>
+                </div>
+              </div>
+              <div className={styles.detailItem}>
+                <LuMail className={styles.detailIcon} />
+                <div>
+                  <label>Email</label>
+                  <p>{selectedStudent.email}</p>
+                </div>
+              </div>
+              <div className={styles.detailItem}>
+                <LuSchool className={styles.detailIcon} />
+                <div>
+                  <label>Instansi</label>
+                  <p>{selectedStudent.instansi || '-'}</p>
+                </div>
+              </div>
+              <div className={styles.detailItem}>
+                <LuCalendar className={styles.detailIcon} />
+                <div>
+                  <label>Bergabung Sejak</label>
+                  <p>{new Date(selectedStudent.created).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
