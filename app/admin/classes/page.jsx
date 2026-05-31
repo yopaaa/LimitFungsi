@@ -1,238 +1,284 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
+import Modal from "@/components/UI/Modal";
+import { LuPlus, LuFileText, LuCalendar, LuClock } from "react-icons/lu";
 
-const CreateClassPage = () => {
-  const [classData, setClassData] = useState({
-    name: "",
-    code: "",
-  });
-  const [message, setMessage] = useState({ type: "", text: "" });
-  const [isLoading, setIsLoading] = useState(false);
-  const [classCode, setClassCode] = useState("");
-
+const ClassesPage = () => {
   const [user, setUser] = useState(null);
+  const [classInfo, setClassInfo] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
-  const [totalClasses, setTotalClasses] = useState(0);
-  const [ClassInfo, setClassInfo] = useState({});
+  // Form State for New Task
+  const [taskData, setTaskData] = useState({
+    title: "",
+    description: "",
+    deadline: "",
+    file: null,
+  });
+
+  // State for Create Class Form
+  const [newClassData, setNewClassData] = useState({ name: "" });
 
   useEffect(() => {
-    const fetchClasses = async () => {
-      // Pastikan user sudah login di PocketBase sebelum fetch data
-      if (!pb.authStore.isValid || !pb.authStore.model) {
-        console.log("User belum login di PocketBase");
-        return;
-      }
-
-      try {
-        const classes = await pb.collection("limit_classes").getFullList(200, {
-          filter: `admin_id = "${pb.authStore.model.id}"`,
-        });
-        setClassInfo(classes);
-        setTotalClasses(classes.length);
-      } catch (err) {
-        console.error("Gagal mengambil data kelas:", err);
-      }
-    };
-
     const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       setUser(JSON.parse(userInfo));
     }
-
-    fetchClasses();
+    fetchClassData();
   }, []);
+
+  const fetchClassData = async () => {
+    if (!pb.authStore.isValid || !pb.authStore.model) return;
+
+    try {
+      // Get Class
+      const records = await pb.collection("limit_classes").getFullList({
+        filter: `admin_id = "${pb.authStore.model.id}"`,
+      });
+
+      if (records.length > 0) {
+        const currentClass = records[0];
+        setClassInfo(currentClass);
+        fetchTasks(currentClass.id);
+      }
+    } catch (err) {
+      console.error("Gagal mengambil data kelas:", err);
+    }
+  };
+
+  const fetchTasks = async (classId) => {
+    try {
+      const taskRecords = await pb.collection("limit_tasks").getFullList({
+        filter: `class_id = "${classId}"`,
+        sort: "-created",
+      });
+      setTasks(taskRecords);
+    } catch (err) {
+      console.error("Gagal mengambil data tugas:", err);
+    }
+  };
 
   const handleCreateClass = async (e) => {
     e.preventDefault();
-    setMessage({ type: "", text: "" });
     setIsLoading(true);
-
-    // 1. Ambil code langsung dari state user yang sudah di-load di useEffect
-    const currentClassCode = user?.classCode;
-
-    // Validasi: Pastikan nama diisi dan kode kelas user ada
-    if (!classData.name || !currentClassCode) {
-      setMessage({
-        type: "error",
-        text: "Nama kelas wajib diisi dan kode kelas tidak ditemukan.",
-      });
-      setIsLoading(false);
-      return;
-    }
+    setMessage({ type: "", text: "" });
 
     try {
-      // 2. Sesi login check
-      if (!pb.authStore.isValid || !pb.authStore.model) {
-        throw new Error("Sesi login berakhir. Silakan login kembali.");
+      const currentClassCode = user?.classCode;
+      if (!newClassData.name || !currentClassCode) {
+        throw new Error("Nama kelas wajib diisi.");
       }
 
-      // 3. Cek apakah kelas dengan kode ini sudah pernah dibuat di database
-      try {
-        const existingClass = await pb
-          .collection("limit_classes")
-          .getFirstListItem(`code="${currentClassCode}"`);
-        if (existingClass) {
-          setMessage({
-            type: "error",
-            text: "Kelas dengan kode ini sudah pernah dibuat sebelumnya.",
-          });
-          setIsLoading(false);
-          return;
-        }
-      } catch (err) {
-        // Jika error 404 (tidak ditemukan), berarti aman untuk lanjut buat baru
-        if (err.status !== 404) throw err;
-      }
-
-      // 4. Buat kelas baru ke PocketBase memakai kode milik admin tersebut
       await pb.collection("limit_classes").create({
-        name: classData.name,
-        code: currentClassCode, // <-- Menggunakan kode milik admin
+        name: newClassData.name,
+        code: currentClassCode,
         admin_id: pb.authStore.model.id,
       });
 
       setMessage({ type: "success", text: "Kelas berhasil dibuat!" });
-      setClassData({ name: "", code: "" });
-
-      // Opsional: Langsung ubah totalClasses jadi 1 agar tampilan form langsung hilang
-      setTotalClasses(1);
+      fetchClassData();
     } catch (error) {
-      console.error("Error creating class:", error);
-      const errorMsg =
-        error.response?.message || error.message || "Gagal membuat kelas.";
-      setMessage({ type: "error", text: errorMsg });
+      setMessage({ type: "error", text: error.message });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const formAddClass = () => {
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      const formData = new FormData();
+      formData.append("class_id", classInfo.id);
+      formData.append("title", taskData.title);
+      formData.append("description", taskData.description);
+      formData.append("deadline", taskData.deadline);
+      if (taskData.file) {
+        formData.append("file", taskData.file);
+      }
+
+      await pb.collection("limit_tasks").create(formData);
+
+      setMessage({ type: "success", text: "Tugas berhasil ditambahkan!" });
+      setTaskData({ title: "", description: "", deadline: "", file: null });
+      setIsModalOpen(false);
+      fetchTasks(classInfo.id);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: "Gagal membuat tugas. Pastikan semua field terisi.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (classInfo) {
     return (
-      <div className={styles.gridContainer}>
-        <div className={styles.card}>
-          <h2
-            className={styles.activityTitle}
-            style={{
-              marginBottom: "1.5rem",
-              borderBottom: "2px solid var(--border)",
-              paddingBottom: "0.5rem",
-            }}
-          >
-            Buat Kelas Baru
-          </h2>
-
-          {message.text && (
-            <p
-              style={{
-                padding: "10px",
-                borderRadius: "var(--radius-sm)",
-                marginBottom: "1rem",
-                backgroundColor:
-                  message.type === "error" ? "var(--error)" : "var(--success)",
-                color: "white",
-                fontSize: "14px",
-              }}
-            >
-              {message.text}
-            </p>
-          )}
-
-          <form
-            onSubmit={handleCreateClass}
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <InputField
-              label="Nama Kelas"
-              placeholder="Contoh: Kalkulus 1 - Teknik Informatika"
-              value={classData.name}
-              onChange={(e) =>
-                setClassData({ ...classData, name: e.target.value })
-              }
-            />
-
-            <InputField
-              label="Kode Kelas"
-              value={user ? user["classCode"] : ""}
-              readOnly={true}
-            />
-
-            <Button type="submit" fullWidth disabled={isLoading}>
-              {isLoading ? "Memproses..." : "Buat Kelas Baru"}
-            </Button>
-          </form>
-        </div>
-
-        <div className={styles.card}>
-          <h2
-            className={styles.activityTitle}
-            style={{ color: "var(--primary)" }}
-          >
-            Informasi Bantuan
-          </h2>
-          <div
-            style={{
-              marginTop: "1rem",
-              color: "var(--text-muted)",
-              lineHeight: "1.6",
-            }}
-          >
-            <p style={{ marginBottom: "1rem" }}>
-              <strong>Langkah-langkah:</strong>
-            </p>
-            <ol style={{ paddingLeft: "1.2rem" }}>
-              <li>Tentukan nama kelas yang deskriptif.</li>
-              <li>Buat kode kelas yang unik (maksimal 10 karakter).</li>
-              <li>Bagikan kode tersebut kepada siswa Anda.</li>
-            </ol>
-            <p
-              style={{
-                marginTop: "1.5rem",
-                fontSize: "13px",
-                fontStyle: "italic",
-              }}
-            >
-              *Siswa akan memasukkan kode ini pada menu "Gabung Kelas" di
-              dashboard mereka.
+      <div className={styles.container}>
+        <div className={styles.headerFlex}>
+          <div className={styles.headerText}>
+            <h1 className={styles.title}>{classInfo.name}</h1>
+            <p className={styles.subtitle}>
+              Kode Kelas:{" "}
+              <code className={styles.codeBadge}>{classInfo.code}</code>
             </p>
           </div>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className={styles.addBtn}
+          >
+            <LuPlus /> Tambah Tugas
+          </Button>
         </div>
+
+        <div className={styles.sectionTitle}>
+          <LuFileText /> Daftar Tugas
+        </div>
+
+        {tasks.length === 0 ? (
+          <div className={styles.emptyTasks}>
+            <p>Belum ada tugas yang dibuat untuk kelas ini.</p>
+          </div>
+        ) : (
+          <div className={styles.taskGrid}>
+            {tasks.map((task) => (
+              <div key={task.id} className={styles.taskCard}>
+                <div className={styles.taskHeader}>
+                  <h3>{task.title}</h3>
+                  <span className={styles.dateTag}>
+                    <LuCalendar size={14} />{" "}
+                    {new Date(task.created).toLocaleDateString()}
+                  </span>
+                </div>
+                <p className={styles.taskDesc}>{task.description}</p>
+                <div className={styles.taskFooter}>
+                  <div className={styles.deadlineInfo}>
+                    <LuClock size={14} />
+                    <span>
+                      Deadline: {new Date(task.deadline).toLocaleString()}
+                    </span>
+                  </div>
+                  {task.file && (
+                    <a
+                      href={pb.files.getUrl(task, task.file)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.fileLink}
+                    >
+                      Lihat Soal
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Buat Tugas Baru"
+        >
+          <form onSubmit={handleCreateTask} className={styles.formStack}>
+            <InputField
+              label="Judul Tugas"
+              placeholder="Contoh: Latihan Turunan Fungsi"
+              value={taskData.title}
+              onChange={(e) =>
+                setTaskData({ ...taskData, title: e.target.value })
+              }
+              required
+            />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Deskripsi</label>
+              <textarea
+                className={styles.textarea}
+                placeholder="Berikan instruksi detail tugas di sini..."
+                value={taskData.description}
+                onChange={(e) =>
+                  setTaskData({ ...taskData, description: e.target.value })
+                }
+                required
+              />
+            </div>
+            <InputField
+              label="Deadline"
+              type="date"
+              value={taskData.deadline}
+              onChange={(e) =>
+                setTaskData({ ...taskData, deadline: e.target.value })
+              }
+              required
+            />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Lampiran Soal (PDF)</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) =>
+                  setTaskData({ ...taskData, file: e.target.files[0] })
+                }
+                className={styles.fileInput}
+                required
+              />
+            </div>
+            <Button type="submit" fullWidth disabled={isLoading}>
+              {isLoading ? "Mengunggah..." : "Publikasikan Tugas"}
+            </Button>
+          </form>
+        </Modal>
       </div>
     );
-  };
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title} style={{ color: "var(--primary)" }}>
-          Manajemen {ClassInfo ? `${ClassInfo[0]?.["name"]}` : `Kelas`}
-        </h1>
+        <h1 className={styles.title}>Buat Kelas Baru</h1>
         <p className={styles.subtitle}>
-          Buat kelas baru untuk siswa Anda agar mereka dapat bergabung.
+          Anda belum memiliki kelas. Silakan buat kelas pertama Anda.
         </p>
       </div>
-
-      {/* if total class = 0 show form */}
-      {totalClasses === 0 ? (
-        formAddClass()
-      ) : (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyMessage}>
-            Anda sudah memiliki kelas yang dibuat. Silakan kelola kelas Anda di
-            halaman "Daftar Kelas".
-
-            <code>
-              {JSON.stringify(ClassInfo, null, 2)} 
-            </code>
+      <div className={styles.card} style={{ maxWidth: "500px" }}>
+        {message.text && (
+          <p
+            className={
+              message.type === "error" ? styles.errorMsg : styles.successMsg
+            }
+          >
+            {message.text}
           </p>
-        </div>
-      )}
+        )}
+        <form onSubmit={handleCreateClass} className={styles.formStack}>
+          <InputField
+            label="Nama Kelas"
+            placeholder="Contoh: Kalkulus 1"
+            value={newClassData.name}
+            onChange={(e) => setNewClassData({ name: e.target.value })}
+          />
+          <InputField
+            label="Kode Kelas (Otomatis)"
+            value={user?.classCode || ""}
+            readOnly
+          />
+          <Button type="submit" fullWidth disabled={isLoading}>
+            {isLoading ? "Memproses..." : "Buat Kelas"}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default CreateClassPage;
+export default ClassesPage;

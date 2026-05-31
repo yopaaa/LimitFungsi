@@ -14,7 +14,7 @@ Koleksi ini menyimpan informasi pengguna dan kredensial login.
 | `instansi` | Text | Nama sekolah atau instansi |
 | `password` | Password | Password (Managed by PocketBase) |
 | `role` | Text | Role pengguna (`admin` atau `user`) |
-| `profile` | Json | Informasi profil tambahan (opsional) |
+| `profile` | File | Informasi profil tambahan (opsional) |
 | `created` | DateTime | Otomatis diisi oleh PocketBase |
 | `updated` | DateTime | Otomatis diisi oleh PocketBase |
 | `classCode` | Text | class code |
@@ -37,7 +37,7 @@ Koleksi untuk menyimpan data kelas yang dibuat oleh admin.
 | `id` | Record ID | Primary Key |
 | `name` | Text | Nama Kelas |
 | `code` | Text | Kode unik kelas (untuk pendaftaran) |
-| `admin_id` | Relation | ID Admin pembuat kelas (Relation to `users`) |
+| `admin_id` | Relation | ID Admin pembuat kelas (Relation to `limit_users`) |
 | `created` | DateTime | Otomatis |
 | `description` | Text | deskripsi |
 
@@ -47,8 +47,34 @@ Koleksi untuk mencatat user yang mendaftar ke kelas tertentu.
 | Nama Field | Tipe Data | Keterangan |
 | :--- | :--- | :--- |
 | `id` | Record ID | Primary Key |
-| `user_id` | Relation | ID User yang mendaftar (Relation to `users`) |
-| `class_id` | Relation | ID Kelas yang diikuti (Relation to `classes`) |
+| `user_id` | Relation | ID User yang mendaftar (Relation to `limit_users`) |
+| `class_id` | Relation | ID Kelas yang diikuti (Relation to `limit_classes`) |
+| `created` | DateTime | Otomatis |
+
+## Koleksi: `limit_tasks` (Base Collection)
+Koleksi untuk menyimpan tugas yang dibuat oleh admin/dosen untuk kelas tertentu.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `class_id` | Relation | Relasi ke `limit_classes` |
+| `title` | Text | Judul Tugas |
+| `description` | Text | Deskripsi atau instruksi tugas |
+| `file` | File | Lampiran soal/tugas (PDF/Docx) |
+| `deadline` | DateTime | Batas waktu pengumpulan |
+| `created` | DateTime | Otomatis |
+
+## Koleksi: `limit_submissions` (Base Collection)
+Koleksi untuk menyimpan jawaban tugas yang dikirimkan oleh siswa.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `task_id` | Relation | Relasi ke `limit_tasks` |
+| `user_id` | Relation | Relasi ke `users` |
+| `file` | File | File jawaban siswa (PDF) |
+| `grade` | Number | Nilai dari dosen |
+| `feedback` | Text | Catatan/umpan balik dari dosen |
 | `created` | DateTime | Otomatis |
 
 ## Konfigurasi Akses (API Rules)
@@ -56,3 +82,5 @@ Koleksi untuk mencatat user yang mendaftar ke kelas tertentu.
 - **messages**: `create` (Anyone/Public).
 - **classes**: `list/view` (Public/Auth users), `create` (Admin).
 - **subscriptions**: `view` (Self/Admin), `create` (Auth user).
+- **tasks**: `list/view` (Auth users), `create/update/delete` (Admin).
+- **submissions**: `view` (Self/Admin), `create` (Auth user), `update` (Admin/Self for file only).
