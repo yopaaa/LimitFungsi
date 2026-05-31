@@ -1,0 +1,134 @@
+.dashboardLayout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  border-right: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 10px;
+  box-shadow: 4px 0 0 var(--border);
+  background: var(--bg-card);
+  z-index: 100;
+}
+
+.dark {
+  background: var(--text-main);
+}
+
+.wrapSidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 30px;
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.navMenu .borderMenu {
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  transition: all 0.2s ease;
+}
+
+.borderMenu .menu {
+  font-size: 24px;
+  color: var(--text-muted);
+  margin: auto;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activeMenu {
+  border: 2px solid var(--text-main);
+  background: var(--primary) !important;
+  box-shadow: 4px 4px 0 var(--text-main);
+  border-radius: var(--radius-md);
+}
+
+.activeMenu .menu {
+  color: var(--text-main) !important;
+  font-size: 22px !important;
+}
+
+.dark .menu {
+  color: var(--text-light);
+}
+
+.profileContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--text-main);
+  background: var(--primary);
+  display: flex;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.profile:hover {
+  transform: scale(1.05);
+}
+
+.profile .profileLink {
+  color: var(--text-main);
+  font-weight: bold;
+  font-size: 16px;
+  margin: auto;
+  text-decoration: none;
+}
+.profile {
+  /* width: 80px; */
+  /* height: 80px; */
+  background-color: var(--primary);
+  border: 2px solid #000000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  overflow: hidden;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mainContent {
+  overflow: auto;
+  flex: 1;
+  margin-left: 76px;
+  padding: 20px;
+}
