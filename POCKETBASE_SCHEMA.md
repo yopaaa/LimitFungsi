@@ -74,6 +74,7 @@ Koleksi untuk menyimpan jawaban tugas yang dikirimkan oleh siswa.
 | `task_id` | Relation | Relasi ke `limit_tasks` |
 | `user_id` | Relation | Relasi ke `users` |
 | `file` | File | File jawaban siswa (PDF) |
+| `answer` | Rich Editor | jawaban extract |
 | `grade` | Number | Nilai dari dosen |
 | `feedback` | Text | Catatan/umpan balik dari dosen |
 | `note` | Text | Catatan untuk dosen |

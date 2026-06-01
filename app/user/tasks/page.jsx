@@ -92,7 +92,16 @@ const TasksPage = () => {
       formData.append("file", uploadFile);
       formData.append("note", notes);
 
-      await pb.collection("limit_submissions").create(formData);
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Gagal mengumpulkan tugas.");
+      }
 
       setMessage({ type: "success", text: "Tugas berhasil dikumpulkan!" });
       setTimeout(() => {
@@ -103,7 +112,7 @@ const TasksPage = () => {
       console.error("Error submitting task:", error);
       setMessage({
         type: "error",
-        text: "Gagal mengumpulkan tugas. Coba lagi nanti.",
+        text: error.message || "Gagal mengumpulkan tugas. Coba lagi nanti.",
       });
     } finally {
       setIsSubmitting(false);

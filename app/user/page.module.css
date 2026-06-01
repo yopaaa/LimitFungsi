@@ -6,9 +6,11 @@
 }
 
 .welcomeSection {
-  max-width: 800px;
+  max-width: 80%;
   margin: 0 auto 2.5rem;
   padding: 0 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
 }
 
 .welcomeTitle {
@@ -28,12 +30,13 @@
 }
 
 .main {
-  max-width: 800px;
+  max-width: 80%;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
 .fullCard {
+  max-width: 60%;
   background-color: var(--bg-card);
   border: 2px solid #000000;
   box-shadow: 6px 6px 0px 0px #000000;
