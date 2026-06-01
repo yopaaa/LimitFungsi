@@ -243,10 +243,15 @@ const TasksPage = () => {
                       )}
                     </div>
                     <div className={styles.gradeSection}>
-                      {submission?.grade ? (
-                        <div className={styles.gradeBadge}>
-                          Nilai: {submission.grade}
-                        </div>
+                      {submission.grade ? (
+                        <>
+                          <div className={styles.gradeBadge}>
+                            Nilai: {submission.grade}
+                          </div>
+                          <br />
+                          <br />
+                          <code>{submission.feedback}</code>
+                        </>
                       ) : (
                         <div className={styles.pendingGrade}>
                           Menunggu Penilaian
