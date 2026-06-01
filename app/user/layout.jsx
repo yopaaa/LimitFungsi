@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuHouse, LuLogOut, LuBookPlus, LuUser } from "react-icons/lu";
+import { FaTasks } from "react-icons/fa";
 import DropdownMenu from "@/components/UI/DropdownMenu";
 import { pb } from "@/utils/db";
 
@@ -31,6 +32,7 @@ const UserLayout = ({ children }) => {
   const menus = [
     { icon: <LuHouse />, path: "/user" },
     { icon: <LuBookPlus />, path: "/user/join" },
+    { icon: <FaTasks />, path: "/user/tasks" },
   ];
 
   const dropdownItems = [

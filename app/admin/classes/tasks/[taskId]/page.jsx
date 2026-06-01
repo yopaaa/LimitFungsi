@@ -128,7 +128,7 @@ const TaskDetailPage = ({ params }) => {
                       <td>
                         <div className={styles.studentInfo}>
                           <span className={styles.studentName}>
-                            {sub.expand?.user_id?.nama || "Tanpa Nama"}
+                            {sub.expand?.user_id?.nama || sub.expand?.user_id?.name || "Tanpa Nama"}
                           </span>
                           <span className={styles.studentEmail}>
                             {sub.expand?.user_id?.email}

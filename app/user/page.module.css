@@ -2,6 +2,29 @@
   min-height: 100vh;
   background-color: var(--bg-main);
   font-family: var(--font-geist-sans), sans-serif;
+  padding-top: 2rem;
+}
+
+.welcomeSection {
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1rem;
+}
+
+.welcomeTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.userName {
+  color: var(--primary);
+}
+
+.welcomeSubtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
 }
 
 .main {

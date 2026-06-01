@@ -5,18 +5,18 @@
 }
 
 .main {
-  max-width: 800px;
+  max-width: 80%;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
-.fullCard {
+/* .fullCard {
   background-color: var(--bg-card);
   border: 2px solid #000000;
   box-shadow: 6px 6px 0px 0px #000000;
   border-radius: var(--radius-md);
   padding: 2rem;
-}
+} */
 
 
 .card h2 {

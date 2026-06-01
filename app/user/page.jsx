@@ -57,12 +57,29 @@ const UserDashboard = () => {
     }
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Selamat Pagi";
+    if (hour >= 12 && hour < 15) return "Selamat Siang";
+    if (hour >= 15 && hour < 18) return "Selamat Sore";
+    return "Selamat Malam";
+  };
+
   if (!user) {
     return <div className={styles.loading}>Memuat data...</div>;
   }
 
   return (
     <div className={styles.container}>
+      <header className={styles.welcomeSection}>
+        <h1 className={styles.welcomeTitle}>
+          {getGreeting()}, <span className={styles.userName}>{user.nama || user.name || "Siswa"}</span>! 👋
+        </h1>
+        <p className={styles.welcomeSubtitle}>
+          Senang melihatmu kembali. Mari selesaikan tugasmu hari ini.
+        </p>
+      </header>
+
       <main className={styles.main}>
         {/* Ringkasan Tugas Pending */}
         <div className={styles.fullCard}>

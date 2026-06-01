@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { LuUsers, LuFileText, LuActivity, LuArrowRight } from "react-icons/lu";
 import Button from "@/components/UI/Button";
@@ -8,28 +8,21 @@ import { pb } from "@/utils/db";
 import Link from "next/link";
 
 const Page = () => {
-  const [stats, setStats] = React.useState([
+  const [stats, setStats] = useState([
     {
-        link: "/admin/students",
       label: "Total Mahasiswa",
       value: "0",
       icon: <LuUsers />,
       color: "var(--primary)",
+      link: "/admin/students",
     },
     {
-        link: "/admin/classes",
       label: "Total Kelas",
       value: "0",
       icon: <LuFileText />,
       color: "var(--accent)",
-    },
-    {
-        link: "/admin/sessions",
-      label: "Active Sessions",
-      value: "-",
-      icon: <LuActivity />,
-      color: "var(--success)",
-    },
+      link: "/admin/classes",
+    }
   ]);
 
   
@@ -67,7 +60,6 @@ const Page = () => {
         setStats((prev) => [
           { ...prev[0], value: students },
           { ...prev[1], value: classes },
-          prev[2],
         ]);
       } catch (error) {
         console.error("Gagal mengambil statistik:", error);
