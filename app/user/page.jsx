@@ -3,30 +3,27 @@
 import React, { useEffect, useState } from "react";
 import { pb } from "@/utils/db";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./page.module.css";
-import { LuBookOpen, LuClock, LuFileText, LuCalendar } from "react-icons/lu";
+import { LuBookOpen, LuClock, LuFileText, LuArrowRight } from "react-icons/lu";
 
 const UserDashboard = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [classCode, setClassCode] = useState("");
-  const [message, setMessage] = useState({ type: "", text: "" });
-  const [isLoading, setIsLoading] = useState(false);
+  const [pendingTasks, setPendingTasks] = useState([]);
 
   useEffect(() => {
     if (pb.authStore.isValid) {
       setUser(pb.authStore.model);
-      fetchSubscriptions();
+      fetchData();
     } else {
       router.push("/auth/login");
     }
   }, [router]);
 
-  const fetchSubscriptions = async () => {
+  const fetchData = async () => {
     try {
-      // Mengambil data subscription dan melakukan expand ke class_id
       const records = await pb.collection('limit_subscriptions').getFullList({
         filter: `user_id = "${pb.authStore.model.id}"`,
         expand: 'class_id',
@@ -34,29 +31,31 @@ const UserDashboard = () => {
       setSubscriptions(records);
 
       if (records.length > 0) {
-        // Ambil semua class_id yang diikuti
         const classIds = records.map(sub => `class_id = "${sub.class_id}"`).join(" || ");
-        fetchTasks(classIds);
+        
+        // Ambil semua tugas
+        const allTasks = await pb.collection('limit_tasks').getFullList({
+          filter: classIds,
+          sort: '-created',
+          expand: 'class_id',
+        });
+
+        // Ambil submission user
+        const submissions = await pb.collection('limit_submissions').getFullList({
+          filter: `user_id = "${pb.authStore.model.id}"`,
+        });
+
+        // Filter hanya yang belum dikumpulkan
+        const pending = allTasks.filter(task => 
+          !submissions.some(sub => sub.task_id === task.id)
+        );
+        
+        setPendingTasks(pending);
       }
     } catch (error) {
-      console.error("Gagal memuat daftar kelas:", error);
+      console.error("Gagal memuat data:", error);
     }
   };
-
-  const fetchTasks = async (filterQuery) => {
-    try {
-      const taskRecords = await pb.collection('limit_tasks').getFullList({
-        filter: filterQuery,
-        sort: '-created',
-        expand: 'class_id',
-      });
-      setTasks(taskRecords);
-    } catch (err) {
-      console.error("Gagal memuat daftar tugas:", err);
-    }
-  };
-
-  
 
   if (!user) {
     return <div className={styles.loading}>Memuat data...</div>;
@@ -65,18 +64,20 @@ const UserDashboard = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        
-
-        {/* Bagian Bawah: Daftar Tugas */}
+        {/* Ringkasan Tugas Pending */}
         <div className={styles.fullCard}>
-          <div className={styles.sectionHeader}>
-            <h2><LuFileText /> Tugas Mendatang</h2>
+          <div className={styles.sectionHeader} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2><LuFileText /> Tugas Belum Selesai</h2>
+            <Link href="/user/tasks" className={styles.fileLink} style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              Lihat Semua <LuArrowRight />
+            </Link>
           </div>
-          {tasks.length === 0 ? (
-            <p className={styles.emptyText}>Belum ada tugas dari kelas yang Anda ikuti.</p>
+          
+          {pendingTasks.length === 0 ? (
+            <p className={styles.emptyText}>Bagus! Tidak ada tugas yang tertunda. 🎉</p>
           ) : (
             <div className={styles.taskGrid}>
-              {tasks.map((task) => (
+              {pendingTasks.slice(0, 4).map((task) => (
                 <div key={task.id} className={styles.taskCard}>
                   <div className={styles.taskCardHeader}>
                     <h3>{task.title}</h3>
@@ -90,25 +91,17 @@ const UserDashboard = () => {
                       <LuClock size={14} />
                       <span>{new Date(task.deadline).toLocaleString()}</span>
                     </div>
-                    {task.file && (
-                      <a 
-                        href={pb.files.getUrl(task, task.file)} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className={styles.fileLink}
-                      >
-                        Lihat Soal
-                      </a>
-                    )}
                   </div>
-                  <button className={styles.submitBtn}>Kumpulkan Tugas</button>
+                  <Link href="/user/tasks" className={styles.submitBtn}>
+                    Kerjakan Tugas
+                  </Link>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        {/* Bagian Bawah: Daftar Kelas yang Diikuti */}
+        {/* Daftar Kelas */}
         <div className={styles.fullCard} style={{ marginTop: "2rem" }}>
           <div className={styles.sectionHeader}>
             <h2><LuBookOpen /> Kelas yang Diikuti</h2>
@@ -135,3 +128,4 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+

@@ -11,7 +11,7 @@ import { pb } from "@/utils/db";
 const UserLayout = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setuser] = useState("U");
+  const [user, setuser] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {

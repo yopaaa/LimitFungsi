@@ -14,6 +14,7 @@ const ClassesPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isExtracting, setIsExtracting] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
   // Form State for New Task
@@ -22,6 +23,7 @@ const ClassesPage = () => {
     description: "",
     deadline: "",
     file: null,
+    answer: "",
   });
 
   // State for Create Class Form
@@ -34,6 +36,42 @@ const ClassesPage = () => {
     }
     fetchClassData();
   }, []);
+
+  const handleExtractAnswer = async () => {
+    if (!taskData.file) {
+      setMessage({ type: "error", text: "Pilih file soal terlebih dahulu!" });
+      return;
+    }
+
+    setIsExtracting(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      const formData = new FormData();
+      formData.append("file", taskData.file);
+
+      const response = await fetch("/api/extract-answer", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setTaskData((prev) => ({ ...prev, answer: data.markdown }));
+      setMessage({ type: "success", text: "Jawaban berhasil diekstrak!" });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: "Gagal mengekstrak jawaban: " + error.message,
+      });
+    } finally {
+      setIsExtracting(false);
+    }
+  };
 
   const fetchClassData = async () => {
     if (!pb.authStore.isValid || !pb.authStore.model) return;
@@ -103,6 +141,7 @@ const ClassesPage = () => {
       formData.append("title", taskData.title);
       formData.append("description", taskData.description);
       formData.append("deadline", taskData.deadline);
+      formData.append("answer", taskData.answer);
       if (taskData.file) {
         formData.append("file", taskData.file);
       }
@@ -110,7 +149,13 @@ const ClassesPage = () => {
       await pb.collection("limit_tasks").create(formData);
 
       setMessage({ type: "success", text: "Tugas berhasil ditambahkan!" });
-      setTaskData({ title: "", description: "", deadline: "", file: null });
+      setTaskData({
+        title: "",
+        description: "",
+        deadline: "",
+        file: null,
+        answer: "",
+      });
       setIsModalOpen(false);
       fetchTasks(classInfo.id);
     } catch (error) {
@@ -126,6 +171,15 @@ const ClassesPage = () => {
   if (classInfo) {
     return (
       <div className={styles.container}>
+        {message.text && (
+          <p
+            className={
+              message.type === "error" ? styles.errorMsg : styles.successMsg
+            }
+          >
+            {message.text}
+          </p>
+        )}
         <div className={styles.headerFlex}>
           <div className={styles.headerText}>
             <h1 className={styles.title}>{classInfo.name}</h1>
@@ -191,6 +245,15 @@ const ClassesPage = () => {
           title="Buat Tugas Baru"
         >
           <form onSubmit={handleCreateTask} className={styles.formStack}>
+            {message.text && (
+              <p
+                className={
+                  message.type === "error" ? styles.errorMsg : styles.successMsg
+                }
+              >
+                {message.text}
+              </p>
+            )}
             <InputField
               label="Judul Tugas"
               placeholder="Contoh: Latihan Turunan Fungsi"
@@ -223,13 +286,35 @@ const ClassesPage = () => {
             />
             <div className={styles.formGroup}>
               <label className={styles.label}>Lampiran Soal (PDF)</label>
-              <input
-                type="file"
-                accept=".pdf"
+              <div className={styles.fileActionGroup}>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) =>
+                    setTaskData({ ...taskData, file: e.target.files[0] })
+                  }
+                  className={styles.fileInput}
+                  required
+                />
+                <Button
+                  type="button"
+                  className={styles.extractBtn}
+                  onClick={handleExtractAnswer}
+                  disabled={isExtracting}
+                >
+                  {isExtracting ? "Memproses..." : "Proses"}
+                </Button>
+              </div>
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Kunci Jawaban (Markdown)</label>
+              <textarea
+                className={styles.textarea}
+                placeholder="Hasil ekstraksi akan muncul di sini..."
+                value={taskData.answer}
                 onChange={(e) =>
-                  setTaskData({ ...taskData, file: e.target.files[0] })
+                  setTaskData({ ...taskData, answer: e.target.value })
                 }
-                className={styles.fileInput}
                 required
               />
             </div>

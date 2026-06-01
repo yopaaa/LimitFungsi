@@ -160,6 +160,22 @@
   width: 100%;
 }
 
+.fileActionGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.fileActionGroup input {
+  flex: 1;
+}
+
+.extractBtn {
+  white-space: nowrap;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+}
+
 .errorMsg {
   background-color: var(--error);
   color: white;

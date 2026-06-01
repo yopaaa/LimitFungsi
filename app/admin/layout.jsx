@@ -20,14 +20,12 @@ import { pb } from "@/utils/db";
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [initialName, setInitialName] = useState("A");
+  const [user, setuser] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (pb.authStore.model) {
-      setInitialName(
-        pb.authStore.model.username?.charAt(0).toUpperCase() || "A",
-      );
+      setuser(pb.authStore.model);
     }
   }, []);
 
@@ -92,14 +90,25 @@ const DashboardLayout = ({ children }) => {
             ))}
           </div>
         </div>
+            {/* {JSON.stringify(user)} */}
 
         <div
           className={styles.profileContainer}
           onMouseEnter={() => setIsDropdownOpen(true)}
         >
           <DropdownMenu items={dropdownItems} isOpen={isDropdownOpen} />
-          <div className={styles.profile}>
-            <h1 className={styles.profileLink}>{initialName}</h1>
+           <div className={styles.profile}>
+            {user.profile ? (
+              <img
+                src={pb.files.getURL(user, user.profile)}
+                alt="Profile"
+                className={styles.avatarImg}
+              />
+            ) : (
+              user.nama?.charAt(0).toUpperCase() ||
+              user.username?.charAt(0).toUpperCase()
+            )}
+            {/* <h1 className={styles.profileLink}>{initialName}</h1> */}
           </div>
         </div>
       </aside>

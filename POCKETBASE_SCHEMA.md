@@ -62,6 +62,7 @@ Koleksi untuk menyimpan tugas yang dibuat oleh admin/dosen untuk kelas tertentu.
 | `description` | Text | Deskripsi atau instruksi tugas |
 | `file` | File | Lampiran soal/tugas (PDF/Docx) |
 | `deadline` | DateTime | Batas waktu pengumpulan |
+| `answer` | Rich Editor | kunci jawaban |
 | `created` | DateTime | Otomatis |
 
 ## Koleksi: `limit_submissions` (Base Collection)
@@ -75,6 +76,7 @@ Koleksi untuk menyimpan jawaban tugas yang dikirimkan oleh siswa.
 | `file` | File | File jawaban siswa (PDF) |
 | `grade` | Number | Nilai dari dosen |
 | `feedback` | Text | Catatan/umpan balik dari dosen |
+| `note` | Text | Catatan untuk dosen |
 | `created` | DateTime | Otomatis |
 
 ## Konfigurasi Akses (API Rules)
