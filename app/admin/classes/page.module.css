@@ -176,6 +176,70 @@
   font-size: 0.875rem;
 }
 
+/* Submissions Detail */
+.detailSection {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.taskInfoCard {
+  background-color: var(--bg-main);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.submissionTableWrapper {
+  overflow-x: auto;
+}
+
+.submissionTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.submissionTable th,
+.submissionTable td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.submissionTable th {
+  background-color: var(--bg-main);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.submissionTable td {
+  font-size: 0.875rem;
+}
+
+.gradeBadge {
+  background-color: var(--success);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.noGrade {
+  background-color: var(--text-muted);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.clickableCard {
+  cursor: pointer;
+}
+
 .errorMsg {
   background-color: var(--error);
   color: white;
@@ -209,6 +273,20 @@
   box-shadow: 6px 6px 0px 0px #000000;
   border-radius: var(--radius-md);
   padding: 2rem;
+}
+
+.formContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.textarea{
+  background-color: var(--bg-card);
+  border: 2px solid #000000;
+  box-shadow: 6px 6px 0px 0px #000000;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
 }
 
 /* Responsive */

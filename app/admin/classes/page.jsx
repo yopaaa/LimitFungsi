@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import Button from "@/components/UI/Button";
@@ -9,6 +10,7 @@ import Modal from "@/components/UI/Modal";
 import { LuPlus, LuFileText, LuCalendar, LuClock } from "react-icons/lu";
 
 const ClassesPage = () => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [classInfo, setClassInfo] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -22,8 +24,9 @@ const ClassesPage = () => {
     title: "",
     description: "",
     deadline: "",
-    file: null,
-    answer: "",
+    file: null, // Ini untuk File Soal (disimpan ke PB)
+    answerFile: null, // Ini untuk File Kunci Jawaban (hanya untuk ekstraksi)
+    answer: "", // Hasil ekstraksi markdown
   });
 
   // State for Create Class Form
@@ -38,8 +41,11 @@ const ClassesPage = () => {
   }, []);
 
   const handleExtractAnswer = async () => {
-    if (!taskData.file) {
-      setMessage({ type: "error", text: "Pilih file soal terlebih dahulu!" });
+    if (!taskData.answerFile) {
+      setMessage({
+        type: "error",
+        text: "Pilih file kunci jawaban terlebih dahulu untuk diekstrak!",
+      });
       return;
     }
 
@@ -48,7 +54,7 @@ const ClassesPage = () => {
 
     try {
       const formData = new FormData();
-      formData.append("file", taskData.file);
+      formData.append("file", taskData.answerFile);
 
       const response = await fetch("/api/extract-answer", {
         method: "POST",
@@ -62,7 +68,10 @@ const ClassesPage = () => {
       }
 
       setTaskData((prev) => ({ ...prev, answer: data.markdown }));
-      setMessage({ type: "success", text: "Jawaban berhasil diekstrak!" });
+      setMessage({
+        type: "success",
+        text: "Kunci jawaban berhasil diekstrak!",
+      });
     } catch (error) {
       setMessage({
         type: "error",
@@ -102,6 +111,10 @@ const ClassesPage = () => {
     } catch (err) {
       console.error("Gagal mengambil data tugas:", err);
     }
+  };
+
+  const handleTaskClick = (task) => {
+    router.push(`/admin/classes/tasks/${task.id}`);
   };
 
   const handleCreateClass = async (e) => {
@@ -154,6 +167,7 @@ const ClassesPage = () => {
         description: "",
         deadline: "",
         file: null,
+        answerFile: null,
         answer: "",
       });
       setIsModalOpen(false);
@@ -190,7 +204,7 @@ const ClassesPage = () => {
           </div>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className={styles.addBtn}
+            // className={styles.addBtn}
           >
             <LuPlus /> Tambah Tugas
           </Button>
@@ -207,7 +221,11 @@ const ClassesPage = () => {
         ) : (
           <div className={styles.taskGrid}>
             {tasks.map((task) => (
-              <div key={task.id} className={styles.taskCard}>
+              <div
+                key={task.id}
+                className={`${styles.taskCard} ${styles.clickableCard}`}
+                onClick={() => handleTaskClick(task)}
+              >
                 <div className={styles.taskHeader}>
                   <h3>{task.title}</h3>
                   <span className={styles.dateTag}>
@@ -229,6 +247,7 @@ const ClassesPage = () => {
                       target="_blank"
                       rel="noreferrer"
                       className={styles.fileLink}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       Lihat Soal
                     </a>
@@ -243,81 +262,112 @@ const ClassesPage = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title="Buat Tugas Baru"
+          style={{maxWidth: "70%"}}
         >
           <form onSubmit={handleCreateTask} className={styles.formStack}>
-            {message.text && (
-              <p
-                className={
-                  message.type === "error" ? styles.errorMsg : styles.successMsg
-                }
-              >
-                {message.text}
-              </p>
-            )}
-            <InputField
-              label="Judul Tugas"
-              placeholder="Contoh: Latihan Turunan Fungsi"
-              value={taskData.title}
-              onChange={(e) =>
-                setTaskData({ ...taskData, title: e.target.value })
-              }
-              required
-            />
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Deskripsi</label>
-              <textarea
-                className={styles.textarea}
-                placeholder="Berikan instruksi detail tugas di sini..."
-                value={taskData.description}
-                onChange={(e) =>
-                  setTaskData({ ...taskData, description: e.target.value })
-                }
-                required
-              />
-            </div>
-            <InputField
-              label="Deadline"
-              type="date"
-              value={taskData.deadline}
-              onChange={(e) =>
-                setTaskData({ ...taskData, deadline: e.target.value })
-              }
-              required
-            />
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Lampiran Soal (PDF)</label>
-              <div className={styles.fileActionGroup}>
-                <input
-                  type="file"
-                  accept=".pdf"
+            <div className={styles.formContainer}>
+              <div>
+                {message.text && (
+                  <p
+                    className={
+                      message.type === "error"
+                        ? styles.errorMsg
+                        : styles.successMsg
+                    }
+                  >
+                    {message.text}
+                  </p>
+                )}
+                <InputField
+                  label="Judul Tugas"
+                  placeholder="Contoh: Latihan Turunan Fungsi"
+                  value={taskData.title}
                   onChange={(e) =>
-                    setTaskData({ ...taskData, file: e.target.files[0] })
+                    setTaskData({ ...taskData, title: e.target.value })
                   }
-                  className={styles.fileInput}
                   required
                 />
-                <Button
-                  type="button"
-                  className={styles.extractBtn}
-                  onClick={handleExtractAnswer}
-                  disabled={isExtracting}
-                >
-                  {isExtracting ? "Memproses..." : "Proses"}
-                </Button>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Deskripsi</label>
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Berikan instruksi detail tugas di sini..."
+                    value={taskData.description}
+                    onChange={(e) =>
+                      setTaskData({ ...taskData, description: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Lampiran Soal (PDF)</label>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) =>
+                      setTaskData({ ...taskData, file: e.target.files[0] })
+                    }
+                    className={styles.fileInput}
+                    required
+                  />
+                </div>
+
+                <InputField
+                  label="Deadline"
+                  type="date"
+                  value={taskData.deadline}
+                  onChange={(e) =>
+                    setTaskData({ ...taskData, deadline: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
+                    File Kunci Jawaban (Untuk Ekstraksi)
+                  </label>
+                  <div className={styles.fileActionGroup}>
+                    <input
+                      type="file"
+                      accept=".pdf,image/*"
+                      onChange={(e) =>
+                        setTaskData({
+                          ...taskData,
+                          answerFile: e.target.files[0],
+                        })
+                      }
+                      className={styles.fileInput}
+                    />
+                    <Button
+                      type="button"
+                      className={styles.extractBtn}
+                      onClick={handleExtractAnswer}
+                      disabled={isExtracting}
+                    >
+                      {isExtracting ? "Memproses..." : "Ekstrak"}
+                    </Button>
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
+                    Kunci Jawaban (Hasil Markdown)
+                  </label>
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Hasil ekstraksi akan muncul di sini..."
+                    value={taskData.answer}
+                    onChange={(e) =>
+                      setTaskData({ ...taskData, answer: e.target.value })
+                    }
+                    required
+                  />
+                </div>
               </div>
             </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Kunci Jawaban (Markdown)</label>
-              <textarea
-                className={styles.textarea}
-                placeholder="Hasil ekstraksi akan muncul di sini..."
-                value={taskData.answer}
-                onChange={(e) =>
-                  setTaskData({ ...taskData, answer: e.target.value })
-                }
-                required
-              />
-            </div>
+
             <Button type="submit" fullWidth disabled={isLoading}>
               {isLoading ? "Mengunggah..." : "Publikasikan Tugas"}
             </Button>
