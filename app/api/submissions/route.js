@@ -74,7 +74,8 @@ Tugas Anda:
 1. Bandingkan jawaban siswa dengan kunci jawaban.
 2. Jika jawaban tidak relevan sama sekali dengan materi atau file yang diupload bukan jawaban tugas, berikan nilai 5 dan feedback 'File yang diunggah tidak sesuai'.
 3. Jika relevan, berikan nilai antara 5-100 berdasarkan ketepatan langkah dan hasil akhir.
-4. Berikan feedback singkat (maksimal 2 kalimat) dalam Bahasa Indonesia.
+4. Bandingkan Antara Kunci Jawaban dan Jawaban Siswa dengan teliti, dan nilai yang sesuai perhitungan, misal ada 10 soal salah 2 maka nilainya 80. Jika semua benar maka nilainya 100. Jika semua salah maka nilainya 5. jika ada 20 soal salah 2 maka nilainya 90. Jika ada 20 soal salah 10 maka nilainya 50. Jika ada 20 soal salah 15 maka nilainya 25. Jika ada 20 soal salah semua maka nilainya 5. begitulah selanjutnya
+5. Berikan feedback singkat (maksimal 2 kalimat) dalam Bahasa Indonesia.
 
 OUTPUT HARUS DALAM FORMAT JSON BERIKUT:
 {
