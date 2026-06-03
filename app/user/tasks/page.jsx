@@ -243,7 +243,7 @@ const TasksPage = () => {
                       )}
                     </div>
                     <div className={styles.gradeSection}>
-                      {submission.grade ? (
+                      {submission.grade != -1? (
                         <>
                           <div className={styles.gradeBadge}>
                             Nilai: {submission.grade}

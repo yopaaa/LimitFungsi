@@ -73,7 +73,7 @@ ${userMarkdown}
 Tugas Anda:
 1. Bandingkan jawaban siswa dengan kunci jawaban.
 2. Jika jawaban tidak relevan sama sekali dengan materi atau file yang diupload bukan jawaban tugas, berikan nilai 5 dan feedback 'File yang diunggah tidak sesuai'.
-3. Jika relevan, berikan nilai antara 0-100 berdasarkan ketepatan langkah dan hasil akhir.
+3. Jika relevan, berikan nilai antara 5-100 berdasarkan ketepatan langkah dan hasil akhir.
 4. Berikan feedback singkat (maksimal 2 kalimat) dalam Bahasa Indonesia.
 
 OUTPUT HARUS DALAM FORMAT JSON BERIKUT:

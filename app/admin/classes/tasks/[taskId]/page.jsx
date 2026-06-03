@@ -147,7 +147,7 @@ const TaskDetailPage = ({ params }) => {
                         </a>
                       </td>
                       <td>
-                        {sub.grade ? (
+                        {sub.grade != -1 ? (
                           <span className={styles.gradeBadge}>{sub.grade}</span>
                         ) : (
                           <span className={styles.noGrade}>Belum Dinilai</span>
