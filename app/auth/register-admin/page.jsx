@@ -114,6 +114,7 @@ export default function RegisterForm() {
         passwordConfirm: registerData.confirmPassword,
         role: "admin", // Set role sebagai "admin" untuk pendaftaran admin
         classCode: classCode, // Simpan kode kelas yang dihasilkan untuk admin baru
+        emailVisibility: true,
       });
 
       setSuccessMessage("Pendaftaran berhasil! Mengalihkan...");

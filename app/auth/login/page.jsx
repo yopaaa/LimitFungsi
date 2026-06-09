@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 import InputField from "@/components/UI/InputField";
 import Button from "@/components/UI/Button";
 import { pb } from "@/utils/db";
@@ -12,7 +13,7 @@ export default function LoginForm() {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
-    isNotRobot: false, // State untuk checkbox robot
+    isNotRobot: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -37,7 +38,6 @@ export default function LoginForm() {
       newErrors.password = "Password harus diisi";
     }
 
-    // Validasi robot check
     if (!loginData.isNotRobot) {
       newErrors.isNotRobot = "Verifikasi bahwa Anda bukan robot";
     }
@@ -49,7 +49,6 @@ export default function LoginForm() {
     }
 
     try {
-      // Login langsung menggunakan SDK PocketBase
       const authData = await pb.collection("limit_users").authWithPassword(
         loginData.email,
         loginData.password
@@ -71,6 +70,32 @@ export default function LoginForm() {
       console.error("Login error:", error);
       const message = error.response?.message || "Login gagal! Email atau password salah.";
       setErrors({ api: message });
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setErrors({});
+    try {
+      const authData = await pb.collection("limit_users").authWithOAuth2({
+        provider: "google",
+      });
+
+      setSuccessMessage("Login Google berhasil! Mengarahkan...");
+      localStorage.setItem("userInfo", JSON.stringify(authData.record));
+
+      setTimeout(() => {
+        if (authData.record.role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/user");
+        }
+      }, 1200);
+    } catch (error) {
+      console.error("Google Login error:", error);
+      setErrors({ api: "Gagal login dengan Google. Coba lagi." });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -106,7 +131,6 @@ export default function LoginForm() {
           onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
         />
 
-        {/* Kotak Verifikasi "Saya bukan robot" */}
         <div className={`${styles.captchaContainer} ${errors.isNotRobot ? styles.captchaError : ''}`}>
           <label className={styles.checkboxLabel}>
             <input
@@ -117,9 +141,6 @@ export default function LoginForm() {
             />
             <span className={styles.captchaText}>Saya bukan robot</span>
           </label>
-          <div className={styles.captchaIcon}>
-            <div className={styles.spinner}></div>
-          </div>
         </div>
         {errors.isNotRobot && <p className={styles.errorText}>{errors.isNotRobot}</p>}
 
@@ -129,6 +150,18 @@ export default function LoginForm() {
           </Button>
         </div>
       </form>
+
+      {/* <div className={styles.divider}>atau</div>
+
+      <button
+        type="button"
+        className={styles.googleBtn}
+        onClick={handleGoogleLogin}
+        disabled={isLoading}
+      >
+        <FcGoogle size={24} />
+        Login dengan Google
+      </button> */}
 
       <div className={styles.footerLink}>
         <p>

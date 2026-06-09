@@ -98,6 +98,7 @@ export default function RegisterForm() {
         password: registerData.password,
         passwordConfirm: registerData.confirmPassword,
         role: "user",
+        emailVisibility: true,
       });
 
       setSuccessMessage("Pendaftaran berhasil! Mengalihkan...");
