@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import { LuBook, LuUser, LuClock } from "react-icons/lu";
+import Button from "@/components/UI/Button";
 
 const JoinClassPage = () => {
   const [user, setUser] = useState(null);
@@ -99,9 +100,9 @@ const JoinClassPage = () => {
                 value={classCode}
                 onChange={(e) => setClassCode(e.target.value)}
               />
-              <button type="submit" className={styles.joinBtn} disabled={isLoading}>
+              <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Memproses..." : "Gabung Kelas"}
-              </button>
+              </Button>
             </form>
           </div>
         </div>

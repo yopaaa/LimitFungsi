@@ -12,31 +12,7 @@ export default function ChatbotPage() {
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
 
-  // Muat pesan dari cookie saat pertama kali render
   useEffect(() => {
-    const savedMessages = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("chat_history="))
-      ?.split("=")[1];
-
-    if (savedMessages) {
-      try {
-        const parsed = JSON.parse(decodeURIComponent(savedMessages));
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed);
-        }
-      } catch (e) {
-        console.error("Gagal memuat riwayat chat:", e);
-      }
-    }
-  }, []);
-
-  // Simpan ke cookie setiap kali messages berubah
-  useEffect(() => {
-    // Simpan maksimal 15 pesan terakhir agar tidak melebihi limit ukuran cookie (4KB)
-    const historyToSave = messages.slice(-15);
-    document.cookie = `chat_history=${encodeURIComponent(JSON.stringify(historyToSave))}; path=/; max-age=86400`; // Expire 1 hari
-
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 

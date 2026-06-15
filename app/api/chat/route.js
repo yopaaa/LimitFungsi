@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import { pb } from "@/utils/db";
 
 const USER_API_URL = process.env.USER_API_URL || process.env.GEMINI_ENDPOINT;
 const USER_API_KEY = process.env.USER_API_KEY || process.env.GEMINI_API || process.env.GEMINI_API_KEY;
@@ -12,30 +13,69 @@ export const GET = () => {
 
 export async function POST(req) {
   try {
+    // 1. Ambil token dari cookie 'pb_auth'
+    const authCookie = req.cookies.get('pb_auth');
+    
+    if (!authCookie) {
+      return NextResponse.json({ error: "Unauthorized: Silakan login terlebih dahulu" }, { status: 401 });
+    }
+
+    // 2. Load token ke store dan validasi menggunakan instance pb dari utils/db
+    try {
+      pb.authStore.loadFromCookie(`pb_auth=${authCookie.value}`);
+      if (!pb.authStore.isValid) {
+        throw new Error("Invalid token");
+      }
+    } catch (err) {
+      return NextResponse.json({ error: "Unauthorized: Sesi tidak valid" }, { status: 401 });
+    }
+
     const body = await req.json();
+
+    // 4. Ambil data user untuk identitas
+    const user = pb.authStore.model;
+    const userName = user?.nama || "Siswa";
+    const instansi = user?.instansi;
+
+    // 5. Konversi riwayat pesan ke format Gemini (user -> user, assistant -> model)
+    // Serta tambahkan system instruction agar Gemini tahu siapa dia dan siapa user-nya
+    let contents = [];
+    
+    if (body.messages && Array.isArray(body.messages)) {
+      contents = body.messages.map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
+    } else {
+      contents = [{
+        role: "user",
+        parts: [{ text: typeof body === "string" ? body : (body.prompt || JSON.stringify(body)) }]
+      }];
+    }
+
+    // Tambahkan instruksi sistem agar Gemini tahu siapa dia dan siapa user-nya
+    const systemInstruction = `Nama kamu adalah Limit Bot, asisten AI untuk aplikasi LimitFungsi. 
+    Kamu sedang berbicara dengan ${userName} dari ${instansi || "Polman Babel"}. 
+    Tugas utama kamu adalah membantu ${userName} belajar tentang matematika, khususnya Limit Fungsi dan Grafik (Graph).
+    Gunakan bahasa Indonesia yang ramah tapi kritis dalam memberikan penjelasan.
+    Selalu panggil user dengan nama ${userName}.`;
+
+    const requestPayload = {
+      contents: contents,
+      system_instruction: {
+        parts: [{ text: systemInstruction }]
+      }
+    };
 
     if (!USER_API_URL) {
       return NextResponse.json({ error: "USER_API_URL is not configured" }, { status: 500 });
     }
 
-    // If using Gemini endpoint, build request similar to extract-answer
+    // If using Gemini endpoint
     if (GEMINI_ENDPOINT && USER_API_URL === GEMINI_ENDPOINT) {
       if (!GEMINI_API_KEY) {
         return NextResponse.json({ error: "GEMINI_API_KEY is not configured" }, { status: 500 });
       }
-
-      // Support simple { prompt: string } or passthrough body
-      const prompt = typeof body === "object" && body.prompt ? body.prompt : JSON.stringify(body);
-
-      const requestPayload = {
-        contents: [
-          {
-            parts: [
-              { text: prompt }
-            ]
-          }
-        ]
-      };
 
       const upstream = await axios.post(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, requestPayload, {
         headers: { "Content-Type": "application/json" }
@@ -48,7 +88,7 @@ export async function POST(req) {
     const headers = { "Content-Type": "application/json" };
     if (USER_API_KEY) headers["Authorization"] = `Bearer ${USER_API_KEY}`;
 
-    const upstream = await axios.post(USER_API_URL, body, { headers });
+    const upstream = await axios.post(USER_API_URL, requestPayload, { headers });
 
     return NextResponse.json(upstream.data, { status: upstream.status });
   } catch (error) {
