@@ -43,7 +43,7 @@ const DashboardLayout = ({ children }) => {
     { icon: <LuHouse />, path: "/admin" },
     { icon: <LuUsers />, path: "/admin/students" },
     { icon: <LuBookOpen />, path: "/admin/classes" },
-    { icon: <TbChartBar />, path: "/admin/analytics" },
+    // { icon: <TbChartBar />, path: "/admin/analytics" },
     { icon: <LuBot />, path: "/admin/chatbot", title: "Chat Bot" },
     { icon: <LuArchive />, path: "/admin/materials", title: "Materi" },
   ];

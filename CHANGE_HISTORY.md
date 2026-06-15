@@ -39,3 +39,11 @@
 - Menambahkan proteksi keamanan pada `app/user/materials/[slug]/page.jsx` agar materi berstatus **Draft** tidak bisa diakses oleh non-admin.
 - Memperbarui `POCKETBASE_SCHEMA.md` dengan **API Rules** yang menyertakan filter status materi.
 - Peningkatan UI kartu materi user dengan integrasi gambar thumbnail dan transisi hover.
+
+# 15-06-2026 [5] : Penambahan Navigasi Daftar Isi (Table of Contents)
+
+- Memindahkan fitur materi dari `/user` ke root `/materials` agar bersifat publik.
+- Mengimplementasikan fitur **Daftar Isi (ToC)** otomatis pada halaman detail materi.
+- Menambahkan logika ekstraksi heading (`h1`, `h2`, `h3`) dari konten Markdown untuk dijadikan navigasi sidebar.
+- Memperbarui layout halaman materi menjadi dua kolom dengan sidebar yang bersifat **sticky** di sisi kiri.
+- Mengintegrasikan navigasi jangkar (anchor links) dengan memberikan ID otomatis pada setiap elemen heading di artikel.
