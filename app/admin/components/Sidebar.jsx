@@ -14,7 +14,8 @@ export default function Sidebar() {
 
   const menuItems = [
     { label: 'Dashboard', href: '/admin' },
-    { label: 'Classes', href: '/admin/classes' }, // Updated to match context
+    { label: 'Classes', href: '/admin/classes' },
+    { label: 'Materi', href: '/admin/materials' },
   ];
 
   console.log('User Info:', user);

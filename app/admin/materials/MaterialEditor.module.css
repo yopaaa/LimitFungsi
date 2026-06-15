@@ -1,0 +1,173 @@
+.container {
+  padding: 2rem;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.backLink:hover {
+  color: var(--primary);
+}
+
+.topFields {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.thumbnailGroup {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px dashed #000000;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.thumbnailPreview {
+  width: 100%;
+  max-width: 300px;
+  height: 180px;
+  object-fit: cover;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  border-radius: var(--radius-sm);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 3px solid #000000;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  background-color: #ffffff;
+}
+
+.editorContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  min-height: 500px;
+}
+
+.textarea {
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 500px;
+  background-color: #fafafa;
+}
+
+.preview {
+  padding: 1.5rem;
+  border: 3px solid #000000;
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  overflow-y: auto;
+  max-height: 800px;
+}
+
+/* Sync with User View Styling */
+.preview h1, .preview h2, .preview h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  font-weight: 800;
+}
+
+.preview h2 {
+  font-size: 1.5rem;
+  border-bottom: 3px solid #000000;
+  display: inline-block;
+  padding-bottom: 0.1rem;
+}
+
+.preview p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.preview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 2px solid #000000;
+}
+
+.preview th, .preview td {
+  border: 1px solid #000000;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.preview th {
+  background-color: #f3f4f6;
+}
+
+.preview blockquote {
+  border-left: 5px solid #000000;
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.previewLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.previewBadge {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+@media (max-width: 992px) {
+  .editorContainer {
+    grid-template-columns: 1fr;
+  }
+}

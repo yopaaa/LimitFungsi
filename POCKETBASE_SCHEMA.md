@@ -80,6 +80,20 @@ Koleksi untuk menyimpan jawaban tugas yang dikirimkan oleh siswa.
 | `note` | Text | Catatan untuk dosen |
 | `created` | DateTime | Otomatis |
 
+## Koleksi: `limit_materials` (Base Collection)
+Koleksi untuk menyimpan materi atau jurnal dalam format Markdown.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `title` | Text | Judul Materi/Jurnal |
+| `slug` | Text | URL Friendly identifier |
+| `content` | Text | Isi materi dalam format Markdown |
+| `admin_id` | Relation | Relasi ke `limit_users` (Pembuat) |
+| `thumbnail` | File | Gambar sampul materi |
+| `status` | Select | `draft` atau `published` |
+| `created` | DateTime | Otomatis |
+
 ## Konfigurasi Akses (API Rules)
 - **users**: `Admin only` for list, `Self` for view/update.
 - **messages**: `create` (Anyone/Public).
@@ -87,3 +101,4 @@ Koleksi untuk menyimpan jawaban tugas yang dikirimkan oleh siswa.
 - **subscriptions**: `view` (Self/Admin), `create` (Auth user).
 - **tasks**: `list/view` (Auth users), `create/update/delete` (Admin).
 - **submissions**: `view` (Self/Admin), `create` (Auth user), `update` (Admin/Self for file only).
+- **materials**: `list/view` (status = "published" || @request.auth.role = "admin"), `create/update/delete` (Admin).

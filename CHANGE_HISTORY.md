@@ -6,7 +6,7 @@
 - Menambahkan tombol "Login dengan Google" dan komponen *divider* pada UI login.
 - Memperbarui `app/user/layout.jsx` dengan sistem menu yang lebih dinamis dan penambahan menu Chat Bot.
 
-# 15-06-2026 : Pembersihan Kode dan Peningkatan UI/UX
+# 15-06-2026 [1] : Pembersihan Kode dan Peningkatan UI/UX
 
 - Melakukan refactor pada `app/user/layout.jsx` untuk mendukung properti `title` pada navigasi sidebar.
 - Menyederhanakan logika validasi captcha manual ("Saya bukan robot") di halaman login.
@@ -14,10 +14,28 @@
 - Membersihkan komentar-komentar kode yang tidak diperlukan di seluruh file autentikasi.
 - Memastikan navigasi *redirect* setelah login (Admin vs User) berjalan lancar dengan data dari localStorage.
 
-# 15-06-2026 [1] : Keamanan API dan Personalisasi Chat Bot
+# 15-06-2026 [2] : Keamanan API dan Personalisasi Chat Bot
 
 - Mengimplementasikan validasi autentikasi pada `app/api/chat/route.js` menggunakan cookie `pb_auth` dan instance `pb` dari `utils/db`.
 - Memperbaiki pengiriman prompt ke Gemini API agar mendukung riwayat percakapan yang terstruktur (format `user` & `model`).
 - Menambahkan **System Instruction** resmi untuk memberikan identitas "Limit Bot" dan mengenali user sebagai "Rizka dari Polman Babel".
 - Mengonfigurasi kepribadian bot agar memberikan respon yang "ramah namun kritis" terkait materi matematika.
 - Mengimplementasikan fitur **Persistensi Chat** menggunakan cookie `chat_history` di frontend, sehingga riwayat percakapan tetap ada saat halaman direfresh.
+
+# 15-06-2026 [3] : Implementasi Fitur Materi/Jurnal berbasis Markdown
+
+- Menginstal library `react-markdown`, `remark-gfm`, dan `react-syntax-highlighter` untuk pendukung fitur materi.
+- Menambahkan koleksi `limit_materials` pada skema database PocketBase.
+- Membuat halaman manajemen materi admin (`app/admin/materials/page.jsx`) untuk operasi CRUD.
+- Membuat editor materi dengan fitur **live preview** Markdown (`app/admin/materials/new/page.jsx` & `edit/page.jsx`).
+- Mengimplementasikan halaman tampilan materi untuk user (`app/user/materials/[slug]/page.jsx`) dengan dukungan tabel dan syntax highlighting kode.
+- Menambahkan link menu "Materi" pada Sidebar Admin.
+- Membuat halaman daftar materi untuk user (`app/user/materials/page.jsx`) dengan tampilan **grid 2 kolom** dan pengurutan dari yang terbaru.
+
+# 15-06-2026 [4] : Penyempurnaan Visual dan Keamanan Materi
+
+- Mengimplementasikan fitur **Unggah Thumbnail** (gambar sampul) untuk materi menggunakan `FormData`.
+- Sinkronisasi **Live Preview** di panel Admin agar menggunakan styling dan syntax highlighter yang identik dengan tampilan User.
+- Menambahkan proteksi keamanan pada `app/user/materials/[slug]/page.jsx` agar materi berstatus **Draft** tidak bisa diakses oleh non-admin.
+- Memperbarui `POCKETBASE_SCHEMA.md` dengan **API Rules** yang menyertakan filter status materi.
+- Peningkatan UI kartu materi user dengan integrasi gambar thumbnail dan transisi hover.

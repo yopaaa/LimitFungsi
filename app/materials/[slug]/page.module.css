@@ -1,0 +1,138 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 3rem;
+  text-align: center;
+  border-bottom: 4px solid #000000;
+  padding-bottom: 2rem;
+}
+
+.heroImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border: 4px solid #000000;
+  box-shadow: 10px 10px 0px 0px #000000;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.content {
+  line-height: 1.8;
+  font-size: 1.125rem;
+  color: #1a1a1a;
+}
+
+/* Markdown Styling */
+.content h1, .content h2, .content h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.content h2 {
+  font-size: 2rem;
+  border-bottom: 3px solid #000000;
+  display: inline-block;
+  padding-bottom: 0.2rem;
+}
+
+.content p {
+  margin-bottom: 1.5rem;
+}
+
+.content ul, .content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.5rem;
+}
+
+.content blockquote {
+  border-left: 8px solid #000000;
+  padding: 1rem 1.5rem;
+  background-color: #f3f4f6;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  border: 3px solid #000000;
+}
+
+.content th, .content td {
+  border: 2px solid #000000;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.content th {
+  background-color: #f3f4f6;
+  font-weight: 800;
+}
+
+.content pre {
+  background-color: #1a1a1a !important;
+  color: #ffffff;
+  padding: 1.5rem !important;
+  border-radius: var(--radius-md);
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.content code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.25rem;
+  }
+}
