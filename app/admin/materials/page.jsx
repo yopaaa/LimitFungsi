@@ -21,6 +21,7 @@ export default function MaterialsAdminPage() {
       const records = await pb.collection("limit_materials").getFullList({
         sort: "-created",
         expand: "admin_id",
+        fields: "id,collectionId,title,slug,thumbnail,description,created,expand.admin_id.nama,status",
       });
       setMaterials(records);
     } catch (error) {
@@ -67,6 +68,9 @@ export default function MaterialsAdminPage() {
                 <div className={styles.cardContent}>
                   <h3>{item.title}</h3>
                   <span className={styles.slug}>/{item.slug}</span>
+                  {item.description && (
+                    <p className={styles.description}>{item.description}</p>
+                  )}
                 </div>
                 <div className={styles.cardFooter}>
                   <span className={styles.date}>

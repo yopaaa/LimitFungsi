@@ -9,6 +9,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { LuCalendar, LuUser } from "react-icons/lu";
 import Footer from "@/components/Layout/Footer";
+import FloatingChat from "@/components/FloatingChat/FloatingChat";
 
 export default function MaterialDetailPage({ params: paramsPromise }) {
   const params = use(paramsPromise);
@@ -145,32 +146,32 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
                 return <h3 id={id}>{children}</h3>;
               },
               code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || "");
-              return !inline && match ? (
-                <SyntaxHighlighter
-                  style={vscDarkPlus}
-                  language={match[1]}
-                  PreTag="div"
-                  {...props}
-                >
-                  {String(children).replace(/\n$/, "")}
-                </SyntaxHighlighter>
-              ) : (
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-        >
-          {material.content}
-        </ReactMarkdown>
-      </main>
-    </div>
+                const match = /language-(\w+)/.exec(className || "");
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    style={vscDarkPlus}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  >
+                    {String(children).replace(/\n$/, "")}
+                  </SyntaxHighlighter>
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {material.content}
+          </ReactMarkdown>
+        </main>
+      </div>
     </div>
 
-          <Footer />
-
+    <Footer />
+    {material && <FloatingChat materialContext={material.content} />}
     </>
   );
 }

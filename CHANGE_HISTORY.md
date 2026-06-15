@@ -47,3 +47,11 @@
 - Menambahkan logika ekstraksi heading (`h1`, `h2`, `h3`) dari konten Markdown untuk dijadikan navigasi sidebar.
 - Memperbarui layout halaman materi menjadi dua kolom dengan sidebar yang bersifat **sticky** di sisi kiri.
 - Mengintegrasikan navigasi jangkar (anchor links) dengan memberikan ID otomatis pada setiap elemen heading di artikel.
+
+# 15-06-2026 [6] : Penambahan Field Deskripsi pada Materi
+
+- Menambahkan field **description** pada form pembuatan (`new`) dan edit materi di sisi Admin.
+- Memperbarui state dan logika pengiriman data menggunakan `FormData` agar menyertakan deskripsi.
+- Menampilkan deskripsi singkat pada kartu materi di halaman manajemen materi Admin.
+- Menambahkan styling CSS untuk membatasi tampilan deskripsi agar rapi (max-lines: 2) pada dashboard admin.
+- Mengoptimalkan pengambilan data materi dengan filter field yang lebih spesifik pada list view.

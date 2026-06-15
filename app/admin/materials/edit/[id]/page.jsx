@@ -140,6 +140,18 @@ export default function EditMaterialPage({ params: paramsPromise }) {
           </div>
         </div>
 
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Deskripsi Singkat</label>
+          <textarea
+            name="description"
+            className={styles.input}
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Ringkasan materi yang akan muncul di daftar materi..."
+            rows={3}
+          />
+        </div>
+
         <div className={styles.thumbnailGroup}>
           <label className={styles.label}>
             <LuImage /> Gambar Sampul (Thumbnail)

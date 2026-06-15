@@ -37,10 +37,8 @@ export async function POST(req) {
     const userName = user?.nama || "Siswa";
     const instansi = user?.instansi;
 
-    // 5. Konversi riwayat pesan ke format Gemini (user -> user, assistant -> model)
-    // Serta tambahkan system instruction agar Gemini tahu siapa dia dan siapa user-nya
+    // 5. Konversi riwayat pesan ke format Gemini
     let contents = [];
-    
     if (body.messages && Array.isArray(body.messages)) {
       contents = body.messages.map(m => ({
         role: m.role === "assistant" ? "model" : "user",
@@ -54,11 +52,20 @@ export async function POST(req) {
     }
 
     // Tambahkan instruksi sistem agar Gemini tahu siapa dia dan siapa user-nya
-    const systemInstruction = `Nama kamu adalah Limit Bot, asisten AI untuk aplikasi LimitFungsi. 
+    let systemInstruction = `Nama kamu adalah Limit Bot, asisten AI untuk aplikasi LimitFungsi. 
     Kamu sedang berbicara dengan ${userName} dari ${instansi || "Polman Babel"}. 
     Tugas utama kamu adalah membantu ${userName} belajar tentang matematika, khususnya Limit Fungsi dan Grafik (Graph).
     Gunakan bahasa Indonesia yang ramah tapi kritis dalam memberikan penjelasan.
     Selalu panggil user dengan nama ${userName}.`;
+
+    // Jika ada konteks materi tambahan dari client
+    if (body.materialContext) {
+      systemInstruction += `\n\nKONTEKS MATERI SAAT INI:
+      Kamu harus menjawab pertanyaan user berdasarkan atau berkaitan dengan materi berikut:
+      ---
+      ${body.materialContext}
+      ---`;
+    }
 
     const requestPayload = {
       contents: contents,
