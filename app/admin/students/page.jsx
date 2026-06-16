@@ -126,7 +126,7 @@ const StudentsPage = () => {
                         <div className={styles.avatarMini}>
                           {student.profile ? (
                             <img
-                              src={pb.files.getUrl(student, student.profile)}
+                              src={pb.files.getURL(student, student.profile)}
                               alt="Profile"
                               className={styles.avatarImg}
                             />
@@ -208,7 +208,7 @@ const StudentsPage = () => {
               <div className={styles.avatarLarge}>
                 {selectedStudent.profile ? (
                   <img
-                    src={pb.files.getUrl(selectedStudent, selectedStudent.profile)}
+                    src={pb.files.getURL(selectedStudent, selectedStudent.profile)}
                     alt="Profile"
                     className={styles.avatarImg}
                   />

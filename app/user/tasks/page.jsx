@@ -82,6 +82,16 @@ const TasksPage = () => {
   const handleSubmitTask = async (e) => {
     e.preventDefault();
     if (!uploadFile || !selectedTask) return;
+
+    // Cek deadline lagi sebelum submit
+    if (new Date(selectedTask.deadline) < new Date()) {
+      setMessage({
+        type: "error",
+        text: "Maaf, deadline untuk tugas ini telah berakhir.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setMessage({ type: "", text: "" });
 
@@ -124,6 +134,8 @@ const TasksPage = () => {
   };
 
   const pendingTasks = tasks.filter((task) => !isTaskSubmitted(task.id));
+  const activeTasks = pendingTasks.filter((task) => new Date(task.deadline) >= new Date());
+  const missedTasks = pendingTasks.filter((task) => new Date(task.deadline) < new Date());
   const completedTasks = tasks.filter((task) => isTaskSubmitted(task.id));
 
   if (!user) return <div className={styles.loading}>Memuat data...</div>;
@@ -135,26 +147,19 @@ const TasksPage = () => {
           <div className={styles.sectionHeader}>
             <div className={styles.headerTitle}>
               <h2>
-                <LuFileText /> Manajemen Tugas
+                <LuFileText /> Tugas Aktif
               </h2>
             </div>
-            <div className={styles.tabs}>
-              <button
-                className={`${styles.tabItem} ${activeTab === "pending" ? styles.activeTab : ""}`}
-                onClick={() => setActiveTab("pending")}
-              >
-                Belum Dikerjakan ({pendingTasks.length})
-              </button>
-            </div>
+            <span className={styles.countBadge}>{activeTasks.length} Tugas</span>
           </div>
 
-          {pendingTasks.length === 0 ? (
+          {activeTasks.length === 0 ? (
             <p className={styles.emptyText}>
-              Tidak ada tugas yang perlu dikerjakan. ✨
+              Tidak ada tugas aktif yang perlu dikerjakan. 
             </p>
           ) : (
             <div className={styles.taskGrid}>
-              {pendingTasks.map((task) => (
+              {activeTasks.map((task) => (
                 <div key={task.id} className={styles.taskCard}>
                   <div className={styles.taskCardHeader}>
                     <h3>{task.title}</h3>
@@ -170,7 +175,7 @@ const TasksPage = () => {
                     </div>
                     {task.file && (
                       <a
-                        href={pb.files.getUrl(task, task.file)}
+                        href={pb.files.getURL(task, task.file)}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.fileLink}
@@ -190,15 +195,58 @@ const TasksPage = () => {
             </div>
           )}
 
-          <div className={styles.sectionHeader}>
-            <div className={styles.tabs}>
-              <button
-                className={`${styles.tabItem} ${activeTab === "submitted" ? styles.activeTab : ""}`}
-                onClick={() => setActiveTab("submitted")}
-              >
-                Sudah Dikumpulkan ({completedTasks.length})
-              </button>
+          {missedTasks.length > 0 && (
+            <>
+              <div className={styles.sectionHeader} style={{ marginTop: '3rem' }}>
+                <div className={styles.headerTitle}>
+                  <h2 className={styles.missedTitle}>
+                    <LuClock /> Tugas Terlewat
+                  </h2>
+                </div>
+                <span className={`${styles.countBadge} ${styles.missedBadge}`}>{missedTasks.length} Terlewat</span>
+              </div>
+              <div className={styles.taskGrid}>
+                {missedTasks.map((task) => (
+                  <div key={task.id} className={`${styles.taskCard} ${styles.missedCard}`}>
+                    <div className={styles.taskCardHeader}>
+                      <h3>{task.title}</h3>
+                      <span className={styles.classBadge}>
+                        {task.expand?.class_id?.name}
+                      </span>
+                    </div>
+                    <p className={styles.taskDesc}>{task.description}</p>
+                    <div className={styles.taskFooter}>
+                      <div className={`${styles.deadline} ${styles.overdueText}`}>
+                        <LuClock size={14} />
+                        <span>Deadline Lewat: {new Date(task.deadline).toLocaleString()}</span>
+                      </div>
+                      {task.file && (
+                        <a
+                          href={pb.files.getURL(task, task.file)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={styles.fileLink}
+                        >
+                          Lihat Soal
+                        </a>
+                      )}
+                    </div>
+                    <div className={styles.missedMessage}>
+                      Batas waktu pengumpulan telah berakhir.
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className={styles.sectionHeader} style={{ marginTop: '3rem' }}>
+            <div className={styles.headerTitle}>
+              <h2>
+                <LuCheckCheck /> Sudah Dikumpulkan
+              </h2>
             </div>
+            <span className={styles.countBadge}>{completedTasks.length} Selesai</span>
           </div>
 
           {completedTasks.length === 0 ? (
@@ -233,7 +281,7 @@ const TasksPage = () => {
                       </div>
                       {submission?.file && (
                         <a
-                          href={pb.files.getUrl(submission, submission.file)}
+                          href={pb.files.getURL(submission, submission.file)}
                           target="_blank"
                           rel="noreferrer"
                           className={styles.fileLink}

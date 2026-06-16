@@ -55,3 +55,23 @@
 - Menampilkan deskripsi singkat pada kartu materi di halaman manajemen materi Admin.
 - Menambahkan styling CSS untuk membatasi tampilan deskripsi agar rapi (max-lines: 2) pada dashboard admin.
 - Mengoptimalkan pengambilan data materi dengan filter field yang lebih spesifik pada list view.
+
+# 16-06-2026 : Peningkatan Sistem Penilaian AI dan Manajemen Tugas
+
+- **Optimasi Penilaian AI**:
+    - Memperbarui prompt Gemini AI untuk penilaian yang lebih objektif menggunakan rumus matematika absolut `(Benar / Total Soal) * 100`.
+    - Menambahkan tahap validasi konten sebelum penilaian untuk mendeteksi file yang tidak relevan.
+    - Menghapus pembungkus Markdown pada output JSON AI untuk stabilitas parsing.
+- **Manajemen Deadline & Kategorisasi Tugas**:
+    - Memisahkan input **Tanggal** dan **Waktu** deadline pada form pembuatan tugas admin untuk presisi lebih baik.
+    - Mengimplementasikan kategorisasi tugas pada Dashboard Admin dan User: **Tugas Aktif** vs **Tugas Terlewat/Selesai**.
+    - Menambahkan pengecekan deadline ketat pada sisi client dan server sebelum proses pengumpulan tugas.
+- **Fitur Admin & Penilaian Manual**:
+    - Memperbaiki **Error 404** pada update nilai dengan memindahkan logika ke API route server-side `app/api/submissions/update-grade/route.js`.
+    - Menambahkan **Modal Detail Jawaban** siswa yang dilengkapi dengan preview Markdown dan syntax highlighting.
+    - Integrasi `ReactMarkdown` untuk menampilkan kunci jawaban tugas di panel admin.
+- **Perbaikan Bug & UI/UX**:
+    - Sinkronisasi penggunaan `pb.files.getURL()` (case-sensitive) di seluruh komponen untuk memastikan file lampiran dan profil tampil dengan benar.
+    - Memberikan styling khusus (neobrutalism muted) untuk tugas-tugas yang sudah melewati batas waktu (overdue).
+    - Memperbaiki filter tugas di dashboard user agar hanya menampilkan tugas yang masih aktif.
+

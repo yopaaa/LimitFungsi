@@ -13,6 +13,7 @@ const InputField = ({ label, id, type = 'text', placeholder, error, ...props }) 
         placeholder={placeholder}
         className={`${styles.input} ${error ? styles.inputError : ''}`}
         {...props}
+        value={props.value ?? ""}
       />
       {error && <p className={styles.errorText}>{error}</p>}
     </div>

@@ -89,7 +89,7 @@ const UserLayout = ({ children }) => {
           <div className={styles.profile}>
             {user.profile ? (
               <img
-                src={pb.files.getUrl(user, user.profile)}
+                src={pb.files.getURL(user, user.profile)}
                 alt="Profile"
                 className={styles.avatarImg}
               />

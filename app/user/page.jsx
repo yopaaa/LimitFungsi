@@ -45,9 +45,10 @@ const UserDashboard = () => {
           filter: `user_id = "${pb.authStore.model.id}"`,
         });
 
-        // Filter hanya yang belum dikumpulkan
+        // Filter hanya yang belum dikumpulkan dan belum lewat deadline
         const pending = allTasks.filter(task => 
-          !submissions.some(sub => sub.task_id === task.id)
+          !submissions.some(sub => sub.task_id === task.id) &&
+          new Date(task.deadline) >= new Date()
         );
         
         setPendingTasks(pending);

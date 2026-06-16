@@ -108,7 +108,7 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
         <header className={styles.header}>
           {material.thumbnail && (
             <img 
-              src={pb.files.getUrl(material, material.thumbnail)} 
+              src={pb.files.getURL(material, material.thumbnail)} 
               alt={material.title} 
               className={styles.heroImage}
             />

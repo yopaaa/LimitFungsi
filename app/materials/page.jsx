@@ -55,7 +55,7 @@ export default function MaterialsListPage() {
               <div className={styles.thumbnailWrapper}>
                 {item.thumbnail ? (
                   <img 
-                    src={pb.files.getUrl(item, item.thumbnail)} 
+                    src={pb.files.getURL(item, item.thumbnail)} 
                     alt={item.title} 
                     className={styles.thumbnail}
                   />

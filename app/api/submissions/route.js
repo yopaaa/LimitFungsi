@@ -60,32 +60,38 @@ export async function POST(req) {
 
     // 4. Bandingkan dengan Kunci Jawaban (Gemini)
     const comparePayload = {
-      contents: [{
-        parts: [{
-          text: `Anda adalah asisten penilai tugas kalkulus (limit fungsi) dan graph.
-          
+  contents: [{
+    parts: [{
+      text: `Anda adalah AI Penilai Tugas Otomatis yang sangat teliti, objektif, dan ahli dalam matematika dasar untuk penilaian.
+
+Materi Soal: Pilihan Ganda (Sesuai dengan konten Kunci Jawaban)
+
 Kunci Jawaban:
 ${answerKey}
 
 Jawaban Siswa (Hasil Ekstraksi):
 ${userMarkdown}
 
-Tugas Anda:
-1. Bandingkan jawaban siswa dengan kunci jawaban.
-2. Jika jawaban tidak relevan sama sekali dengan materi atau file yang diupload bukan jawaban tugas, berikan nilai 5 dan feedback 'File yang diunggah tidak sesuai'.
-3. Jika relevan, berikan nilai antara 5-100 berdasarkan ketepatan langkah dan hasil akhir.
-4. Bandingkan Antara Kunci Jawaban dan Jawaban Siswa dengan teliti, dan nilai yang sesuai perhitungan, misal ada 10 soal salah 2 maka nilainya 80. Jika semua benar maka nilainya 100. Jika semua salah maka nilainya 5. jika ada 20 soal salah 2 maka nilainya 90. Jika ada 20 soal salah 10 maka nilainya 50. Jika ada 20 soal salah 15 maka nilainya 25. Jika ada 20 soal salah semua maka nilainya 5. begitulah selanjutnya
-5. Berikan feedback singkat (maksimal 2 kalimat) dalam Bahasa Indonesia.
+Tugas Anda (Ikuti langkah-langkah ini secara sekuensial):
+1. VALIDASI: Periksa apakah konten Jawaban Siswa relevan dengan Kunci Jawaban. Jika sama sekali tidak relevan atau file yang diunggah salah, langsung berikan nilai (grade) 5 dan feedback 'File yang diunggah tidak sesuai'. Jangan lanjutkan ke langkah berikutnya jika tidak relevan.
+2. ANALISIS JAWABAN: Bandingkan jawaban siswa dengan kunci jawaban per nomor secara teliti.
+3. HITUNG SALAH: Daftarkan nomor berapa saja yang jawabannya TIDAK SAMA dengan kunci jawaban.
+4. RUMUS NILAI (GRADE): 
+   - Jika semua salah (Salah = Total Soal), nilai otomatis = 5.
+   - Jika ada yang benar, hitung nilai menggunakan rumus matematika absolut berikut:
+     Grade = (Jumlah Jawaban Benar / Total Semua Soal) * 100
+     *Contoh jika total 20 soal dan salah 3: ((20 - 3) / 20) * 100 = 85.*
+5. BUAT FEEDBACK: Tulis feedback singkat dalam Bahasa Indonesia yang merangkum jumlah benar/salah dan evaluasi singkat (maksimal 2-3 kalimat).
 
-OUTPUT HARUS DALAM FORMAT JSON BERIKUT:
+OUTPUT HARUS DALAM FORMAT JSON BERIKUT (Tanpa markdown pembungsu seperti \`\`\`json):
 {
   "grade": number,
   "feedback": "string"
 }`
-        }]
-      }],
-      generationConfig: { response_mime_type: "application/json" }
-    };
+    }]
+  }],
+  generationConfig: { response_mime_type: "application/json" }
+};
 
     const compareRes = await axios.post(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, comparePayload);
     const evaluation = JSON.parse(compareRes.data.candidates[0].content.parts[0].text);

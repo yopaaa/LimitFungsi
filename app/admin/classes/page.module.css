@@ -160,10 +160,18 @@
   width: 100%;
 }
 
+.deadlineGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
 .fileActionGroup {
   display: flex;
   gap: 0.5rem;
   align-items: flex-start;
+  align-items: center;
+  /* height: max-content; */
 }
 
 .fileActionGroup input {
@@ -264,6 +272,31 @@
   background-color: var(--bg-card);
   border: 2px dashed var(--border);
   border-radius: var(--radius-md);
+  color: var(--text-muted);
+}
+
+.taskSections {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.overdueCard {
+  border-color: var(--text-muted);
+  opacity: 0.8;
+  box-shadow: 4px 4px 0px 0px var(--text-muted);
+}
+
+.overdueCard:hover {
+  box-shadow: 6px 6px 0px 0px var(--text-muted);
+}
+
+.overdueText {
   color: var(--text-muted);
 }
 

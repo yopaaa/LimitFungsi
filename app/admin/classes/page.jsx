@@ -23,7 +23,8 @@ const ClassesPage = () => {
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
-    deadline: "",
+    deadlineDate: "",
+    deadlineTime: "23:59",
     file: null, // Ini untuk File Soal (disimpan ke PB)
     answerFile: null, // Ini untuk File Kunci Jawaban (hanya untuk ekstraksi)
     answer: "", // Hasil ekstraksi markdown
@@ -149,11 +150,14 @@ const ClassesPage = () => {
     setMessage({ type: "", text: "" });
 
     try {
+      const deadlineObj = new Date(`${taskData.deadlineDate}T${taskData.deadlineTime}:00`);
+      const combinedDeadline = deadlineObj.toISOString();
+
       const formData = new FormData();
       formData.append("class_id", classInfo.id);
       formData.append("title", taskData.title);
       formData.append("description", taskData.description);
-      formData.append("deadline", taskData.deadline);
+      formData.append("deadline", combinedDeadline);
       formData.append("answer", taskData.answer);
       if (taskData.file) {
         formData.append("file", taskData.file);
@@ -165,7 +169,8 @@ const ClassesPage = () => {
       setTaskData({
         title: "",
         description: "",
-        deadline: "",
+        deadlineDate: "",
+        deadlineTime: "23:59",
         file: null,
         answerFile: null,
         answer: "",
@@ -181,6 +186,9 @@ const ClassesPage = () => {
       setIsLoading(false);
     }
   };
+
+  const overdueTasks = tasks.filter(task => new Date(task.deadline) < new Date());
+  const upcomingTasks = tasks.filter(task => new Date(task.deadline) >= new Date());
 
   if (classInfo) {
     return (
@@ -210,51 +218,101 @@ const ClassesPage = () => {
           </Button>
         </div>
 
-        <div className={styles.sectionTitle}>
-          <LuFileText /> Daftar Tugas
-        </div>
-
         {tasks.length === 0 ? (
           <div className={styles.emptyTasks}>
             <p>Belum ada tugas yang dibuat untuk kelas ini.</p>
           </div>
         ) : (
-          <div className={styles.taskGrid}>
-            {tasks.map((task) => (
-              <div
-                key={task.id}
-                className={`${styles.taskCard} ${styles.clickableCard}`}
-                onClick={() => handleTaskClick(task)}
-              >
-                <div className={styles.taskHeader}>
-                  <h3>{task.title}</h3>
-                  <span className={styles.dateTag}>
-                    <LuCalendar size={14} />{" "}
-                    {new Date(task.created).toLocaleDateString()}
-                  </span>
+          <div className={styles.taskSections}>
+            {upcomingTasks.length > 0 && (
+              <div className={styles.section}>
+                <div className={styles.sectionTitle}>
+                  <LuFileText /> Daftar Tugas Aktif (Belum Deadline)
                 </div>
-                <p className={styles.taskDesc}>{task.description}</p>
-                <div className={styles.taskFooter}>
-                  <div className={styles.deadlineInfo}>
-                    <LuClock size={14} />
-                    <span>
-                      Deadline: {new Date(task.deadline).toLocaleString()}
-                    </span>
-                  </div>
-                  {task.file && (
-                    <a
-                      href={pb.files.getUrl(task, task.file)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.fileLink}
-                      onClick={(e) => e.stopPropagation()}
+                <div className={styles.taskGrid}>
+                  {upcomingTasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className={`${styles.taskCard} ${styles.clickableCard}`}
+                      onClick={() => handleTaskClick(task)}
                     >
-                      Lihat Soal
-                    </a>
-                  )}
+                      <div className={styles.taskHeader}>
+                        <h3>{task.title}</h3>
+                        <span className={styles.dateTag}>
+                          <LuCalendar size={14} />{" "}
+                          {new Date(task.created).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className={styles.taskDesc}>{task.description}</p>
+                      <div className={styles.taskFooter}>
+                        <div className={styles.deadlineInfo}>
+                          <LuClock size={14} />
+                          <span>
+                            Deadline: {new Date(task.deadline).toLocaleString()}
+                          </span>
+                        </div>
+                        {task.file && (
+                          <a
+                            href={pb.files.getURL(task, task.file)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.fileLink}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Lihat Soal
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
+            )}
+
+            {overdueTasks.length > 0 && (
+              <div className={styles.section}>
+                <div className={styles.sectionTitle}>
+                  <LuClock /> Tugas Selesai (Lewat Deadline)
+                </div>
+                <div className={styles.taskGrid}>
+                  {overdueTasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className={`${styles.taskCard} ${styles.clickableCard} ${styles.overdueCard}`}
+                      onClick={() => handleTaskClick(task)}
+                    >
+                      <div className={styles.taskHeader}>
+                        <h3>{task.title}</h3>
+                        <span className={styles.dateTag}>
+                          <LuCalendar size={14} />{" "}
+                          {new Date(task.created).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className={styles.taskDesc}>{task.description}</p>
+                      <div className={styles.taskFooter}>
+                        <div className={`${styles.deadlineInfo} ${styles.overdueText}`}>
+                          <LuClock size={14} />
+                          <span>
+                            Deadline: {new Date(task.deadline).toLocaleString()}
+                          </span>
+                        </div>
+                        {task.file && (
+                          <a
+                            href={pb.files.getURL(task, task.file)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.fileLink}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Lihat Soal
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -313,15 +371,26 @@ const ClassesPage = () => {
                   />
                 </div>
 
-                <InputField
-                  label="Deadline"
-                  type="date"
-                  value={taskData.deadline}
-                  onChange={(e) =>
-                    setTaskData({ ...taskData, deadline: e.target.value })
-                  }
-                  required
-                />
+                <div className={styles.deadlineGrid}>
+                  <InputField
+                    label="Tanggal Deadline"
+                    type="date"
+                    value={taskData.deadlineDate}
+                    onChange={(e) =>
+                      setTaskData({ ...taskData, deadlineDate: e.target.value })
+                    }
+                    required
+                  />
+                  <InputField
+                    label="Jam"
+                    type="time"
+                    value={taskData.deadlineTime}
+                    onChange={(e) =>
+                      setTaskData({ ...taskData, deadlineTime: e.target.value })
+                    }
+                    required
+                  />
+                </div>
               </div>
 
               <div>
@@ -343,7 +412,7 @@ const ClassesPage = () => {
                     />
                     <Button
                       type="button"
-                      className={styles.extractBtn}
+                      // className={styles.extractBtn}
                       onClick={handleExtractAnswer}
                       disabled={isExtracting}
                     >

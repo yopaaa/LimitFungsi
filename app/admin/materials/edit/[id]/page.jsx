@@ -40,7 +40,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
         status: record.status,
       });
       if (record.thumbnail) {
-        setThumbnailPreview(pb.files.getUrl(record, record.thumbnail));
+        setThumbnailPreview(pb.files.getURL(record, record.thumbnail));
       }
     } catch (error) {
       console.error("Gagal mengambil data materi:", error);

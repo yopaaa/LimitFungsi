@@ -6,16 +6,59 @@ import styles from "./page.module.css";
 import { LuArrowLeft, LuFileText, LuCalendar, LuClock, LuDownload, LuExternalLink } from "react-icons/lu";
 import Link from "next/link";
 import Button from "@/components/UI/Button";
+import Modal from "@/components/UI/Modal";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 const TaskDetailPage = ({ params }) => {
   const { taskId } = use(params);
   const [task, setTask] = useState(null);
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [grade, setGrade] = useState("");
+       const [feedback, setFeedback] = useState("");
+       const [isUpdating, setIsUpdating] = useState(false);
+
 
   useEffect(() => {
     fetchTaskDetail();
   }, [taskId]);
+
+   const openDetailModal = (sub) => {
+         setSelectedSubmission(sub);
+         setGrade(sub.grade === -1 ? "" : sub.grade.toString());
+         setFeedback(sub.feedback || "");
+         setIsModalOpen(true);
+       };
+       
+       const handleUpdateGrade = async () => {
+         if (!selectedSubmission) return;
+         setIsUpdating(true);
+         try {
+           await pb.collection("limit_submissions").update(selectedSubmission.id, {
+             grade: parseInt(grade) || 0,
+             feedback: feedback,
+           });
+           
+           // Update local state without full refetch for better UX
+           setSubmissions(prev => prev.map(s => 
+             s.id === selectedSubmission.id 
+               ? { ...s, grade: parseInt(grade) || 0, feedback: feedback } 
+               : s
+           ));
+           
+           setIsModalOpen(false);
+         } catch (err) {
+           console.error("Gagal update nilai:", err);
+         } finally {
+           setIsUpdating(false);
+         }
+       };
+       
 
   const fetchTaskDetail = async () => {
     try {
@@ -68,12 +111,33 @@ const TaskDetailPage = ({ params }) => {
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Kunci Jawaban</h2>
-            <div className={styles.card}>
-             
-              <textarea  className={styles.markdownContent} name="" id="" value={task.answer || "Tidak ada kunci jawaban."} readOnly>
-               
-
-              </textarea>
+            <div className={`${styles.card} ${styles.markdownCard}`}>
+              <div className={styles.markdownContent}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          style={vscDarkPlus}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {task.answer || "*Tidak ada kunci jawaban.*"}
+                </ReactMarkdown>
+              </div>
             </div>
           </section>
         </div>
@@ -84,7 +148,7 @@ const TaskDetailPage = ({ params }) => {
             <div className={styles.card}>
               {task.file ? (
                 <a
-                  href={pb.files.getUrl(task, task.file)}
+                  href={pb.files.getURL(task, task.file)}
                   target="_blank"
                   rel="noreferrer"
                   className={styles.fileButton}
@@ -138,7 +202,7 @@ const TaskDetailPage = ({ params }) => {
                       <td>{new Date(sub.created).toLocaleString()}</td>
                       <td>
                         <a
-                          href={pb.files.getUrl(sub, sub.file)}
+                          href={pb.files.getURL(sub, sub.file)}
                           target="_blank"
                           rel="noreferrer"
                           className={styles.fileLink}
@@ -154,7 +218,9 @@ const TaskDetailPage = ({ params }) => {
                         )}
                       </td>
                       <td>
-                        <Button className={styles.actionBtn}>Beri Nilai</Button>
+                        <Button onClick={() => openDetailModal(sub)}>
+                          Lihat Detail
+                        </Button>
                       </td>
                     </tr>
                   ))
@@ -164,6 +230,82 @@ const TaskDetailPage = ({ params }) => {
           </div>
         </div>
       </section>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={`Detail Jawaban: ${selectedSubmission?.expand?.user_id?.nama || "Siswa"}`}
+      >
+        <div className={styles.modalBody}>
+          <div className={styles.markdownCard} style={{ border: 'none', boxShadow: 'none' }}>
+            <div className={styles.markdownContent}>
+              {selectedSubmission?.answer ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          style={vscDarkPlus}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {selectedSubmission.answer}
+                </ReactMarkdown>
+              ) : (
+                <p>*Siswa tidak menyertakan jawaban teks atau ekstraksi gagal.*</p>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.gradingSection}>
+            <h3 className={styles.gradingTitle}>Penilaian</h3>
+            <div className={styles.gradingForm}>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Nilai (0-100)</label>
+                <input
+                  type="number"
+                  className={styles.gradeInput}
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                  placeholder="Contoh: 85"
+                  min="0"
+                  max="100"
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Feedback / Catatan</label>
+                <textarea
+                  className={styles.feedbackInput}
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  placeholder="Berikan masukan untuk siswa..."
+                  rows={3}
+                />
+              </div>
+              <Button 
+                onClick={handleUpdateGrade} 
+                fullWidth 
+                disabled={isUpdating}
+              >
+                {isUpdating ? "Menyimpan..." : "Simpan Nilai"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
