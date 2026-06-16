@@ -29,6 +29,10 @@ export default function Header() {
             Team
           </Link>
 
+          <Link href="/#materials" className={styles.navText}>
+            Materi
+          </Link>
+
           <Link href="/#social" className={styles.navText}>
             Sosmed
           </Link>

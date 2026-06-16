@@ -75,3 +75,9 @@
     - Memberikan styling khusus (neobrutalism muted) untuk tugas-tugas yang sudah melewati batas waktu (overdue).
     - Memperbaiki filter tugas di dashboard user agar hanya menampilkan tugas yang masih aktif.
 
+# 16-06-2026 [1] : Revitalisasi Landing Page (Halaman Utama)
+
+- Membuat komponen `HeroSection` sebagai penyambut dengan judul yang dinamis dan elemen visual neobrutalism.
+- Membuat komponen `MaterialList` yang menampilkan 4 materi terbaru secara otomatis dari database.
+- Sinkronisasi warna desain agar konsisten menggunakan variabel `--primary` (biru) di seluruh elemen Hero Section.
+- Implementasi layout responsif pada halaman utama untuk mendukung tampilan mobile dan desktop.

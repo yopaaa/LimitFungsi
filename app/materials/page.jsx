@@ -5,8 +5,10 @@ import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import Link from "next/link";
 import { LuBookOpen, LuUser, LuCalendar } from "react-icons/lu";
+import Header from "@/components/Layout/Header";
+import Footer from "@/components/Layout/Footer";
 
-export default function MaterialsListPage() {
+function MaterialsListPage() {
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,13 +19,14 @@ export default function MaterialsListPage() {
   const fetchMaterials = async () => {
     try {
       setLoading(true);
-      // OPTIMASI: Hanya mengambil field yang diperlukan untuk daftar. 
+      // OPTIMASI: Hanya mengambil field yang diperlukan untuk daftar.
       // Field 'content' yang besar sengaja tidak diambil untuk menghemat bandwidth.
       const records = await pb.collection("limit_materials").getFullList({
         filter: 'status = "published"',
         sort: "-created",
         expand: "admin_id",
-        fields: "id,collectionId,title,slug,thumbnail,description,created,expand.admin_id.nama,status",
+        fields:
+          "id,collectionId,title,slug,thumbnail,description,created,expand.admin_id.nama,status",
       });
       setMaterials(records);
     } catch (error) {
@@ -33,7 +36,8 @@ export default function MaterialsListPage() {
     }
   };
 
-  if (loading) return <div className={styles.loading}>Memuat daftar materi...</div>;
+  if (loading)
+    return <div className={styles.loading}>Memuat daftar materi...</div>;
 
   return (
     <div className={styles.container}>
@@ -47,16 +51,16 @@ export default function MaterialsListPage() {
       {materials.length > 0 ? (
         <div className={styles.grid}>
           {materials.map((item) => (
-            <Link 
-              key={item.id} 
-              href={`/materials/${item.slug}`} 
+            <Link
+              key={item.id}
+              href={`/materials/${item.slug}`}
               className={styles.card}
             >
               <div className={styles.thumbnailWrapper}>
                 {item.thumbnail ? (
-                  <img 
-                    src={pb.files.getURL(item, item.thumbnail)} 
-                    alt={item.title} 
+                  <img
+                    src={pb.files.getURL(item, item.thumbnail)}
+                    alt={item.title}
                     className={styles.thumbnail}
                   />
                 ) : (
@@ -65,7 +69,7 @@ export default function MaterialsListPage() {
                   </div>
                 )}
               </div>
-              
+
               <div className={styles.cardBody}>
                 <div className={styles.cardHeader}>
                   <h2 className={styles.materialTitle}>{item.title}</h2>
@@ -73,11 +77,9 @@ export default function MaterialsListPage() {
                 </div>
 
                 {item.description && (
-                  <p className={styles.description}>
-                    {item.description}
-                  </p>
+                  <p className={styles.description}>{item.description}</p>
                 )}
-                
+
                 <div className={styles.footer}>
                   <div className={styles.authorInfo}>
                     <LuUser />
@@ -89,7 +91,7 @@ export default function MaterialsListPage() {
                       {new Date(item.created).toLocaleDateString("id-ID", {
                         day: "numeric",
                         month: "short",
-                        year: "numeric"
+                        year: "numeric",
                       })}
                     </span>
                   </div>
@@ -103,6 +105,25 @@ export default function MaterialsListPage() {
           <p>Belum ada materi yang dipublikasikan.</p>
         </div>
       )}
+    </div>
+  );
+}
+
+export default function RegisterLayout({ children }) {
+  return (
+    <div className={styles.pageWrapper}>
+      {/* Ornamen Latar Belakang Tetap di Sini */}
+
+      {/* Header Global */}
+      <div className={styles.contentWrapper}>
+        <Header />
+
+        <main className={styles.mainContent}>
+          <MaterialsListPage />
+        </main>
+
+        <Footer />
+      </div>
     </div>
   );
 }
