@@ -20,6 +20,7 @@ export default function MaterialsAdminPage() {
       setLoading(true);
       const records = await pb.collection("limit_materials").getFullList({
         sort: "-created",
+        filter: `admin_id = "${pb.authStore.model.id}"`,
         expand: "admin_id",
         fields: "id,collectionId,title,slug,thumbnail,description,created,expand.admin_id.nama,status",
       });

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import PocketBase from 'pocketbase';
 
-export const middleware = async (req) => {
+export const proxy = async (req) => {
   const { pathname } = req.nextUrl;
   const pbUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || 'http://127.0.0.1:8090';
   const pb = new PocketBase(pbUrl);
@@ -19,8 +19,8 @@ export const middleware = async (req) => {
     }
   }
 
-  console.log("Middleware - Path:", pathname);
-  console.log("Middleware - Auth Valid:", pb.authStore.isValid);
+  console.log("Proxy - Path:", pathname);
+  console.log("Proxy - Auth Valid:", pb.authStore.isValid);
 
   // Izinkan akses ke auth, api, dan public assets tanpa token
   if (
