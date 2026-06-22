@@ -94,6 +94,33 @@ Koleksi untuk menyimpan materi atau jurnal dalam format Markdown.
 | `status` | Select | `draft` atau `published` |
 | `created` | DateTime | Otomatis |
 
+## Koleksi: `limit_quizzes` (Base Collection)
+Koleksi untuk menyimpan data kuis yang dibuat oleh admin.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `title` | Text | Judul Kuis |
+| `description` | Text | Deskripsi singkat kuis |
+| `class_id` | Relation | Relasi ke kelas jika kuis spesifik kelas (Relation to `limit_classes`, opsional) |
+| `questions` | JSON | Daftar pertanyaan, opsi pilihan ganda, dan kunci jawaban. Format: `[ { "id": "q1", "text": "...", "options": ["...", "..."], "answer": "..." } ]` |
+| `time_limit` | Number | Batas waktu pengerjaan kuis (dalam menit, opsional) |
+| `admin_id` | Relation | ID Admin pembuat kuis (Relation to `limit_users`) |
+| `created` | DateTime | Otomatis |
+| `updated` | DateTime | Otomatis |
+
+## Koleksi: `limit_quiz_results` (Base Collection)
+Koleksi untuk menyimpan nilai dan jawaban pengerjaan kuis siswa.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `quiz_id` | Relation | Relasi ke kuis yang dikerjakan (Relation to `limit_quizzes`) |
+| `user_id` | Relation | Relasi ke siswa yang mengerjakan (Relation to `limit_users`) |
+| `score` | Number | Skor akhir kuis (misal dari skala 0-100) |
+| `answers` | JSON | Detail jawaban yang dipilih siswa |
+| `created` | DateTime | Otomatis |
+
 ## Konfigurasi Akses (API Rules)
 - **users**: `Admin only` for list, `Self` for view/update.
 - **messages**: `create` (Anyone/Public).
@@ -102,3 +129,5 @@ Koleksi untuk menyimpan materi atau jurnal dalam format Markdown.
 - **tasks**: `list/view` (Auth users), `create/update/delete` (Admin).
 - **submissions**: `view` (Self/Admin), `create` (Auth user), `update` (Admin/Self for file only).
 - **materials**: `list/view` (status = "published" || @request.auth.role = "admin"), `create/update/delete` (Admin).
+- **quizzes**: `list/view` (Auth users), `create/update/delete` (Admin).
+- **quiz_results**: `view` (Self/Admin), `create` (Auth user).

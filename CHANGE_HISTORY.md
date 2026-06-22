@@ -81,3 +81,23 @@
 - Membuat komponen `MaterialList` yang menampilkan 4 materi terbaru secara otomatis dari database.
 - Sinkronisasi warna desain agar konsisten menggunakan variabel `--primary` (biru) di seluruh elemen Hero Section.
 - Implementasi layout responsif pada halaman utama untuk mendukung tampilan mobile dan desktop.
+
+# 22-06-2026 : Penambahan Fitur Kuis Admin dan Siswa
+
+- **Rancangan Database (PocketBase)**:
+    - Menambahkan skema koleksi `limit_quizzes` (menyimpan data judul, deskripsi, relasi kelas, batas waktu pengerjaan, pembuat kuis, serta JSON daftar pertanyaan, opsi pilihan ganda A-D, dan kunci jawaban).
+    - Menambahkan skema koleksi `limit_quiz_results` (menyimpan data relasi kuis, relasi siswa, skor perolehan, dan JSON pilihan jawaban siswa) pada dokumen [POCKETBASE_SCHEMA.md](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/POCKETBASE_SCHEMA.md).
+- **Manajemen Kuis Sisi Admin**:
+    - Menambahkan menu navigasi **"Quiz"** di sidebar admin (`app/admin/layout.jsx`).
+    - Membuat halaman manajemen kuis admin (`app/admin/quizzes/page.jsx`) untuk melihat daftar kuis, menghapusnya, dan menambahkan/mengedit kuis menggunakan modal form interaktif.
+    - Form admin dilengkapi fungsionalitas tambah/kurang pertanyaan kuis secara dinamis dengan input opsi jawaban A, B, C, D dan pemilihan kunci jawaban kuis.
+    - Membuat halaman detail pengerjaan kuis admin (`app/admin/quizzes/[id]/page.jsx`) untuk memantau data pengerjaan siswa. Dilengkapi dengan tabel daftar nilai siswa serta modal detail analisis jawaban per pertanyaan untuk meninjau secara rinci kesalahan/kebenaran jawaban siswa.
+- **Pengerjaan Kuis Sisi Siswa (User)**:
+    - Menambahkan menu navigasi **"Quiz"** di sidebar user (`app/user/layout.jsx`).
+    - Membuat halaman kuis user (`app/user/quizzes/page.jsx`) untuk menampilkan daftar kuis yang tersedia bagi kelas yang telah diikuti oleh siswa beserta status kelulusan/nilainya.
+    - Mengimplementasikan antarmuka pengerjaan kuis interaktif yang dilengkapi dengan:
+        - **Timer Kuis**: Batas waktu otomatis (waktu habis memicu auto-submit).
+        - **Navigasi Soal**: Panel grid nomor soal untuk melompat antar pertanyaan secara acak serta penanda status soal (sudah dijawab, aktif, belum dijawab).
+        - **Kalkulasi & Submission**: Penilaian kuis secara otomatis saat dikumpulkan dan pencatatan hasil pengerjaan di database PocketBase.
+- **Styling UI/UX**:
+    - Menerapkan desain bernuansa **neo-brutalism** yang konsisten dengan sisa aplikasi menggunakan CSS Module di halaman kuis admin & user.

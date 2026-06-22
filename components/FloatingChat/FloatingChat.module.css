@@ -20,7 +20,7 @@
 
 .floatingButton:hover {
   transform: scale(1.1) translate(-2px, -2px);
-  /* box-shadow: 8px 8px 0px 0px #000000; */
+  /* box-shadow: 4px 4px 0px 0px #000000; */
 }
 
 .floatingButton:active {

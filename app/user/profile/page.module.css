@@ -39,7 +39,7 @@
 .profileCard {
   background-color: var(--bg-card);
   border: 2px solid #000000;
-  box-shadow: 8px 8px 0px 0px #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
   border-radius: var(--radius-md);
   padding: 2.5rem;
 }
