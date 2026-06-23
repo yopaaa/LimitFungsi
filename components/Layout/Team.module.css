@@ -38,15 +38,28 @@
 .serviceCard::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 6px;
 }
 
 /* Dinamis Class dari JS */
-.c1::before { background: blue; }
-.c2::before { background: pink; }
-.c3::before { background: green; }
-.c4::before { background: orange; }
+.c1::before {
+  background: blue;
+}
+
+.c2::before {
+  background: pink;
+}
+
+.c3::before {
+  background: green;
+}
+
+.c4::before {
+  background: orange;
+}
 
 .serviceIcon {
   width: 100%;
@@ -62,16 +75,16 @@
 
 .serviceIcon img {
   width: 100%;
-  height: 100%;
+  height: 400px;
   object-fit: cover;
   image-rendering: pixelated;
 }
 
 @media (max-width: 768px) {
-   .services {
+  .services {
     /* padding: 60px 20px; */
   }
-   
+
   .servicesGrid {
     grid-template-columns: repeat(1, 1fr);
   }

@@ -10,10 +10,11 @@
   align-items: center;
   margin-top: 50px;
 }
+
 .socialGrid {
   /* padding: 100px 40px; */
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   border: 3px solid var(--secondary);
   width: 70vw;
 }
@@ -30,7 +31,9 @@
   gap: 14px;
 }
 
-.socialItem:last-child { border-right: none; }
+.socialItem:last-child {
+  border-right: none;
+}
 
 .socialItem:hover {
   background: var(--white);

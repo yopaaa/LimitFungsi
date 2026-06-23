@@ -2,46 +2,11 @@
 
 import React from "react";
 import styles from "./Footer.module.css";
+import layoutData from "../../data/layout.json";
 
-// 1. Objek Data untuk Semua Teks Statis
-const footerData = {
-  brand: {
-    imgSrc: "/app.png",
-    logo: "LIMIT",
-    tagline: `Building things for the web.
-Based in Batam, Indonesia.
-hello@yopaaa.dev`,
-  },
-  navigation: {
-    title: "Navigasi",
-    links: [
-      { name: "Tentang Saya", href: "#about" },
-      { name: "Artikel", href: "#articles" },
-      { name: "Servis & Proyek", href: "#services" },
-      { name: "Media Sosial", href: "#social" },
-    ],
-  },
-  contact: {
-    title: "Kontak",
-    links: [
-      { name: "hello@yopaaa.dev", href: "mailto:hello@yopaaa.dev" },
-      {
-        name: "Jadwalkan Meeting",
-        href: "https://cal.com/yopa",
-        target: "_blank",
-        rel: "noreferrer",
-      },
-      { name: "Download CV", href: "#", download: "CV.pdf" }, // Tambahkan atribut download jika perlu
-    ],
-  },
-  bottom: {
-    copyText:
-      "© 2025 Yopa Pitra R. — Dibuat dengan ☕ & terlalu banyak caffeine",
-    scrollToTopAnchor: "↑",
-  },
-};
+const Footer = () => {
+  const { footer: footerData } = layoutData;
 
-export default function Footer() {
   const scrollToTop = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -114,4 +79,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

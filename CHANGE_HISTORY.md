@@ -116,3 +116,13 @@
     - Menghubungkan log aktivitas ke seluruh operasi CRUD pada admin: kuis (`quizzes`), materi (`materials`), video (`videos`), kelas (`classes`), dan tugas (`tasks`).
     - Memperbarui halaman dashboard admin ([app/admin/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/page.jsx) dan [page.module.css](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/page.module.css)) untuk memuat dan menampilkan log aktivitas terbaru secara dinamis lengkap dengan ikon representatif dan tombol hapus riwayat.
 
+# 23-06-2026 [1] : Implementasi Verifikasi Bukan Robot (CAPTCHA)
+
+- **Sistem Keamanan Login**:
+    - Membuat widget "Saya bukan robot" interaktif kustom berbasis Next.js dan React State di halaman login ([app/auth/login/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/auth/login/page.jsx)).
+    - Mengintegrasikan generator alfanumerik acak 5 karakter serta render grafis ke `<canvas>` HTML5 dengan efek rotasi karakter, gradasi latar belakang, dan *noise lines/dots* untuk mempersulit pembacaan otomatis oleh bot.
+    - Menambahkan transisi status *loading spinner* pada checkbox CAPTCHA untuk memberikan kesan interaktif yang mulus.
+    - Menambahkan penanganan tombol **Enter** (`onKeyDown`) pada input captcha untuk melakukan verifikasi kode tanpa men-submit formulir login utama.
+    - Menambahkan CSS Module styling neobrutalism yang konsisten untuk widget captcha, box tantangan, dan tombol refresh/verifikasi ([app/auth/login/page.module.css](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/auth/login/page.module.css)).
+
+

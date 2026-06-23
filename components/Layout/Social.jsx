@@ -1,18 +1,9 @@
 import styles from './Social.module.css';
+import layoutData from "../../data/layout.json";
 
-const data = {
-  page_number: "03", 
-  title: "LINK & SOSIAL MEDIA",
-  data: [
-  { name: 'GitHub', handle: '@yopaaa', icon: 'GH', url: '#' },
-  { name: 'X / Twitter', handle: '@yopaaa_', icon: 'X', url: '#' },
-  { name: 'LinkedIn', handle: 'Yopa Pitra R.', icon: 'IN', url: '#' },
-  { name: 'Instagram', handle: '@yopaaa.dev', icon: 'IG', url: '#' },
-  { name: 'Telegram', handle: '@yopaaa', icon: 'TG', url: '#' },
-]
-};
+const Social = () => {
+  const { social: data } = layoutData;
 
-export default function Social() {
   return (
     <section id="social" className={styles.social}>
       <div className={styles.sectionInner}>
@@ -21,17 +12,19 @@ export default function Social() {
           <h2 className={styles.sectionTitle}>{data.title}</h2>
         </div>
         <div className={styles.socialGridContainer}>
-        <div className={styles.socialGrid}>
-          {data.data.map((soc) => (
-            <a key={soc.name} href={soc.url} target="_blank" rel="noreferrer" className={styles.socialItem}>
-              <span className={styles.socialIcon}>{/* Masukkan SVG masing-masing di sini */}</span>
-              <span className={styles.socialName}>{soc.name}</span>
-              <span className={styles.socialHandle}>{soc.handle}</span>
-            </a>
-          ))}
-        </div>
+          <div className={styles.socialGrid}>
+            {data.data.map((soc, i) => (
+              <a key={i} href={soc.url} target="_blank" rel="noreferrer" className={styles.socialItem}>
+                <span className={styles.socialIcon}>{/* Masukkan SVG masing-masing di sini */}</span>
+                <span className={styles.socialName}>{soc.name}</span>
+                <span className={styles.socialHandle}>{soc.handle}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default Social;

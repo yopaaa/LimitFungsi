@@ -4,9 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
+import layoutData from "../../data/layout.json";
 
-export default function Header() {
+const Header = () => {
   const pathname = usePathname();
+  const { header } = layoutData;
 
   // Logika penentuan teks tombol dan tujuan link berdasarkan router aktif
   // Jika path saat ini adalah /auth/login (atau mengandung 'login'), arahkan ke register/signup, begitu juga sebaliknya
@@ -20,22 +22,16 @@ export default function Header() {
       <div className={styles.container}>
         {/* Link Logo kembali ke halaman utama */}
         <Link href="/" className={styles.logo}>
-          <img src="/app.png" alt="logo" className={styles.logoImg} />
-          LIMIT
+          <img src={header.logo.imgSrc} alt="logo" className={styles.logoImg} />
+          {header.logo.text}
         </Link>
 
         <div className={styles.nav}>
-          <Link href="/#team" className={styles.navText}>
-            Team
-          </Link>
-
-          <Link href="/#materials" className={styles.navText}>
-            Materi
-          </Link>
-
-          <Link href="/#social" className={styles.navText}>
-            Sosmed
-          </Link>
+          {header.links.map((link) => (
+            <Link key={link.name} href={link.href} className={styles.navText}>
+              {link.name}
+            </Link>
+          ))}
 
           {/* Menggunakan Link bawaan Next.js agar navigasi instant / SPA */}
           <Link href={buttonLink} className={styles.navBtn}>
@@ -45,4 +41,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};
+
+export default Header;

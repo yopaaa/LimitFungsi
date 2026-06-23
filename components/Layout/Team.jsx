@@ -1,34 +1,9 @@
 import styles from "./Team.module.css";
+import layoutData from "../../data/layout.json";
 
-const data = {
-  page_number: "02", 
-  title: "TEAM",
-  data: [
-    {
-      id: "c1",
-      img: "/images/yopa.jpeg",
-      name: "Yopa",
-      desc: "URL shortener dengan analitik real-time.",
-      url: "katalis.yopa.dev",
-    },
-    {
-      id: "c2",
-      img: "/images/yopa.jpeg",
-      name: "Yopa",
-      desc: "Sistem kasir berbasis web untuk UMKM.",
-      url: "kasir.yopa.dev",
-    },
-    {
-      id: "c3",
-      img: "/images/yopa.jpeg",
-      name: "Yopa",
-      desc: "Sistem kasir berbasis web untuk UMKM.",
-      url: "kasir.yopa.dev",
-    },
-  ],
-};
+const Team = () => {
+  const { team: data } = layoutData;
 
-export default function Team() {
   return (
     <section id="team" className={styles.services}>
       <div className={styles.sectionInner}>
@@ -57,4 +32,6 @@ export default function Team() {
       </div>
     </section>
   );
-}
+};
+
+export default Team;
