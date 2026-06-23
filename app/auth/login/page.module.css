@@ -167,3 +167,222 @@
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
+
+/* CAPTCHA Widget Styling */
+.captchaWidget {
+  /* background-color: #f9fafb; */
+  /* border: 3px solid #000000; */
+  /* box-shadow: 4px 4px 0px 0px #000000; */
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.captchaWidgetError {
+  border-color: #ba1a1a;
+  background-color: #fff8f7;
+}
+
+.captchaLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.captchaCheckboxWrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.captchaCheckbox {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #000000;
+  background-color: #ffffff;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.captchaCheckbox:checked {
+  background-color: #00875a;
+  border-color: #000000;
+}
+
+.captchaCheckbox:disabled {
+  cursor: not-allowed;
+}
+
+.checkmarkIcon {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.captchaSpinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #0058be;
+  border-radius: 50%;
+  animation: captcha-spin 0.6s linear infinite;
+}
+
+@keyframes captcha-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.captchaLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1c1c;
+  user-select: none;
+  cursor: pointer;
+}
+
+.captchaRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.captchaLogoIcon {
+  font-size: 20px;
+  color: #0058be;
+}
+
+.captchaLogoText {
+  font-size: 9px;
+  font-weight: 700;
+  color: #5e5e5e;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* Challenge Box */
+.challengeBox {
+  background-color: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  padding: 16px;
+  margin-bottom: 16px;
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.challengeTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1c1c;
+  margin-bottom: 8px;
+}
+
+.captchaCanvasWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.captchaCanvas {
+  border: 2px solid #000000;
+  border-radius: 4px;
+  display: block;
+}
+
+.refreshButton {
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px 0px #000000;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.refreshButton:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.refreshButton:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0px 0px #000000;
+}
+
+.challengeInputWrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.captchaInput {
+  padding: 8px 12px;
+  border: 2px solid #000000;
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.captchaInput:focus {
+  border-color: #0058be;
+}
+
+.verifyBtn {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px 0px #000000;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.verifyBtn:hover {
+  background-color: #0058be;
+  border-color: #000000;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.verifyBtn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0px 0px #000000;
+}
