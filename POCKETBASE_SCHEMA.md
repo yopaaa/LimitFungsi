@@ -121,6 +121,21 @@ Koleksi untuk menyimpan nilai dan jawaban pengerjaan kuis siswa.
 | `answers` | JSON | Detail jawaban yang dipilih siswa |
 | `created` | DateTime | Otomatis |
 
+## Koleksi: `limit_videos` (Base Collection)
+Koleksi untuk menyimpan video pembelajaran dari YouTube.
+
+| Nama Field | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | Record ID | Primary Key |
+| `title` | Text | Judul video |
+| `youtube_url` | URL | URL lengkap video YouTube |
+| `youtube_id` | Text | ID video YouTube (diekstrak dari URL) |
+| `description` | Text | Deskripsi singkat video (opsional) |
+| `class_id` | Relation | Relasi ke `limit_classes` (opsional, jika video spesifik kelas) |
+| `admin_id` | Relation | ID Admin yang mengupload (Relation to `limit_users`) |
+| `created` | DateTime | Otomatis |
+| `updated` | DateTime | Otomatis |
+
 ## Konfigurasi Akses (API Rules)
 - **users**: `Admin only` for list, `Self` for view/update.
 - **messages**: `create` (Anyone/Public).
@@ -131,3 +146,4 @@ Koleksi untuk menyimpan nilai dan jawaban pengerjaan kuis siswa.
 - **materials**: `list/view` (status = "published" || @request.auth.role = "admin"), `create/update/delete` (Admin).
 - **quizzes**: `list/view` (Auth users), `create/update/delete` (Admin).
 - **quiz_results**: `view` (Self/Admin), `create` (Auth user).
+- **videos**: `list/view` (Auth users), `create/update/delete` (Admin).
