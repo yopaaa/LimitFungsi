@@ -14,6 +14,18 @@
   max-width: 80%;
 }
 
+.title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
 .topSection {
   max-width: 450px;
   width: 100%;
@@ -87,7 +99,8 @@
   gap: 0.5rem;
 }
 
-.adminInfo, .joinedInfo {
+.adminInfo,
+.joinedInfo {
   display: flex;
   align-items: center;
   gap: 0.5rem;

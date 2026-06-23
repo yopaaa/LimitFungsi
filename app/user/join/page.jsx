@@ -85,6 +85,14 @@ const JoinClassPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
+
+        <div className={styles.header}>
+          <h1 className={styles.title}>Tambah Kelas</h1>
+          <p className={styles.subtitle}>
+            Masukan kode kelas untuk bergabung
+          </p>
+        </div>
+
         <div className={styles.topSection}>
           <div className={styles.card}>
             <h2>Tambah Kelas Baru</h2>
@@ -111,7 +119,7 @@ const JoinClassPage = () => {
           <h2 className={styles.sectionTitle}>
             <LuBook /> Kelas Saya ({subscriptions.length})
           </h2>
-          
+
           {subscriptions.length === 0 ? (
             <div className={styles.emptyState}>
               <p>Anda belum bergabung dengan kelas mana pun.</p>
@@ -121,7 +129,7 @@ const JoinClassPage = () => {
               {subscriptions.map((sub) => {
                 const classData = sub.expand?.class_id;
                 const adminData = classData?.expand?.admin_id;
-                
+
                 return (
                   <div key={sub.id} className={styles.classCard}>
                     <div className={styles.classHeader}>

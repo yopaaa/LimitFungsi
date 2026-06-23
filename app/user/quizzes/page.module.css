@@ -31,7 +31,7 @@
 .title {
   font-size: 2.25rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--text-main);
   margin-bottom: 0.5rem;
 }
 
@@ -64,7 +64,8 @@
 }
 
 .cardCompleted {
-  background-color: #f0fdf4; /* soft green tint for completed */
+  background-color: #f0fdf4;
+  /* soft green tint for completed */
 }
 
 .classBadge {
@@ -235,8 +236,13 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.05); }
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 .quizLayout {
@@ -291,7 +297,8 @@
 }
 
 .optionSelected {
-  background-color: #e9d5ff; /* light purple indicating select */
+  background-color: #e9d5ff;
+  /* light purple indicating select */
   border-color: #a855f7;
   box-shadow: 4px 4px 0px #000000;
 }
@@ -483,19 +490,25 @@
   .quizLayout {
     grid-template-columns: 1fr;
   }
+
   .questionNavPanel {
-    order: -1; /* panel nav di atas jika screen kecil */
+    order: -1;
+    /* panel nav di atas jika screen kecil */
   }
+
   .navGrid {
     grid-template-columns: repeat(10, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .headerFlex, .quizHeader {
+
+  .headerFlex,
+  .quizHeader {
     flex-direction: column;
     align-items: stretch;
   }
+
   .navGrid {
     grid-template-columns: repeat(5, 1fr);
   }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "../../MaterialEditor.module.css";
 import Button from "@/components/UI/Button";
 import { pb } from "@/utils/db";
+import { logActivity } from "@/utils/activityLog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -80,6 +81,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       }
 
       await pb.collection("limit_materials").update(params.id, data);
+      logActivity({ type: "material", action: "update", title: formData.title });
       router.push("/admin/materials");
     } catch (error) {
       console.error("Gagal memperbarui materi:", error);

@@ -12,7 +12,30 @@ export default function ChatbotPage() {
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
 
+  // Muat pesan dari cookie saat pertama kali render
   useEffect(() => {
+    const savedMessages = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("admin_chat_history="))
+      ?.split("=")[1];
+
+    if (savedMessages) {
+      try {
+        const parsed = JSON.parse(decodeURIComponent(savedMessages));
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+        }
+      } catch (e) {
+        console.error("Gagal memuat riwayat chat:", e);
+      }
+    }
+  }, []);
+
+  // Simpan ke cookie setiap kali messages berubah
+  useEffect(() => {
+    const historyToSave = messages.slice(-15);
+    document.cookie = `admin_chat_history=${encodeURIComponent(JSON.stringify(historyToSave))}; path=/; max-age=86400`;
+
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -93,7 +116,16 @@ export default function ChatbotPage() {
                   >
                     <div className={styles.messageContent}>{m.content}</div>
                   </div>
-                ))}
+                ))}{/* Thinking indicator */}
+                {loading && (
+                  <div className={`${styles.message} ${styles.messageAssistant}`}>
+                    <div className={styles.thinkingDots}>
+                      <span className={styles.dot} />
+                      <span className={styles.dot} />
+                      <span className={styles.dot} />
+                    </div>
+                  </div>
+                )}
                 <div ref={endRef} />
               </div>
             </div>

@@ -6,6 +6,7 @@ import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
 import Modal from "@/components/UI/Modal";
 import { pb } from "@/utils/db";
+import { logActivity } from "@/utils/activityLog";
 import { useRouter } from "next/navigation";
 import { LuPlus, LuPencil, LuTrash2, LuClock, LuBookOpen, LuClipboardList } from "react-icons/lu";
 
@@ -64,7 +65,9 @@ const QuizzesAdminPage = () => {
   const handleDelete = async (id) => {
     if (!confirm("Apakah Anda yakin ingin menghapus kuis ini?")) return;
     try {
+      const deletedQuiz = quizzes.find((q) => q.id === id);
       await pb.collection("limit_quizzes").delete(id);
+      logActivity({ type: "quiz", action: "delete", title: deletedQuiz?.title || "Kuis" });
       setQuizzes(quizzes.filter((q) => q.id !== id));
     } catch (error) {
       console.error("Gagal menghapus kuis:", error);
@@ -166,8 +169,10 @@ const QuizzesAdminPage = () => {
     try {
       if (modalType === "add") {
         await pb.collection("limit_quizzes").create(payload);
+        logActivity({ type: "quiz", action: "create", title: formState.title });
       } else {
         await pb.collection("limit_quizzes").update(currentQuizId, payload);
+        logActivity({ type: "quiz", action: "update", title: formState.title });
       }
       setIsModalOpen(false);
       fetchQuizzesAndClasses();

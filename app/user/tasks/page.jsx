@@ -143,6 +143,14 @@ const TasksPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
+
+        <div className={styles.header}>
+          <h1 className={styles.title}>Tugas</h1>
+          <p className={styles.subtitle}>
+            Kerjakan tugas dari kelas yang kamu ikuti
+          </p>
+        </div>
+
         <div className={styles.fullCard}>
           <div className={styles.sectionHeader}>
             <div className={styles.headerTitle}>
@@ -155,7 +163,7 @@ const TasksPage = () => {
 
           {activeTasks.length === 0 ? (
             <p className={styles.emptyText}>
-              Tidak ada tugas aktif yang perlu dikerjakan. 
+              Tidak ada tugas aktif yang perlu dikerjakan.
             </p>
           ) : (
             <div className={styles.taskGrid}>
@@ -291,7 +299,7 @@ const TasksPage = () => {
                       )}
                     </div>
                     <div className={styles.gradeSection}>
-                      {submission.grade != -1? (
+                      {submission.grade != -1 ? (
                         <>
                           <div className={styles.gradeBadge}>
                             Nilai: {submission.grade}

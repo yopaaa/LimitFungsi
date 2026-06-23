@@ -13,7 +13,8 @@ import {
   LuLogOut,
   LuBookPlus,
   LuBot,
-  LuArchive
+  LuArchive,
+  LuVideo
 } from "react-icons/lu";
 import { TbChartBar } from "react-icons/tb";
 import DropdownMenu from "@/components/UI/DropdownMenu";
@@ -47,6 +48,7 @@ const DashboardLayout = ({ children }) => {
     // { icon: <TbChartBar />, path: "/admin/analytics" },
     { icon: <LuBot />, path: "/admin/chatbot", title: "Chat Bot" },
     { icon: <LuArchive />, path: "/admin/materials", title: "Materi" },
+    { icon: <LuVideo />, path: "/admin/videos", title: "Video" },
   ];
 
   const dropdownItems = [

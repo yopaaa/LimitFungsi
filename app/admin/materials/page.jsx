@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Button from "@/components/UI/Button";
 import { pb } from "@/utils/db";
+import { logActivity } from "@/utils/activityLog";
 import Link from "next/link";
 import { LuPlus, LuPencil, LuTrash2, LuEye } from "react-icons/lu";
 
@@ -35,7 +36,9 @@ export default function MaterialsAdminPage() {
   const handleDelete = async (id) => {
     if (!confirm("Apakah Anda yakin ingin menghapus materi ini?")) return;
     try {
+      const deletedMaterial = materials.find((m) => m.id === id);
       await pb.collection("limit_materials").delete(id);
+      logActivity({ type: "material", action: "delete", title: deletedMaterial?.title || "Materi" });
       setMaterials(materials.filter((m) => m.id !== id));
     } catch (error) {
       alert("Gagal menghapus materi.");

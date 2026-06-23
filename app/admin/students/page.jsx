@@ -66,7 +66,7 @@ const StudentsPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title} style={{ color: "var(--primary)" }}>
+        <h1 className={styles.title} >
           Daftar Mahasiswa
         </h1>
         <p className={styles.subtitle}>

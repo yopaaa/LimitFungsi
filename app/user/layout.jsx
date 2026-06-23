@@ -4,7 +4,7 @@ import styles from "./layout.module.css";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LuHouse, LuLogOut, LuBookPlus, LuUser, LuBot, LuArchive, LuTrophy } from "react-icons/lu";
+import { LuHouse, LuLogOut, LuBookPlus, LuUser, LuBot, LuArchive, LuTrophy, LuVideo } from "react-icons/lu";
 import { FaTasks } from "react-icons/fa";
 import DropdownMenu from "@/components/UI/DropdownMenu";
 import { pb } from "@/utils/db";
@@ -36,6 +36,7 @@ const UserLayout = ({ children }) => {
     { icon: <LuTrophy />, path: "/user/quizzes", title: "Quiz" },
     { icon: <LuBot />, path: "/user/chatbot", title: "Chat Bot" },
     { icon: <LuArchive />, path: "/user/materials", title: "Materi" },
+    { icon: <LuVideo />, path: "/user/videos", title: "Video" },
   ];
 
   const dropdownItems = [

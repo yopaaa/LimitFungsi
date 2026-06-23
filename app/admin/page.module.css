@@ -114,3 +114,106 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Activity list */
+.activityHeader {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid var(--text-main);
+  background-color: var(--bg-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clearBtn {
+  background: none;
+  border: 1.5px solid var(--error);
+  color: var(--error);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clearBtn:hover {
+  background-color: var(--error);
+  color: #fff;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.activityItem:last-child {
+  border-bottom: none;
+}
+
+.activityIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  border: 2px solid #000;
+}
+
+.icon_create {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.icon_update {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.icon_delete {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.activityInfo {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.activityText {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.activityTitle2 {
+  font-weight: 700;
+}
+
+.activityTime {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.activityContent {
+  padding: 0.5rem 1.5rem;
+  background-color: var(--bg-card);
+  max-height: 400px;
+  overflow-y: auto;
+}

@@ -101,3 +101,18 @@
         - **Kalkulasi & Submission**: Penilaian kuis secara otomatis saat dikumpulkan dan pencatatan hasil pengerjaan di database PocketBase.
 - **Styling UI/UX**:
     - Menerapkan desain bernuansa **neo-brutalism** yang konsisten dengan sisa aplikasi menggunakan CSS Module di halaman kuis admin & user.
+
+# 23-06-2026 : Penambahan Fitur Video Kelas, Animasi Chatbot, dan Log Aktivitas Admin
+
+- **Manajemen Video Kelas (Admin & User)**:
+    - Membuat halaman manajemen video admin ([app/admin/videos/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/videos/page.jsx)) untuk menambah, mengedit, dan menghapus video pembelajaran berbasis link YouTube.
+    - Menambahkan skema koleksi `limit_videos` di PocketBase untuk menyimpan metadata video (judul, deskripsi, YouTube URL, dan kelas terkait) serta mendokumentasikannya di [POCKETBASE_SCHEMA.md](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/POCKETBASE_SCHEMA.md).
+    - Membuat halaman video untuk siswa ([app/user/videos/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/user/videos/page.jsx)) yang menampilkan video pembelajaran berdasarkan kelas yang sedang diikuti oleh siswa.
+- **Peningkatan Chatbot (Animasi Thinking & Persistensi Cookie)**:
+    - Menambahkan animasi indikator *thinking* (3 titik memantul) saat bot sedang memproses jawaban di [/user/chatbot](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/user/chatbot/page.jsx) dan [/admin/chatbot](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/chatbot/page.jsx).
+    - Mengimplementasikan persistensi riwayat obrolan admin menggunakan cookie `admin_chat_history` di [/admin/chatbot](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/chatbot/page.jsx), sehingga chat admin tetap tersimpan saat halaman direfresh.
+- **Sistem Pelacakan Aktivitas Admin (Recent Activity)**:
+    - Membuat utilitas [utils/activityLog.js](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/utils/activityLog.js) untuk mencatat dan mengelola log aktivitas admin (maksimal 20 item, tersimpan di cookie `admin_activity_log` selama 7 hari).
+    - Menghubungkan log aktivitas ke seluruh operasi CRUD pada admin: kuis (`quizzes`), materi (`materials`), video (`videos`), kelas (`classes`), dan tugas (`tasks`).
+    - Memperbarui halaman dashboard admin ([app/admin/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/page.jsx) dan [page.module.css](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/page.module.css)) untuk memuat dan menampilkan log aktivitas terbaru secara dinamis lengkap dengan ikon representatif dan tombol hapus riwayat.
+

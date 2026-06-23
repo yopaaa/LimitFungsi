@@ -8,6 +8,7 @@ import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
 import Modal from "@/components/UI/Modal";
 import { LuPlus, LuFileText, LuCalendar, LuClock } from "react-icons/lu";
+import { logActivity } from "@/utils/activityLog";
 
 const ClassesPage = () => {
   const router = useRouter();
@@ -135,6 +136,8 @@ const ClassesPage = () => {
         admin_id: pb.authStore.model.id,
       });
 
+      logActivity({ type: "class", action: "create", title: newClassData.name });
+
       setMessage({ type: "success", text: "Kelas berhasil dibuat!" });
       fetchClassData();
     } catch (error) {
@@ -164,6 +167,8 @@ const ClassesPage = () => {
       }
 
       await pb.collection("limit_tasks").create(formData);
+
+      logActivity({ type: "task", action: "create", title: taskData.title });
 
       setMessage({ type: "success", text: "Tugas berhasil ditambahkan!" });
       setTaskData({

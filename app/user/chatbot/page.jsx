@@ -117,7 +117,16 @@ export default function ChatbotPage() {
                   >
                     <div className={styles.messageContent}>{m.content}</div>
                   </div>
-                ))}
+                ))}{/* Thinking indicator */}
+                {loading && (
+                  <div className={`${styles.message} ${styles.messageAssistant}`}>
+                    <div className={styles.thinkingDots}>
+                      <span className={styles.dot} />
+                      <span className={styles.dot} />
+                      <span className={styles.dot} />
+                    </div>
+                  </div>
+                )}
                 <div ref={endRef} />
               </div>
             </div>
