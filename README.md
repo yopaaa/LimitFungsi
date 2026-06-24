@@ -1,6 +1,6 @@
-# Limit Fungsi Kalkulus
+# Kalkulus Interaktif
 
-Proyek ini adalah aplikasi untuk mempelajari limit fungsi kalkulus menggunakan Next.js.
+Proyek ini adalah aplikasi untuk mempelajari matematika Kalkulus (Limit, Turunan, Integral, dll.) menggunakan Next.js.
 
 ## Getting Started
 

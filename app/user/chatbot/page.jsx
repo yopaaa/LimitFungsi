@@ -6,7 +6,7 @@ import Button from "@/components/UI/Button";
 
 export default function ChatbotPage() {
   const [messages, setMessages] = useState([
-    { id: 1, role: "assistant", content: "Halo! Ada yang bisa saya bantu tentang limit fungsi atau graph?" },
+    { id: 1, role: "assistant", content: "Halo! Ada yang bisa saya bantu tentang kalkulus (limit, turunan, integral) atau grafik fungsi?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);

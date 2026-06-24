@@ -2,72 +2,41 @@
   "header": {
     "logo": {
       "imgSrc": "/app.png",
-      "text": "LIMIT"
+      "text": "KALKULUS"
     },
     "links": [
-      {
-        "name": "Team",
-        "href": "/#team"
-      },
-      {
-        "name": "Materi",
-        "href": "/#materials"
-      },
-      {
-        "name": "Sosmed",
-        "href": "/#social"
-      }
+      { "name": "Materi", "href": "/#materials" },
+      { "name": "Team", "href": "/#team" },
+      { "name": "Sosmed", "href": "/#social" }
     ]
   },
   "footer": {
     "brand": {
       "imgSrc": "/app.png",
-      "logo": "LIMIT",
-      "tagline": "Building things for the web.\nBased in Batam, Indonesia.\nhello@yopaaa.dev"
+      "logo": "KALKULUS",
+      "tagline": "Platform pembelajaran interaktif Kalkulus.\nMemudahkan pemahaman konsep limit, turunan, dan integral."
     },
     "navigation": {
       "title": "Navigasi",
       "links": [
-        {
-          "name": "Tentang Saya",
-          "href": "#about"
-        },
-        {
-          "name": "Artikel",
-          "href": "#articles"
-        },
-        {
-          "name": "Servis & Proyek",
-          "href": "#services"
-        },
-        {
-          "name": "Media Sosial",
-          "href": "#social"
-        }
+        { "name": "Materi", "href": "/#materials" },
+        { "name": "Team", "href": "/#team" },
+        { "name": "Sosmed", "href": "/#social" }
       ]
     },
     "contact": {
-      "title": "Kontak",
+      "title": "Tautan",
       "links": [
         {
-          "name": "hello@yopaaa.dev",
-          "href": "mailto:hello@yopaaa.dev"
-        },
-        {
-          "name": "Jadwalkan Meeting",
-          "href": "https://cal.com/yopa",
+          "name": "GitHub Repository",
+          "href": "https://github.com/yopaaa/LimitFungsi",
           "target": "_blank",
           "rel": "noreferrer"
-        },
-        {
-          "name": "Download CV",
-          "href": "#",
-          "download": "CV.pdf"
         }
       ]
     },
     "bottom": {
-      "copyText": "© 2026 Yopa Pitra R.",
+      "copyText": "© 2026 Team Kalkulus — Dibuat dengan ☕ & terlalu banyak caffeine",
       "scrollToTopAnchor": "↑"
     }
   },
@@ -75,42 +44,11 @@
     "page_number": "03",
     "title": "LINK & SOSIAL MEDIA",
     "data": [
-      {
-        "name": "GitHub",
-        "handle": "@barel",
-        "icon": "GH",
-        "url": "#"
-      },
-      {
-        "name": "Instagram",
-        "handle": "@barel.dev",
-        "icon": "IG",
-        "url": "#"
-      },
-      {
-        "name": "GitHub",
-        "handle": "@yopaaa",
-        "icon": "GH",
-        "url": "#"
-      },
-      {
-        "name": "Instagram",
-        "handle": "@yopaaa.dev",
-        "icon": "IG",
-        "url": "#"
-      },
-      {
-        "name": "GitHub",
-        "handle": "@tiara",
-        "icon": "GH",
-        "url": "#"
-      },
-      {
-        "name": "Instagram",
-        "handle": "@tiara.dev",
-        "icon": "IG",
-        "url": "#"
-      }
+      { "name": "GitHub", "handle": "@yopaaa", "icon": "GH", "url": "https://github.com/yopaaa" },
+      { "name": "X / Twitter", "handle": "@yopaaa_", "icon": "X", "url": "#" },
+      { "name": "LinkedIn", "handle": "Yopa Pitra R.", "icon": "IN", "url": "#" },
+      { "name": "Instagram", "handle": "@yopaaa.dev", "icon": "IG", "url": "#" },
+      { "name": "Telegram", "handle": "@yopaaa", "icon": "TG", "url": "#" }
     ]
   },
   "team": {
@@ -121,21 +59,21 @@
         "id": "c2",
         "img": "/images/barelkamada.jpeg",
         "name": "Barel Kamada",
-        "desc": "NPM 1062560",
+        "desc": "Mahasiswa Polman Babel",
         "url": "#"
       },
       {
         "id": "c1",
         "img": "/images/yopa.jpeg",
         "name": "Yopa Pitra R.",
-        "desc": "NPM 1062560",
+        "desc": "Mahasiswa Polman Babel",
         "url": "yopaaa.xyz"
       },
       {
         "id": "c3",
         "img": "/images/tiaracitralestari.jpeg",
         "name": "Tiara Citra L.",
-        "desc": "NPM 1062560",
+        "desc": "Mahasiswa Polman Babel",
         "url": "#"
       }
     ]

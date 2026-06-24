@@ -219,7 +219,7 @@ export default function LoginForm() {
     <div className={styles.card}>
       <div className={styles.header}>
         <h1 className={styles.title}>Login ke Akun</h1>
-        <p className={styles.subtitle}>Selamat datang kembali di LIMIT.</p>
+        <p className={styles.subtitle}>Selamat datang kembali di Kalkulus.</p>
       </div>
 
       {successMessage && <div className={styles.successBlock}>{successMessage}</div>}

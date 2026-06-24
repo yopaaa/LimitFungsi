@@ -1,6 +1,6 @@
 # Struktur Database PocketBase
 
-Berikut adalah koleksi (collections) yang diperlukan untuk proyek **Limit Fungsi Kalkulus**.
+Berikut adalah koleksi (collections) yang diperlukan untuk proyek **Kalkulus Interaktif**.
 
 ## Koleksi: `limit_users` (Auth Collection)
 Koleksi ini menyimpan informasi pengguna dan kredensial login.

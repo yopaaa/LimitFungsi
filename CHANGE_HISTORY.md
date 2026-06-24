@@ -125,4 +125,19 @@
     - Menambahkan penanganan tombol **Enter** (`onKeyDown`) pada input captcha untuk melakukan verifikasi kode tanpa men-submit formulir login utama.
     - Menambahkan CSS Module styling neobrutalism yang konsisten untuk widget captcha, box tantangan, dan tombol refresh/verifikasi ([app/auth/login/page.module.css](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/auth/login/page.module.css)).
 
+# 24-06-2026 : Migrasi Proyek ke Kalkulus Interaktif
+
+- **Pembaruan UI & Metadata Proyek**:
+    - Memperbarui metadata judul (`title`) dan deskripsi (`description`) di [app/layout.tsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/layout.tsx) menjadi **Kalkulus Interaktif**.
+    - Menyesuaikan heading utama dan penyebutan nama asisten AI menjadi **Kalkulus Bot** di [components/UI/HeroSection.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/components/UI/HeroSection.jsx).
+    - Memperbarui subtitle pada [app/auth/login/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/auth/login/page.jsx) untuk menyambut pengguna ke platform Kalkulus.
+- **Penyelarasan Data & Konfigurasi Landing Page**:
+    - Mengedit [data/layout.json](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/data/layout.json) secara menyeluruh untuk memperbarui teks logo, tagline footer, tautan navigasi, tautan kontak (repositori GitHub), dan menyelaraskan deskripsi tim pengembang menjadi "Mahasiswa Polman Babel".
+- **Ekspansi Chatbot & Sistem AI**:
+    - Memperbarui petunjuk sistem (*System Instruction*) di API proxy route [app/api/chat/route.js](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/api/chat/route.js) untuk mengubah nama bot menjadi **Kalkulus Bot** dengan fokus materi yang lebih luas (limit, turunan, integral).
+    - Mengubah teks sapaan awal chatbot admin ([app/admin/chatbot/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/admin/chatbot/page.jsx)) dan chatbot user ([app/user/chatbot/page.jsx](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/app/user/chatbot/page.jsx)) agar melingkupi seluruh topik kalkulus.
+- **Dokumentasi Proyek**:
+    - Menyesuaikan referensi topik aplikasi di [README.md](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/README.md) dan [POCKETBASE_SCHEMA.md](file:///home/yopa/Kuliah/SubGraph/LimitFungsi/POCKETBASE_SCHEMA.md).
+
+
 

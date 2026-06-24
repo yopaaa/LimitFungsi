@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Limit Fungsi Kalkulus",
-  description: "Aplikasi pembelajaran limit fungsi kalkulus",
+  title: "Kalkulus Interaktif",
+  description: "Aplikasi pembelajaran kalkulus interaktif",
 };
 
 const RootLayout = ({

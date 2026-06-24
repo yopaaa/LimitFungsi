@@ -13,11 +13,11 @@ const HeroSection = () => {
           <LuSparkles /> <span>Platform Belajar Kalkulus Terkini</span>
         </div>
         <h1 className={styles.title}>
-          Kuasai Konsep <span className={styles.highlight}>Limit Fungsi</span> dengan Mudah!
+          Kuasai Konsep <span className={styles.highlight}>Kalkulus</span> dengan Mudah!
         </h1>
         <p className={styles.subtitle}>
           Jelajahi materi interaktif, kerjakan tugas dengan penilaian AI otomatis, 
-          dan diskusikan kesulitanmu dengan Limit Bot yang cerdas.
+          dan diskusikan kesulitanmu dengan Kalkulus Bot yang cerdas.
         </p>
         <div className={styles.actions}>
           <Link href="/auth/login" className={styles.primaryBtn}>
@@ -37,7 +37,7 @@ const HeroSection = () => {
         </div>
         <div className={styles.card2}>
           <div className={styles.cardIcon}><LuSparkles size={32} /></div>
-          <h3>Limit Bot</h3>
+          <h3>Kalkulus Bot</h3>
           <p>Asisten AI siap bantu 24/7.</p>
         </div>
         <div className={styles.decoration1}></div>
