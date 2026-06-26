@@ -1,10 +1,18 @@
+import { pb } from "./db";
+
 /**
  * Utility untuk menyimpan dan membaca activity log admin dari cookie.
  * Menyimpan maksimal 20 aktivitas terakhir.
  */
 
-const COOKIE_KEY = "admin_activity_log";
+const BASE_COOKIE_KEY = "admin_activity_log";
 const MAX_ITEMS = 20;
+
+const getCookieKey = () => {
+  if (typeof window === "undefined") return BASE_COOKIE_KEY;
+  const userId = pb?.authStore?.model?.id || "";
+  return userId ? `${BASE_COOKIE_KEY}_${userId}` : BASE_COOKIE_KEY;
+};
 
 /**
  * Ambil semua activity dari cookie
@@ -15,7 +23,7 @@ export const getActivities = () => {
 
   const raw = document.cookie
     .split("; ")
-    .find((row) => row.startsWith(`${COOKIE_KEY}=`))
+    .find((row) => row.startsWith(`${getCookieKey()}=`))
     ?.split("=")[1];
 
   if (!raw) return [];
@@ -45,12 +53,12 @@ export const logActivity = ({ type, action, title }) => {
 
   const updated = [newActivity, ...activities].slice(0, MAX_ITEMS);
 
-  document.cookie = `${COOKIE_KEY}=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 hari
+  document.cookie = `${getCookieKey()}=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 hari
 };
 
 /**
  * Hapus semua activity dari cookie
  */
 export const clearActivities = () => {
-  document.cookie = `${COOKIE_KEY}=; path=/; max-age=0`;
+  document.cookie = `${getCookieKey()}=; path=/; max-age=0`;
 };

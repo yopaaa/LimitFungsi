@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import Button from "@/components/UI/Button";
+import { pb } from "@/utils/db";
 
 export default function ChatbotPage() {
   const [messages, setMessages] = useState([
@@ -14,9 +15,11 @@ export default function ChatbotPage() {
 
   // Muat pesan dari cookie saat pertama kali render
   useEffect(() => {
+    const adminId = pb.authStore.model?.id || "";
+    const cookieKey = adminId ? `admin_chat_history_${adminId}` : "admin_chat_history";
     const savedMessages = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("admin_chat_history="))
+      .find((row) => row.startsWith(`${cookieKey}=`))
       ?.split("=")[1];
 
     if (savedMessages) {
@@ -33,8 +36,10 @@ export default function ChatbotPage() {
 
   // Simpan ke cookie setiap kali messages berubah
   useEffect(() => {
+    const adminId = pb.authStore.model?.id || "";
+    const cookieKey = adminId ? `admin_chat_history_${adminId}` : "admin_chat_history";
     const historyToSave = messages.slice(-15);
-    document.cookie = `admin_chat_history=${encodeURIComponent(JSON.stringify(historyToSave))}; path=/; max-age=86400`;
+    document.cookie = `${cookieKey}=${encodeURIComponent(JSON.stringify(historyToSave))}; path=/; max-age=86400`;
 
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

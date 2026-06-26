@@ -89,15 +89,24 @@ const VideosAdminPage = () => {
     try {
       const records = await pb.collection("limit_classes").getFullList({
         sort: "-created",
+        filter: `admin_id = "${pb.authStore.model.id}"`,
       });
       setClasses(records);
+      if (records.length > 0) {
+        setForm((prev) => ({ ...prev, class_id: records[0].id }));
+      }
     } catch (error) {
       console.error("Gagal mengambil data kelas:", error);
     }
   };
 
   const resetForm = () => {
-    setForm({ title: "", youtube_url: "", description: "", class_id: "" });
+    setForm({
+      title: "",
+      youtube_url: "",
+      description: "",
+      class_id: classes[0]?.id || "",
+    });
     setFormError("");
     setEditingVideo(null);
   };

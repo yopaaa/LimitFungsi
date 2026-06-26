@@ -24,14 +24,14 @@ const Page = () => {
   const [stats, setStats] = useState([
     {
       label: "Total Mahasiswa",
-      value: "0",
+      value: [],
       icon: <LuUsers />,
       color: "var(--primary)",
       link: "/admin/students",
     },
     {
       label: "Total Kelas",
-      value: "0",
+      value: [],
       icon: <LuFileText />,
       color: "var(--accent)",
       link: "/admin/classes",
@@ -48,31 +48,30 @@ const Page = () => {
         return;
       }
 
+      setActivities(getActivities());
+
       try {
-        // 1. Ambil jumlah mahasiswa (Pastikan API Rule 'List' di limit_users sudah dibuka)
-        const students = await pb
-          .collection("limit_subscriptions")
-          .getFullList()
-          .then((subscriptions) => {
-            console.log(subscriptions);
+        // 1. Ambil kelas milik admin ini saja
+        const myClasses = await pb.collection("limit_classes").getFullList({
+          filter: `admin_id = "${pb.authStore.model.id}"`,
+        });
 
-            const userIds = subscriptions.map((sub) => sub.user_id);
-            return pb
-              .collection("limit_users")
-              .getFullList()
-              .then((users) =>
-                users.filter((user) => userIds.includes(user.id)),
-              );
-          });
-
-        //   alert(JSON.stringify(students, null, 2)); // Debug: Tampilkan data mahasiswa yang diambil
-
-        // 2. Ambil jumlah kelas milik admin ini
-        const classes = await pb.collection("limit_classes").getFullList();
+        // 2. Ambil subscription untuk mendapatkan daftar mahasiswa yang mengikuti kelas-kelas tersebut
+        let myStudents = [];
+        if (myClasses.length > 0) {
+          const subscriptions = await pb.collection("limit_subscriptions").getFullList();
+          const myClassIds = myClasses.map((c) => c.id);
+          const mySubscribedUsers = subscriptions
+            .filter((sub) => myClassIds.includes(sub.class_id))
+            .map((sub) => sub.user_id);
+          
+          // Dapatkan daftar ID user siswa yang unik
+          myStudents = [...new Set(mySubscribedUsers)];
+        }
 
         setStats((prev) => [
-          { ...prev[0], value: students },
-          { ...prev[1], value: classes },
+          { ...prev[0], value: myStudents },
+          { ...prev[1], value: myClasses },
         ]);
       } catch (error) {
         console.error("Gagal mengambil statistik:", error);
@@ -80,7 +79,6 @@ const Page = () => {
     };
 
     fetchStats();
-    setActivities(getActivities());
   }, []);
 
   const typeIcons = {

@@ -22,19 +22,41 @@ const StudentsPage = () => {
 
   useEffect(() => {
     const fetchStudents = async () => {
+      // Jalankan hanya jika token valid dan data model user tersedia
+      if (!pb.authStore.isValid || !pb.authStore.model) {
+        console.log("Sesi tidak valid atau belum terotentikasi.");
+        return;
+      }
+
       try {
-        const records = await pb
-          .collection("limit_subscriptions")
-          .getFullList()
-          .then((subscriptions) => {
-            const userIds = subscriptions.map((sub) => sub.user_id);
-            return pb
-              .collection("limit_users")
-              .getFullList()
-              .then((users) =>
-                users.filter((user) => userIds.includes(user.id)),
-              );
+        // 1. Ambil kelas milik admin ini saja
+        const myClasses = await pb.collection("limit_classes").getFullList({
+          filter: `admin_id = "${pb.authStore.model.id}"`,
+        });
+
+        let records = [];
+        if (myClasses.length > 0) {
+          const myClassIds = myClasses.map((c) => c.id);
+
+          // 2. Ambil subscription beserta relasi user_id untuk kelas-kelas tersebut
+          const subscriptions = await pb.collection("limit_subscriptions").getFullList({
+            expand: "user_id",
           });
+
+          const mySubscribedUsers = subscriptions
+            .filter((sub) => myClassIds.includes(sub.class_id))
+            .map((sub) => sub.expand?.user_id)
+            .filter(Boolean);
+
+          // Hapus duplikat mahasiswa
+          const uniqueStudentsMap = {};
+          mySubscribedUsers.forEach((user) => {
+            uniqueStudentsMap[user.id] = user;
+          });
+
+          records = Object.values(uniqueStudentsMap);
+        }
+
         setStudents(records);
       } catch (error) {
         console.error("Gagal mengambil data mahasiswa:", error);
