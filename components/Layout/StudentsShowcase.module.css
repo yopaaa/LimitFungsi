@@ -1,0 +1,190 @@
+.showcaseSection {
+  background: var(--yellow);
+  padding: 100px 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.sectionInner {
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sectionHeader {
+  margin-bottom: 60px;
+}
+
+.sectionNumber {
+  /* Polos seperti Social.jsx */
+}
+
+.sectionTitle {
+  /* Polos seperti Social.jsx */
+}
+
+/* Marquee Scroll Styling */
+.marqueeContainer {
+  margin: auto;
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden;
+  padding: 1.5rem 0;
+  display: flex;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.marqueeTrack:hover {
+  animation-play-state: paused;
+}
+
+.marqueeGroup {
+  display: flex;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Card Styling */
+.studentCard {
+  background-color: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  width: 260px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.studentCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.cardBorderTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-color: var(--primary);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.studentCard:nth-child(2n) .cardBorderTop {
+  background-color: var(--accent);
+}
+
+.studentCard:nth-child(3n) .cardBorderTop {
+  background-color: #00875a;
+}
+
+.avatarContainer {
+  width: 84px;
+  height: 84px;
+  border: 3px solid #000000;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  box-shadow: 2px 2px 0px 0px #000000;
+  flex-shrink: 0;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.studentName {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem 0;
+  text-align: center;
+  color: #000000;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.studentInstansi {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.roleBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #f3f4f6;
+  border: 2px solid #000000;
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
+}
+
+/* Loading & Spinner */
+.loadingContainer {
+  border-top: 4px solid #000000;
+  padding: 5rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
