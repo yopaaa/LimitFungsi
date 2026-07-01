@@ -156,4 +156,7 @@
   .logo {
     display: none;
   }
+  .container {
+    justify-content: space-around;
+  }
 }

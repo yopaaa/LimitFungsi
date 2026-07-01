@@ -172,7 +172,7 @@
   transform: translate(-50%, -50%);
 }
 /* phone  */
-@media (max-width: 800px) {
+@media (max-width: 700px) {
   .hero {
   max-width: 100%;
     grid-template-columns: 1fr;
@@ -185,11 +185,19 @@
   }
 
   .title {
-    font-size: 3rem;
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
   }
 
   .visual {
     display: none;
+  }
+
+  .primaryBtn {
+    padding: 0;
   }
 }
 
@@ -206,7 +214,7 @@
   }
 
   .title {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .visual {
