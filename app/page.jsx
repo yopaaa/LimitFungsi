@@ -26,7 +26,7 @@ export default function RegisterLayout({ children }) {
           <MaterialList />
       <LecturerShowcase /> {/* Komponen Dosen Pengampu */}
       <StudentsShowcase /> {/* Komponen Mahasiswa Tetap di Sini */}
-      <Social /> {/* Komponen Social Tetap di Sini */}
+      {/* <Social /> Komponen Social Tetap di Sini */}
       {/* Footer Global */}
       <Footer />
     </div>

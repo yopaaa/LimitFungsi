@@ -171,6 +171,28 @@
   left: 55%;
   transform: translate(-50%, -50%);
 }
+/* phone  */
+@media (max-width: 800px) {
+  .hero {
+  max-width: 100%;
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .content {
+    align-items: center;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .visual {
+    display: none;
+  }
+}
+
 
 @media (max-width: 992px) {
   .hero {

@@ -100,3 +100,9 @@
   height: 32px;
   margin-right: 8px;
 }
+
+@media (max-width: 800px) {
+  .logo {
+    display: none;
+  }
+}
