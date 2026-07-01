@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputField from "@/components/UI/InputField";
 import Button from "@/components/UI/Button";
@@ -9,6 +9,17 @@ import styles from "./page.module.css";
 
 export default function RegisterForm() {
   const router = useRouter();
+
+  useEffect(() => {
+    if (pb.authStore.isValid && pb.authStore.model) {
+      if (pb.authStore.model.role === "admin") {
+        router.replace("/admin");
+      } else {
+        router.replace("/user");
+      }
+    }
+  }, [router]);
+
   const [step, setStep] = useState(1); // Tracker halaman: Step 1 atau Step 2
 
   const [registerData, setRegisterData] = useState({

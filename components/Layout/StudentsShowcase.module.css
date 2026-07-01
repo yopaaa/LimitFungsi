@@ -28,34 +28,36 @@
   margin: auto;
   width: 100%;
   max-width: 1200px;
-  overflow: hidden;
+  overflow-x: auto;
   padding: 1.5rem 0;
   display: flex;
+  cursor: grab;
+  scrollbar-width: none; /* Firefox */
+  user-select: none;
+}
+
+.marqueeContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.marqueeContainer:active {
+  cursor: grabbing;
 }
 
 .marqueeTrack {
   display: flex;
   width: max-content;
-  animation: marquee 35s linear infinite;
+  pointer-events: none;
 }
 
-.marqueeTrack:hover {
-  animation-play-state: paused;
+.marqueeTrack * {
+  pointer-events: auto;
 }
 
 .marqueeGroup {
   display: flex;
   gap: 1.5rem;
   padding-right: 1.5rem;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 /* Card Styling */

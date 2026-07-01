@@ -68,6 +68,17 @@ const drawCaptcha = (canvas, text) => {
 
 export default function LoginForm() {
   const router = useRouter();
+
+  useEffect(() => {
+    if (pb.authStore.isValid && pb.authStore.model) {
+      if (pb.authStore.model.role === "admin") {
+        router.replace("/admin");
+      } else {
+        router.replace("/user");
+      }
+    }
+  }, [router]);
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",

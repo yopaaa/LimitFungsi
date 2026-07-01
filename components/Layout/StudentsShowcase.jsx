@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { pb } from "@/utils/db";
 import styles from "./StudentsShowcase.module.css";
 
@@ -9,6 +9,45 @@ const StudentsShowcase = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const containerRef = useRef(null);
+  const isDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const animationRef = useRef(null);
+  const isHoveredRef = useRef(false);
+
+  const speed = 0.8; // pixels per frame
+
+  const startMarquee = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const scroll = () => {
+      if (isDownRef.current) return;
+      if (isHoveredRef.current) {
+        animationRef.current = requestAnimationFrame(scroll);
+        return;
+      }
+
+      container.scrollLeft += speed;
+
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
+      }
+
+      animationRef.current = requestAnimationFrame(scroll);
+    };
+
+    animationRef.current = requestAnimationFrame(scroll);
+  };
+
+  const stopMarquee = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  // Hook 1: Ambil data mahasiswa dari API
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -32,6 +71,101 @@ const StudentsShowcase = () => {
     fetchStudents();
   }, []);
 
+  // Hook 2: Efek inisialisasi Marquee
+  useEffect(() => {
+    if (students.length > 0 && !loading && !error) {
+      startMarquee();
+    }
+    return () => stopMarquee();
+  }, [students, loading, error]);
+
+  const handleMouseDown = (e) => {
+    const container = containerRef.current;
+    if (!container) return;
+    isDownRef.current = true;
+    container.style.cursor = "grabbing";
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftRef.current = container.scrollLeft;
+    stopMarquee();
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    if (!isDownRef.current) return;
+    isDownRef.current = false;
+    if (containerRef.current) {
+      containerRef.current.style.cursor = "grab";
+    }
+    startMarquee();
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDownRef.current) return;
+    e.preventDefault();
+    const container = containerRef.current;
+    if (!container) return;
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    let newScrollLeft = scrollLeftRef.current - walk;
+
+    if (newScrollLeft <= 0) {
+      newScrollLeft = container.scrollWidth / 2;
+      startXRef.current = e.pageX - container.offsetLeft;
+      scrollLeftRef.current = newScrollLeft;
+    } else if (newScrollLeft >= container.scrollWidth / 2) {
+      newScrollLeft = 0;
+      startXRef.current = e.pageX - container.offsetLeft;
+      scrollLeftRef.current = newScrollLeft;
+    }
+
+    container.scrollLeft = newScrollLeft;
+  };
+
+  const handleTouchStart = (e) => {
+    const container = containerRef.current;
+    if (!container) return;
+    isDownRef.current = true;
+    startXRef.current = e.touches[0].pageX - container.offsetLeft;
+    scrollLeftRef.current = container.scrollLeft;
+    stopMarquee();
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDownRef.current) return;
+    isDownRef.current = false;
+    startMarquee();
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDownRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    let newScrollLeft = scrollLeftRef.current - walk;
+
+    if (newScrollLeft <= 0) {
+      newScrollLeft = container.scrollWidth / 2;
+      startXRef.current = e.touches[0].pageX - container.offsetLeft;
+      scrollLeftRef.current = newScrollLeft;
+    } else if (newScrollLeft >= container.scrollWidth / 2) {
+      newScrollLeft = 0;
+      startXRef.current = e.touches[0].pageX - container.offsetLeft;
+      scrollLeftRef.current = newScrollLeft;
+    }
+
+    container.scrollLeft = newScrollLeft;
+  };
+
+  const handleMouseEnter = () => {
+    isHoveredRef.current = true;
+  };
+
+  const handleMouseLeaveContainer = () => {
+    isHoveredRef.current = false;
+    handleMouseLeaveOrUp();
+  };
+
+  // ================= TAHAP EARLY RETURNS =================
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
@@ -94,8 +228,19 @@ const StudentsShowcase = () => {
           <span className={styles.sectionNumber}>02</span>
           <h2 className={styles.sectionTitle}>MAHASISWA KAMI</h2>
         </div>
-
-        <div className={styles.marqueeContainer}>
+ 
+        <div 
+          className={styles.marqueeContainer}
+          ref={containerRef}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseLeaveOrUp}
+          onMouseLeave={handleMouseLeaveContainer}
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchMove={handleTouchMove}
+          onMouseEnter={handleMouseEnter}
+        >
           <div className={styles.marqueeTrack}>
             <div className={styles.marqueeGroup}>
               {renderCards("g1")}
