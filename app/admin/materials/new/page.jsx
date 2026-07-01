@@ -18,6 +18,7 @@ export default function NewMaterialPage() {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
+    description: "",
     status: "draft",
   });
   const [previewContent, setPreviewContent] = useState("");
@@ -63,6 +64,7 @@ export default function NewMaterialPage() {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("slug", formData.slug);
+      data.append("description", formData.description || "");
       data.append("content", contentRef.current ? contentRef.current.value : "");
       data.append("status", formData.status);
       data.append("admin_id", user.id);

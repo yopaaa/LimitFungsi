@@ -19,6 +19,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
+    description: "",
     status: "draft",
   });
   const [initialContent, setInitialContent] = useState("");
@@ -39,6 +40,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       setFormData({
         title: record.title,
         slug: record.slug,
+        description: record.description || "",
         status: record.status,
       });
       setInitialContent(record.content);
@@ -80,6 +82,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("slug", formData.slug);
+      data.append("description", formData.description || "");
       data.append("content", contentRef.current ? contentRef.current.value : "");
       data.append("status", formData.status);
       
