@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../MaterialEditor.module.css";
 import Button from "@/components/UI/Button";
@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { LuSave, LuX, LuChevronLeft, LuImage } from "react-icons/lu";
+import { LuSave, LuX, LuChevronLeft, LuImage, LuRefreshCw } from "react-icons/lu";
 import Link from "next/link";
 
 export default function NewMaterialPage() {
@@ -18,12 +18,17 @@ export default function NewMaterialPage() {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    content: "",
     status: "draft",
   });
+  const [previewContent, setPreviewContent] = useState("");
+  const contentRef = useRef(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const handleRefreshPreview = () => {
+    setPreviewContent(contentRef.current ? contentRef.current.value : "");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +63,7 @@ export default function NewMaterialPage() {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("slug", formData.slug);
-      data.append("content", formData.content);
+      data.append("content", contentRef.current ? contentRef.current.value : "");
       data.append("status", formData.status);
       data.append("admin_id", user.id);
       
@@ -157,15 +162,24 @@ export default function NewMaterialPage() {
 
         <div className={styles.previewLabel}>
           <label className={styles.label}>Konten (Markdown)</label>
-          <span className={styles.previewBadge}>Preview Aktif</span>
+          <div className={styles.previewActions}>
+            <button
+              type="button"
+              className={styles.refreshButton}
+              onClick={handleRefreshPreview}
+              title="Refresh Preview"
+            >
+              <LuRefreshCw className={styles.refreshIcon} /> Refresh Preview
+            </button>
+            <span className={styles.previewBadge}>Preview Manual</span>
+          </div>
         </div>
 
         <div className={styles.editorContainer}>
           <textarea
             name="content"
             className={styles.textarea}
-            value={formData.content}
-            onChange={handleChange}
+            ref={contentRef}
             placeholder="Tulis materi Anda di sini menggunakan format Markdown..."
             required
           />
@@ -192,7 +206,7 @@ export default function NewMaterialPage() {
                 },
               }}
             >
-              {formData.content || "*Preview materi akan muncul di sini...*"}
+              {previewContent || "*Preview materi akan muncul di sini. Silakan ketik dan klik 'Refresh Preview' untuk memperbarui...*"}
             </ReactMarkdown>
           </div>
         </div>

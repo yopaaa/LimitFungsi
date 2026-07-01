@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../../MaterialEditor.module.css";
 import Button from "@/components/UI/Button";
@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { LuSave, LuX, LuChevronLeft, LuImage } from "react-icons/lu";
+import { LuSave, LuX, LuChevronLeft, LuImage, LuRefreshCw } from "react-icons/lu";
 import Link from "next/link";
 
 export default function EditMaterialPage({ params: paramsPromise }) {
@@ -19,9 +19,11 @@ export default function EditMaterialPage({ params: paramsPromise }) {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    content: "",
     status: "draft",
   });
+  const [initialContent, setInitialContent] = useState("");
+  const [previewContent, setPreviewContent] = useState("");
+  const contentRef = useRef(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,9 +39,10 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       setFormData({
         title: record.title,
         slug: record.slug,
-        content: record.content,
         status: record.status,
       });
+      setInitialContent(record.content);
+      setPreviewContent(record.content);
       if (record.thumbnail) {
         setThumbnailPreview(pb.files.getURL(record, record.thumbnail));
       }
@@ -50,6 +53,10 @@ export default function EditMaterialPage({ params: paramsPromise }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRefreshPreview = () => {
+    setPreviewContent(contentRef.current ? contentRef.current.value : "");
   };
 
   const handleChange = (e) => {
@@ -73,7 +80,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("slug", formData.slug);
-      data.append("content", formData.content);
+      data.append("content", contentRef.current ? contentRef.current.value : "");
       data.append("status", formData.status);
       
       if (thumbnail) {
@@ -171,15 +178,25 @@ export default function EditMaterialPage({ params: paramsPromise }) {
 
         <div className={styles.previewLabel}>
           <label className={styles.label}>Konten (Markdown)</label>
-          <span className={styles.previewBadge}>Preview Aktif</span>
+          <div className={styles.previewActions}>
+            <button
+              type="button"
+              className={styles.refreshButton}
+              onClick={handleRefreshPreview}
+              title="Refresh Preview"
+            >
+              <LuRefreshCw className={styles.refreshIcon} /> Refresh Preview
+            </button>
+            <span className={styles.previewBadge}>Preview Manual</span>
+          </div>
         </div>
 
         <div className={styles.editorContainer}>
           <textarea
             name="content"
             className={styles.textarea}
-            value={formData.content}
-            onChange={handleChange}
+            ref={contentRef}
+            defaultValue={initialContent}
             required
           />
           <div className={`${styles.preview} markdown-body`}>
@@ -205,7 +222,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
                 },
               }}
             >
-              {formData.content}
+              {previewContent}
             </ReactMarkdown>
           </div>
         </div>
