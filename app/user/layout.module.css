@@ -132,3 +132,95 @@
   margin-left: 76px;
   padding: 20px;
 }
+
+@media (max-width: 768px) {
+  .dashboardLayout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 70px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+    box-shadow: 0 4px 0 var(--border);
+    z-index: 100;
+  }
+
+  .wrapSidebar {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    height: 100%;
+  }
+
+  .logo {
+    margin-bottom: 0;
+    font-size: 24px;
+  }
+
+  .navMenu {
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    max-width: calc(100vw - 120px);
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+  }
+
+  .navMenu::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome/Safari */
+  }
+
+  .navMenu .borderMenu {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0; /* Prevent icons from squeezing */
+  }
+
+  .borderMenu .menu {
+    font-size: 20px;
+  }
+
+  .activeMenu .menu {
+    font-size: 18px !important;
+  }
+
+  .profile {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+
+  .userDropdown {
+    top: 50px !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: 0px !important;
+    box-shadow: -4px 4px 0 var(--text-main) !important;
+    animation: slideDown 0.2s ease-out !important;
+  }
+
+  .mainContent {
+    margin-left: 0;
+    padding: 15px;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

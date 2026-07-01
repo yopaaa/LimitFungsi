@@ -89,6 +89,12 @@ const ProfilePage = () => {
       </div>
 
       <div className={styles.profileCard}>
+        {isLoading && (
+          <div className={styles.overlay}>
+            <div className={styles.spinner} />
+            <p className={styles.loadingText}>Memperbarui profil...</p>
+          </div>
+        )}
         <div className={styles.avatarSection}>
           <div className={styles.avatarWrapper}>
             <div className={styles.avatar}>
