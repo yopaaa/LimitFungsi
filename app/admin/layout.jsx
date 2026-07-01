@@ -103,7 +103,7 @@ const DashboardLayout = ({ children }) => {
           className={styles.profileContainer}
           onMouseEnter={() => setIsDropdownOpen(true)}
         >
-          <DropdownMenu items={dropdownItems} isOpen={isDropdownOpen} />
+          <DropdownMenu items={dropdownItems} isOpen={isDropdownOpen} className={styles.adminDropdown} />
            <div className={styles.profile}>
             {user.profile ? (
               <img

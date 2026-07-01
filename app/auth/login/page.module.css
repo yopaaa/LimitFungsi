@@ -386,3 +386,13 @@
   transform: translate(1px, 1px);
   box-shadow: 0px 0px 0px 0px #000000;
 }
+
+
+@media (max-width: 768px) {
+  .challengeInputWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-row: 1fr 1fr;
+  gap: 8px;
+}
+}
