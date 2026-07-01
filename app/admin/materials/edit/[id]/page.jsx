@@ -24,7 +24,9 @@ export default function EditMaterialPage({ params: paramsPromise }) {
   });
   const [initialContent, setInitialContent] = useState("");
   const [previewContent, setPreviewContent] = useState("");
+  const [isAutoPreview, setIsAutoPreview] = useState(false);
   const contentRef = useRef(null);
+  const debounceTimeoutRef = useRef(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,6 +61,18 @@ export default function EditMaterialPage({ params: paramsPromise }) {
 
   const handleRefreshPreview = () => {
     setPreviewContent(contentRef.current ? contentRef.current.value : "");
+  };
+
+  const handleTextareaChange = (e) => {
+    if (isAutoPreview) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      const value = e.target.value;
+      debounceTimeoutRef.current = setTimeout(() => {
+        setPreviewContent(value);
+      }, 800);
+    }
   };
 
   const handleChange = (e) => {
@@ -182,15 +196,33 @@ export default function EditMaterialPage({ params: paramsPromise }) {
         <div className={styles.previewLabel}>
           <label className={styles.label}>Konten (Markdown)</label>
           <div className={styles.previewActions}>
-            <button
-              type="button"
-              className={styles.refreshButton}
-              onClick={handleRefreshPreview}
-              title="Refresh Preview"
-            >
-              <LuRefreshCw className={styles.refreshIcon} /> Refresh Preview
-            </button>
-            <span className={styles.previewBadge}>Preview Manual</span>
+            <label className={styles.toggleLabel}>
+              <input
+                type="checkbox"
+                checked={isAutoPreview}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setIsAutoPreview(checked);
+                  if (checked && contentRef.current) {
+                    setPreviewContent(contentRef.current.value);
+                  }
+                }}
+              />
+              Auto Preview
+            </label>
+            {!isAutoPreview && (
+              <button
+                type="button"
+                className={styles.refreshButton}
+                onClick={handleRefreshPreview}
+                title="Refresh Preview"
+              >
+                <LuRefreshCw className={styles.refreshIcon} /> Refresh Preview
+              </button>
+            )}
+            <span className={styles.previewBadge}>
+              {isAutoPreview ? "Preview Otomatis" : "Preview Manual"}
+            </span>
           </div>
         </div>
 
@@ -199,6 +231,7 @@ export default function EditMaterialPage({ params: paramsPromise }) {
             name="content"
             className={styles.textarea}
             ref={contentRef}
+            onChange={handleTextareaChange}
             defaultValue={initialContent}
             required
           />

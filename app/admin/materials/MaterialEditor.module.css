@@ -202,6 +202,34 @@
   font-size: 0.95rem;
 }
 
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0px 0px #000000;
+  transition: all 0.1s ease;
+}
+
+.toggleLabel:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.toggleLabel input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
 @media (max-width: 992px) {
   .editorContainer {
     grid-template-columns: 1fr;
