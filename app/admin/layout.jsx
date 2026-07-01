@@ -30,7 +30,16 @@ const DashboardLayout = ({ children }) => {
     if (pb.authStore.model) {
       setuser(pb.authStore.model);
     }
+
+    const closeDropdown = () => setIsDropdownOpen(false);
+    window.addEventListener("click", closeDropdown);
+    return () => window.removeEventListener("click", closeDropdown);
   }, []);
+
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   const handleLogout = () => {
     pb.authStore.clear();
@@ -102,6 +111,8 @@ const DashboardLayout = ({ children }) => {
         <div
           className={styles.profileContainer}
           onMouseEnter={() => setIsDropdownOpen(true)}
+          onMouseLeave={() => setIsDropdownOpen(false)}
+          onClick={toggleDropdown}
         >
           <DropdownMenu items={dropdownItems} isOpen={isDropdownOpen} className={styles.adminDropdown} />
            <div className={styles.profile}>

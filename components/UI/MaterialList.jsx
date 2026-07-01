@@ -16,6 +16,7 @@ const MaterialList = () => {
         const records = await pb.collection("limit_materials").getList(1, 4, {
           filter: 'status = "published"',
           sort: "-created",
+          fields: "id,title,slug,description,thumbnail,collectionId,collectionName",
         });
         setMaterials(records.items);
       } catch (error) {
