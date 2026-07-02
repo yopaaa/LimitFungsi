@@ -94,7 +94,7 @@ const UserLayout = ({ children }) => {
         <div
           className={styles.profileContainer}
           onMouseEnter={() => setIsDropdownOpen(true)}
-          onMouseLeave={() => setIsDropdownOpen(false)}
+          // onMouseLeave={() => setIsDropdownOpen(false)}
           onClick={toggleDropdown}
         >
           <DropdownMenu items={dropdownItems} isOpen={isDropdownOpen} className={styles.userDropdown} />
