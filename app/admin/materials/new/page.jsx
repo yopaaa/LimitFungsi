@@ -222,6 +222,23 @@ export default function NewMaterialPage() {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
+                img: ({ src, alt, ...props }) => (
+                  <span style={{ display: "block", textAlign: "center", margin: "2rem auto" }}>
+                    <img 
+                      src={src} 
+                      alt={alt} 
+                      style={{ 
+                        maxWidth: "100%", 
+                        height: "auto", 
+                        borderRadius: "8px", 
+                        border: "3px solid #000000", 
+                        boxShadow: "6px 6px 0px #000000",
+                        display: "inline-block"
+                      }} 
+                      {...props}
+                    />
+                  </span>
+                ),
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || "");
                   return !inline && match ? (

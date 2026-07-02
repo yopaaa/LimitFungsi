@@ -32,6 +32,10 @@ export default function EditMaterialPage({ params: paramsPromise }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [deletingImageUrl, setDeletingImageUrl] = useState("");
+
   useEffect(() => {
     fetchMaterial();
   }, [params.id]);
@@ -50,12 +54,97 @@ export default function EditMaterialPage({ params: paramsPromise }) {
       if (record.thumbnail) {
         setThumbnailPreview(pb.files.getURL(record, record.thumbnail));
       }
+      fetchGalleryImages(record.id);
     } catch (error) {
       console.error("Gagal mengambil data materi:", error);
       alert("Materi tidak ditemukan.");
       router.push("/admin/materials");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchGalleryImages = async (materialId) => {
+    try {
+      const res = await fetch(`/api/admin/upload-blob?materialId=${materialId}`);
+      if (!res.ok) throw new Error("Gagal mengambil galeri gambar");
+      const data = await res.json();
+      setGalleryImages(data.blobs || []);
+    } catch (err) {
+      console.error("Error mengambil galeri:", err);
+    }
+  };
+
+  const handleUploadGalleryImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Format file tidak didukung. Harap gunakan PNG, JPG, WEBP, atau GIF.");
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("materialId", params.id);
+
+      const res = await fetch("/api/admin/upload-blob", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Gagal mengunggah gambar ke Vercel Blob");
+      const data = await res.json();
+      
+      setGalleryImages((prev) => [...prev, data.blob]);
+      alert("Gambar berhasil diunggah!");
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Error: " + err.message);
+    } finally {
+      setUploadingImage(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleCopyLink = (url) => {
+    const markdownLink = `![Gambar](${url})`;
+    navigator.clipboard.writeText(markdownLink)
+      .then(() => {
+        alert("Link gambar disalin ke clipboard dalam format Markdown!");
+      })
+      .catch((err) => {
+        console.error("Gagal menyalin:", err);
+        navigator.clipboard.writeText(url);
+        alert("URL gambar disalin ke clipboard!");
+      });
+  };
+
+  const handleDeleteGalleryImage = async (url) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus gambar ini dari Vercel Blob?")) return;
+
+    setDeletingImageUrl(url);
+    try {
+      const res = await fetch("/api/admin/upload-blob", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      if (!res.ok) throw new Error("Gagal menghapus gambar");
+      
+      setGalleryImages((prev) => prev.filter((img) => img.url !== url));
+      alert("Gambar berhasil dihapus!");
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Error: " + err.message);
+    } finally {
+      setDeletingImageUrl("");
     }
   };
 
@@ -193,6 +282,67 @@ export default function EditMaterialPage({ params: paramsPromise }) {
           )}
         </div>
 
+        <div className={styles.galleryGroup}>
+          <label className={styles.label}>
+            <LuImage /> Galeri Gambar Pendukung (Vercel Blob)
+          </label>
+          <p className={styles.galleryHelp}>
+            Unggah gambar pendukung untuk disalin link-nya dalam format Markdown dan ditempel ke dalam konten.
+          </p>
+          <div className={styles.galleryUploadWrapper}>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={handleUploadGalleryImage}
+              className={styles.fileInput}
+              disabled={uploadingImage}
+              id="gallery-upload"
+              style={{ display: "none" }}
+            />
+            <button
+              type="button"
+              className={styles.uploadBtn}
+              onClick={() => document.getElementById("gallery-upload").click()}
+              disabled={uploadingImage}
+            >
+              {uploadingImage ? "Mengunggah..." : "Unggah Gambar Pendukung"}
+            </button>
+          </div>
+
+          <div className={styles.galleryList}>
+            {galleryImages.length === 0 ? (
+              <p className={styles.emptyGallery}>Belum ada gambar pendukung. Silakan unggah.</p>
+            ) : (
+              galleryImages.map((img, idx) => (
+                <div key={img.url || idx} className={styles.galleryItem}>
+                  <div className={styles.galleryThumbWrapper}>
+                    <img src={img.url} alt={img.pathname} className={styles.galleryThumb} />
+                  </div>
+                  <div className={styles.galleryItemActions}>
+                    <button
+                      type="button"
+                      className={styles.galleryActionBtn}
+                      onClick={() => handleCopyLink(img.url)}
+                      title="Salin Link Markdown"
+                    >
+                      Copy Link
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.galleryActionBtn} ${styles.deleteBtn}`}
+                      onClick={() => handleDeleteGalleryImage(img.url)}
+                      disabled={deletingImageUrl === img.url}
+                      title="Hapus Gambar"
+                    >
+                      {deletingImageUrl === img.url ? "..." : "Hapus"}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
         <div className={styles.previewLabel}>
           <label className={styles.label}>Konten (Markdown)</label>
           <div className={styles.previewActions}>
@@ -239,6 +389,23 @@ export default function EditMaterialPage({ params: paramsPromise }) {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
+                img: ({ src, alt, ...props }) => (
+                  <span style={{ display: "block", textAlign: "center", margin: "2rem auto" }}>
+                    <img 
+                      src={src} 
+                      alt={alt} 
+                      style={{ 
+                        maxWidth: "100%", 
+                        height: "auto", 
+                        borderRadius: "8px", 
+                        border: "3px solid #000000", 
+                        boxShadow: "1px 1px 0px #000000",
+                        display: "inline-block"
+                      }} 
+                      {...props}
+                    />
+                  </span>
+                ),
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || "");
                   return !inline && match ? (

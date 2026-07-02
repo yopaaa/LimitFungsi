@@ -382,6 +382,23 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
                     const id = generateSlug(text);
                     return <h3 id={id}>{children}</h3>;
                   },
+                  img: ({ src, alt, ...props }) => (
+                    <span style={{ display: "block", textAlign: "center", margin: "2rem auto" }}>
+                      <img 
+                        src={src} 
+                        alt={alt} 
+                        style={{ 
+                          maxWidth: "100%", 
+                          height: "auto", 
+                          borderRadius: "8px", 
+                          border: "3px solid #000000", 
+                          boxShadow: "1px 1px 0px #000000",
+                          display: "inline-block"
+                        }} 
+                        {...props}
+                      />
+                    </span>
+                  ),
                   code({ node, inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     return !inline && match ? (
