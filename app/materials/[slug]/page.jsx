@@ -249,6 +249,18 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
     }
   };
 
+  // Helper to extract plain text from React children recursively
+  const extractText = (children) => {
+    if (typeof children === "string") return children;
+    if (Array.isArray(children)) {
+      return children.map(extractText).join("");
+    }
+    if (children && children.props && children.props.children) {
+      return extractText(children.props.children);
+    }
+    return "";
+  };
+
   // Helper to generate IDs for headings
   const generateSlug = (text) => {
     return text
@@ -294,6 +306,9 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
   if (error) return <div className={styles.error}>{error}</div>;
 
   const toc = material ? getToc(material.content) : [];
+  const thumbnailUrl = material && material.thumbnail 
+    ? pb.files.getURL(material, material.thumbnail) 
+    : null;
 
   return (
     <>
@@ -314,9 +329,9 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
 
       <div className={styles.mainContent}>
         <header className={styles.header}>
-          {material.thumbnail && (
+          {thumbnailUrl && (
             <img 
-              src={pb.files.getURL(material, material.thumbnail)} 
+              src={thumbnailUrl} 
               alt={material.title} 
               className={styles.heroImage}
             />
@@ -353,15 +368,18 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
                 components={{
                   // Add IDs to headings for ToC linking
                   h1: ({ children }) => {
-                    const id = generateSlug(String(children));
+                    const text = extractText(children);
+                    const id = generateSlug(text);
                     return <h1 id={id}>{children}</h1>;
                   },
                   h2: ({ children }) => {
-                    const id = generateSlug(String(children));
+                    const text = extractText(children);
+                    const id = generateSlug(text);
                     return <h2 id={id}>{children}</h2>;
                   },
                   h3: ({ children }) => {
-                    const id = generateSlug(String(children));
+                    const text = extractText(children);
+                    const id = generateSlug(text);
                     return <h3 id={id}>{children}</h3>;
                   },
                   code({ node, inline, className, children, ...props }) {

@@ -481,7 +481,7 @@
   border-radius: 8px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 888px) {
   .container {
     overflow: hidden;
   }
