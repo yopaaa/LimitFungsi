@@ -8,7 +8,7 @@ import Modal from "@/components/UI/Modal";
 import { pb } from "@/utils/db";
 import { logActivity } from "@/utils/activityLog";
 import { useRouter } from "next/navigation";
-import { LuPlus, LuPencil, LuTrash2, LuClock, LuBookOpen, LuClipboardList } from "react-icons/lu";
+import { LuPlus, LuPencil, LuTrash2, LuClock, LuBookOpen, LuClipboardList, LuCopy } from "react-icons/lu";
 
 const QuizzesAdminPage = () => {
   const router = useRouter();
@@ -73,6 +73,18 @@ const QuizzesAdminPage = () => {
       console.error("Gagal menghapus kuis:", error);
       alert("Gagal menghapus kuis.");
     }
+  };
+
+  const handleCopyFormat = (quizId) => {
+    const format = `[quiz:${quizId}]`;
+    navigator.clipboard.writeText(format)
+      .then(() => {
+        alert(`Format kuis ${format} berhasil disalin ke clipboard!`);
+      })
+      .catch((err) => {
+        console.error("Gagal menyalin format kuis:", err);
+        alert(`Gagal menyalin. Silakan salin manual: ${format}`);
+      });
   };
 
   const openAddModal = () => {
@@ -235,6 +247,16 @@ const QuizzesAdminPage = () => {
                     Dibuat: {new Date(quiz.created).toLocaleDateString("id-ID")}
                   </span>
                   <div className={styles.actionBtns}>
+                    <Button
+                      variant="secondary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCopyFormat(quiz.id);
+                      }}
+                      title="Salin Format Markdown [quiz:ID]"
+                    >
+                      <LuCopy />
+                    </Button>
                     <Button
                       variant="secondary"
                       onClick={(e) => {
