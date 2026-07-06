@@ -5,6 +5,9 @@ import { pb } from "@/utils/db";
 import styles from "./page.module.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { LuCalendar, LuUser, LuCheckCheck } from "react-icons/lu";
@@ -364,7 +367,8 @@ export default function MaterialDetailPage({ params: paramsPromise }) {
             return (
               <ReactMarkdown
                 key={idx}
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeKatex]}
                 components={{
                   // Add IDs to headings for ToC linking
                   h1: ({ children }) => {

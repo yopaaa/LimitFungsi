@@ -8,6 +8,9 @@ import { pb } from "@/utils/db";
 import { logActivity } from "@/utils/activityLog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { LuSave, LuX, LuChevronLeft, LuImage, LuRefreshCw } from "react-icons/lu";
@@ -387,7 +390,8 @@ export default function EditMaterialPage({ params: paramsPromise }) {
           />
           <div className={`${styles.preview} markdown-body`}>
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkMath]}
+              rehypePlugins={[rehypeKatex]}
               components={{
                 img: ({ src, alt, ...props }) => (
                   <span style={{ display: "block", textAlign: "center", margin: "2rem auto" }}>
