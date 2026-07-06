@@ -371,6 +371,19 @@
   font-size: 0.85rem;
 }
 
+/* Centering KaTeX display math in preview */
+.preview :global(.katex-display) {
+  text-align: center;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.preview :global(.katex) {
+  font-size: 1.15em;
+}
+
 @media (max-width: 992px) {
   .editorContainer {
     grid-template-columns: 1fr;

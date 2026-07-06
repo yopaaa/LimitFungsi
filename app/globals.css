@@ -35,3 +35,17 @@
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
 }
+
+.katex {
+  text-align: center;
+  margin: 2rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  display: flex;
+  justify-content: center;
+}
+
+.katex {
+  font-size: 1.15em;
+}
