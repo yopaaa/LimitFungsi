@@ -6,8 +6,8 @@
     },
     "links": [
       { "name": "Materi", "href": "/#materials" },
-      { "name": "Team", "href": "/#team" },
-      { "name": "Sosmed", "href": "/#social" }
+      { "name": "Dosen Pengampu", "href": "/#dosen" },
+      { "name": "Mahasiswa", "href": "/#students" }
     ]
   },
   "footer": {
@@ -20,8 +20,8 @@
       "title": "Navigasi",
       "links": [
         { "name": "Materi", "href": "/#materials" },
-        { "name": "Team", "href": "/#team" },
-        { "name": "Sosmed", "href": "/#social" }
+        { "name": "Dosen Pengampu", "href": "/#dosen" },
+        { "name": "Mahasiswa", "href": "/#students" }
       ]
     },
     "contact": {

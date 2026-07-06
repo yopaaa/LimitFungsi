@@ -52,7 +52,7 @@ const LecturerShowcase = () => {
   if (!lecturer) return null;
 
   return (
-    <section className={styles.lecturerSection} id="lecturer">
+    <section className={styles.lecturerSection} id="dosen">
       <div className={styles.sectionInner}>
         <div className={styles.sectionHeader}>
           <span className={styles.sectionNumber}>01</span>
