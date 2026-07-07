@@ -1,55 +1,54 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { pb } from "@/utils/db";
+import PocketBase from "pocketbase";
+import Image from "next/image";
 import styles from "./LecturerShowcase.module.css";
 
-const LecturerShowcase = () => {
-  const [lecturer, setLecturer] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// Konfigurasi ISR: Revalidasi cache data dosen di server setiap 10 menit (600 detik)
+export const revalidate = 600;
 
-  useEffect(() => {
-    const fetchLecturer = async () => {
-      try {
-        console.log("LecturerShowcase: Fetching lecturer from /api/lecturer...");
-        const response = await fetch("/api/lecturer");
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.error || `HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("LecturerShowcase: Successfully fetched lecturer:", data);
-        setLecturer(data);
-      } catch (err) {
-        console.error("LecturerShowcase: Error fetching lecturer:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+const getLecturerData = async () => {
+  const pbUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || "http://localhost:8100";
+  const pb = new PocketBase(pbUrl);
+
+  try {
+    const adminEmail = process.env.POCKETBASE_ADMIN_EMAIL;
+    const adminPassword = process.env.POCKETBASE_ADMIN_PASSWORD;
+
+    if (!adminEmail || !adminPassword) {
+      console.warn("LecturerShowcase Server: Kredensial PocketBase admin belum dikonfigurasi");
+      return null;
+    }
+
+    // Autentikasi sebagai admin untuk membaca data bypass API Rules
+    await pb.admins.authWithPassword(adminEmail, adminPassword);
+
+    // Ambil detail dosen berdasarkan ID
+    const user = await pb.collection("limit_users").getOne("gvkqsrsorgtx5aa");
+
+    return {
+      id: user.id,
+      nama: user.nama,
+      instansi: user.instansi,
+      profile: user.profile,
+      role: user.role,
+      email: user.email,
+      collectionId: user.collectionId,
+      collectionName: user.collectionName,
     };
-
-    fetchLecturer();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}></div>
-        <p>Memuat data dosen...</p>
-      </div>
-    );
+  } catch (error) {
+    console.error("LecturerShowcase Server: Gagal mengambil data dosen:", error.message);
+    return null;
   }
+};
 
-  if (error) {
-    return (
-      <div className={styles.loadingContainer} style={{ borderColor: 'var(--error)' }}>
-        <p style={{ color: 'var(--error)', fontWeight: 'bold' }}>Gagal memuat dosen: {error}</p>
-      </div>
-    );
-  }
+const LecturerShowcase = async () => {
+  const pbUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || "http://localhost:8100";
+  const lecturer = await getLecturerData();
 
   if (!lecturer) return null;
+
+  const profileUrl = lecturer.profile
+    ? `${pbUrl}/api/files/${lecturer.collectionName || "users"}/${lecturer.id}/${lecturer.profile}`
+    : null;
 
   return (
     <section className={styles.lecturerSection} id="dosen">
@@ -63,11 +62,14 @@ const LecturerShowcase = () => {
           <div className={styles.lecturerCard}>
             <div className={styles.cardBorderTop} />
             <div className={styles.avatarContainer}>
-              {lecturer.profile ? (
-                <img
-                  src={pb.files.getURL(lecturer, lecturer.profile)}
+              {profileUrl ? (
+                <Image
+                  src={profileUrl}
                   alt={lecturer.nama}
                   className={styles.avatarImg}
+                  width={150}
+                  height={150}
+                  priority
                 />
               ) : (
                 <div className={styles.avatarPlaceholder}>
