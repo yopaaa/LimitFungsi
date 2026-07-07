@@ -8,7 +8,7 @@ import Modal from "@/components/UI/Modal";
 import { pb } from "@/utils/db";
 import { logActivity } from "@/utils/activityLog";
 import { useRouter } from "next/navigation";
-import { LuPlus, LuPencil, LuTrash2, LuClock, LuBookOpen, LuClipboardList, LuCopy } from "react-icons/lu";
+import { LuPlus, LuPencil, LuTrash2, LuClock, LuBookOpen, LuClipboardList, LuCopy, LuImage, LuX } from "react-icons/lu";
 
 const QuizzesAdminPage = () => {
   const router = useRouter();
@@ -138,6 +138,76 @@ const QuizzesAdminPage = () => {
     });
   };
 
+  const handleOptionImageChange = (qIndex, oIndex, value) => {
+    setFormState((prev) => {
+      const updatedQuestions = [...prev.questions];
+      const updatedOptionImages = [...(updatedQuestions[qIndex].optionImages || ["", "", "", ""])];
+      updatedOptionImages[oIndex] = value;
+      updatedQuestions[qIndex] = {
+        ...updatedQuestions[qIndex],
+        optionImages: updatedOptionImages,
+      };
+      return { ...prev, questions: updatedQuestions };
+    });
+  };
+
+  const [uploadingField, setUploadingField] = useState("");
+
+  const uploadImageToBlob = async (file, fieldKey, onSuccess) => {
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Format tidak didukung. Gunakan PNG, JPG, WEBP, atau GIF.");
+      return;
+    }
+
+    setUploadingField(fieldKey);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("folder", "quizzes");
+
+      const res = await fetch("/api/admin/upload-blob", {
+        method: "POST",
+        body: fd,
+      });
+
+      if (!res.ok) throw new Error("Gagal mengunggah gambar");
+      const data = await res.json();
+      onSuccess(data.blob.url);
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Gagal mengunggah: " + err.message);
+    } finally {
+      setUploadingField("");
+    }
+  };
+
+  const handleImageDrop = (e, fieldKey, onSuccess) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer?.files?.[0];
+    if (file) uploadImageToBlob(file, fieldKey, onSuccess);
+  };
+
+  const handleImageSelect = (e, fieldKey, onSuccess) => {
+    const file = e.target.files?.[0];
+    if (file) uploadImageToBlob(file, fieldKey, onSuccess);
+    e.target.value = "";
+  };
+
+  const handleRemoveImage = async (url, onRemove) => {
+    try {
+      await fetch("/api/admin/upload-blob", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+    } catch (err) {
+      console.error("Gagal menghapus dari blob:", err);
+    }
+    onRemove();
+  };
+
   const addQuestion = () => {
     setFormState((prev) => ({
       ...prev,
@@ -146,7 +216,9 @@ const QuizzesAdminPage = () => {
         {
           id: `q-${Date.now()}-${prev.questions.length}`,
           text: "",
+          image: "",
           options: ["", "", "", ""],
+          optionImages: ["", "", "", ""],
           answer: "A",
         },
       ],
@@ -394,22 +466,88 @@ const QuizzesAdminPage = () => {
                       />
                     </div>
 
+                    <div className={styles.inputGroup}>
+                      <label className={styles.labelSmall}><LuImage size={12} /> Gambar Soal (Opsional)</label>
+                      {q.image ? (
+                        <div className={styles.imagePreviewBox}>
+                          <img src={q.image} alt="Preview soal" className={styles.imagePreview} />
+                          <button
+                            type="button"
+                            className={styles.removeImageBtn}
+                            onClick={() => handleRemoveImage(q.image, () => handleQuestionChange(qIndex, "image", ""))}
+                            title="Hapus gambar"
+                          >
+                            <LuX size={14} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          className={`${styles.dropZone} ${uploadingField === `q-${qIndex}` ? styles.dropZoneUploading : ""}`}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={(e) => handleImageDrop(e, `q-${qIndex}`, (url) => handleQuestionChange(qIndex, "image", url))}
+                          onClick={() => document.getElementById(`quiz-img-q-${qIndex}`).click()}
+                        >
+                          <input
+                            type="file"
+                            accept="image/*"
+                            id={`quiz-img-q-${qIndex}`}
+                            style={{ display: "none" }}
+                            onChange={(e) => handleImageSelect(e, `q-${qIndex}`, (url) => handleQuestionChange(qIndex, "image", url))}
+                          />
+                          {uploadingField === `q-${qIndex}` ? "Mengunggah..." : "Klik atau seret gambar ke sini"}
+                        </div>
+                      )}
+                    </div>
+
                     <div className={styles.optionsGrid}>
                       {q.options.map((opt, oIndex) => {
                         const optionLetter = String.fromCharCode(65 + oIndex); // A, B, C, D
+                        const optFieldKey = `q-${qIndex}-o-${oIndex}`;
+                        const optImgUrl = (q.optionImages && q.optionImages[oIndex]) || "";
                         return (
-                          <div key={oIndex} className={styles.optionInputWrapper}>
-                            <span className={styles.optionLabel}>{optionLetter}</span>
-                            <input
-                              type="text"
-                              value={opt}
-                              onChange={(e) =>
-                                handleOptionChange(qIndex, oIndex, e.target.value)
-                              }
-                              className={styles.optionInput}
-                              placeholder={`Pilihan ${optionLetter}...`}
-                              required
-                            />
+                          <div key={oIndex} className={styles.optionBlock}>
+                            <div className={styles.optionInputWrapper}>
+                              <span className={styles.optionLabel}>{optionLetter}</span>
+                              <input
+                                type="text"
+                                value={opt}
+                                onChange={(e) =>
+                                  handleOptionChange(qIndex, oIndex, e.target.value)
+                                }
+                                className={styles.optionInput}
+                                placeholder={`Pilihan ${optionLetter}...`}
+                                required
+                              />
+                            </div>
+                            {optImgUrl ? (
+                              <div className={styles.optionImagePreviewBox}>
+                                <img src={optImgUrl} alt={`Preview ${optionLetter}`} className={styles.optionImagePreview} />
+                                <button
+                                  type="button"
+                                  className={styles.removeOptionImgBtn}
+                                  onClick={() => handleRemoveImage(optImgUrl, () => handleOptionImageChange(qIndex, oIndex, ""))}
+                                  title="Hapus gambar"
+                                >
+                                  <LuX size={10} />
+                                </button>
+                              </div>
+                            ) : (
+                              <div
+                                className={`${styles.dropZoneSmall} ${uploadingField === optFieldKey ? styles.dropZoneUploading : ""}`}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => handleImageDrop(e, optFieldKey, (url) => handleOptionImageChange(qIndex, oIndex, url))}
+                                onClick={() => document.getElementById(`quiz-img-${optFieldKey}`).click()}
+                              >
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  id={`quiz-img-${optFieldKey}`}
+                                  style={{ display: "none" }}
+                                  onChange={(e) => handleImageSelect(e, optFieldKey, (url) => handleOptionImageChange(qIndex, oIndex, url))}
+                                />
+                                {uploadingField === optFieldKey ? "..." : `📷 ${optionLetter}`}
+                              </div>
+                            )}
                           </div>
                         );
                       })}

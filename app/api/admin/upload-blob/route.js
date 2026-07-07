@@ -22,20 +22,24 @@ export const GET = async (req) => {
   }
 };
 
-// POST: Mengunggah berkas gambar baru ke Vercel Blob di dalam folder materials/[materialId]
+// POST: Mengunggah berkas gambar baru ke Vercel Blob
 export const POST = async (req) => {
   try {
     const formData = await req.formData();
     const file = formData.get("file");
     const materialId = formData.get("materialId");
+    const folder = formData.get("folder");
 
-    if (!file || !materialId) {
-      return Response.json({ error: "file and materialId are required" }, { status: 400 });
+    // Support folder generik ATAU materialId (backward compatible)
+    const prefix = folder || (materialId ? `materials/${materialId}` : null);
+
+    if (!file || !prefix) {
+      return Response.json({ error: "file and (folder or materialId) are required" }, { status: 400 });
     }
 
     // Dapatkan nama unik dengan timestamp
     const filename = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
-    const blobPath = `materials/${materialId}/${filename}`;
+    const blobPath = `${prefix}/${filename}`;
 
     // Upload berkas menggunakan put() ke Vercel Blob
     const blob = await put(blobPath, file, {

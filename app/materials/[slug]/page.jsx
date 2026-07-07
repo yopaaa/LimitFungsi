@@ -144,6 +144,15 @@ const QuizWidget = ({ quiz, user }) => {
       
       <div className={styles.quizBody}>
         <p className={styles.quizQuestionText}>{currentQuestion.text}</p>
+        {currentQuestion.image && (
+          <div style={{ textAlign: "center", margin: "1rem 0" }}>
+            <img 
+              src={currentQuestion.image} 
+              alt="Gambar soal" 
+              style={{ maxWidth: "100%", maxHeight: "300px", objectFit: "contain", border: "3px solid #000000", borderRadius: "8px", boxShadow: "4px 4px 0px #000000" }} 
+            />
+          </div>
+        )}
         <div className={styles.quizOptions}>
           {currentQuestion.options && currentQuestion.options.map((opt, oIdx) => {
             const letter = String.fromCharCode(65 + oIdx);
@@ -157,6 +166,13 @@ const QuizWidget = ({ quiz, user }) => {
               >
                 <span className={styles.optionLetter}>{letter}</span>
                 <span className={styles.optionText}>{opt}</span>
+                {currentQuestion.optionImages && currentQuestion.optionImages[oIdx] && (
+                  <img 
+                    src={currentQuestion.optionImages[oIdx]} 
+                    alt={`Gambar ${letter}`} 
+                    style={{ maxHeight: "80px", objectFit: "contain", border: "2px solid #000000", borderRadius: "4px", marginLeft: "auto" }} 
+                  />
+                )}
               </button>
             );
           })}

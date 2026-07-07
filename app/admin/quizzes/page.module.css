@@ -174,6 +174,12 @@
   color: #000000;
 }
 
+.labelSmall {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+}
+
 .textarea {
   width: 100%;
   border: 3px solid #000000;
@@ -265,11 +271,13 @@
 
 .optionInputWrapper {
   display: flex;
+  flex-wrap: wrap;
   border: 3px solid #000000;
   border-radius: var(--radius-md);
   overflow: hidden;
   background-color: #ffffff;
 }
+
 
 .optionLabel {
   background-color: #000000;
@@ -287,6 +295,179 @@
   font-size: 0.9rem;
   outline: none;
   flex-grow: 1;
+}
+
+.labelSmall {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #4b5563;
+}
+
+.imageUrlInput {
+  width: 100%;
+  border: 3px solid #000000;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.imageUrlInput:focus {
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.imageUrlInput::placeholder {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.imagePreview {
+  max-width: 200px;
+  height: auto;
+  margin-top: 0.5rem;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.optionImageInput {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  outline: none;
+  width: 100%;
+  background-color: #fafafa;
+}
+
+.optionImageInput::placeholder {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.optionImagePreview {
+  max-width: 80px;
+  height: auto;
+  border: 2px solid #000000;
+  border-radius: 4px;
+}
+
+/* Drop Zone for image upload */
+.dropZone {
+  border: 3px dashed #9ca3af;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+.dropZone:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: #f0f7ff;
+}
+
+.dropZoneSmall {
+  border: 2px dashed #cbd5e1;
+  border-radius: 4px;
+  padding: 0.3rem;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.25rem;
+}
+
+.dropZoneSmall:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: #f0f7ff;
+}
+
+.dropZoneUploading {
+  opacity: 0.6;
+  pointer-events: none;
+  background-color: #f3f4f6;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Image Preview with remove button */
+.imagePreviewBox {
+  position: relative;
+  display: inline-block;
+}
+
+.imagePreview {
+  max-width: 200px;
+  height: auto;
+  border: 3px solid #000000;
+  border-radius: var(--radius-md);
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  color: white;
+  border: 2px solid #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px #000000;
+  transition: all 0.15s;
+}
+
+.removeImageBtn:hover {
+  transform: scale(1.1);
+}
+
+.optionBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionImagePreviewBox {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.removeOptionImgBtn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  color: white;
+  border: 2px solid #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  padding: 0;
 }
 
 .answerSelector {

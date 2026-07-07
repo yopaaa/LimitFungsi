@@ -194,6 +194,15 @@ const QuizDetailPage = ({ params: paramsPromise }) => {
                         )}
                       </div>
                       <p className={styles.questionText}>{q.text}</p>
+                      {q.image && (
+                        <div style={{ textAlign: "center", margin: "0.75rem 0" }}>
+                          <img 
+                            src={q.image} 
+                            alt="Gambar soal" 
+                            style={{ maxWidth: "100%", maxHeight: "250px", objectFit: "contain", border: "3px solid #000000", borderRadius: "8px", boxShadow: "4px 4px 0px #000000" }} 
+                          />
+                        </div>
+                      )}
 
                       <div className={styles.optionsList}>
                         {q.options.map((opt, oIndex) => {
@@ -212,6 +221,13 @@ const QuizDetailPage = ({ params: paramsPromise }) => {
                             <div key={oIndex} className={optionClass}>
                               <span className={styles.optionLetter}>{optionLetter}</span>
                               <span className={styles.optionText}>{opt}</span>
+                              {q.optionImages && q.optionImages[oIndex] && (
+                                <img 
+                                  src={q.optionImages[oIndex]} 
+                                  alt={`Gambar ${optionLetter}`} 
+                                  style={{ maxHeight: "60px", objectFit: "contain", border: "2px solid #000000", borderRadius: "4px", marginLeft: "auto" }} 
+                                />
+                              )}
                               {isCorrectChoice && <span className={styles.badgeIndicator}>Kunci</span>}
                               {isStudentChoice && <span className={styles.badgeIndicatorChoice}>Jawaban Siswa</span>}
                             </div>
