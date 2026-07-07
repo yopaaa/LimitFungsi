@@ -19,6 +19,7 @@ const QuizzesAdminPage = () => {
   const [modalType, setModalType] = useState("add"); // "add" | "edit"
   const [currentQuizId, setCurrentQuizId] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [aiExtracting, setAiExtracting] = useState(false);
 
   const initialFormState = {
     title: "",
@@ -206,6 +207,56 @@ const QuizzesAdminPage = () => {
       console.error("Gagal menghapus dari blob:", err);
     }
     onRemove();
+  };
+
+  const handleUploadDocumentQuiz = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedExtensions = ["pdf"];
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert("Format file tidak didukung. Harap gunakan berkas PDF.");
+      return;
+    }
+
+    if (!confirm("Mengunggah dokumen baru akan menganalisis dan menambahkan pertanyaan secara otomatis ke daftar. Lanjutkan?")) {
+      return;
+    }
+
+    setAiExtracting(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/generate-quiz", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Gagal mengolah dokumen");
+      }
+
+      const data = await res.json();
+      
+      if (data.questions && data.questions.length > 0) {
+        setFormState((prev) => ({
+          ...prev,
+          questions: [...prev.questions, ...data.questions],
+        }));
+        alert(`Berhasil mengimpor ${data.questions.length} pertanyaan dari dokumen via AI!`);
+      } else {
+        alert("AI tidak menemukan pertanyaan kuis yang valid di dokumen tersebut.");
+      }
+    } catch (err) {
+      console.error("Gagal impor dokumen:", err);
+      alert("Error: " + err.message);
+    } finally {
+      setAiExtracting(false);
+      e.target.value = "";
+    }
   };
 
   const addQuestion = () => {
@@ -430,6 +481,35 @@ const QuizzesAdminPage = () => {
           </div>
 
           <div className={styles.questionsSection}>
+            {/* <div className={styles.aiImportWrapper}>
+              <div className={styles.aiImportHeader}>
+                <span className={styles.aiBadge}>AI POWERED</span>
+                <h4>Impor Pertanyaan Otomatis (PDF)</h4>
+              </div>
+              <p className={styles.aiHelpText}>
+                Unggah berkas soal kuis dalam format PDF. Gemini AI akan mendeteksi soal pilihan ganda beserta pilihan dan kunci jawabannya secara otomatis untuk dimasukkan ke form di bawah.
+              </p>
+              
+              <div className={styles.aiUploadZone}>
+                <input 
+                  type="file" 
+                  accept=".pdf" 
+                  onChange={handleUploadDocumentQuiz}
+                  disabled={aiExtracting}
+                  id="ai-document-upload"
+                  style={{ display: "none" }}
+                />
+                <button
+                  type="button"
+                  className={`${styles.aiUploadBtn} ${aiExtracting ? styles.aiUploading : ""}`}
+                  onClick={() => document.getElementById("ai-document-upload").click()}
+                  disabled={aiExtracting}
+                >
+                  {aiExtracting ? "Sedang Menganalisis Dokumen via Gemini AI..." : "Pilih Berkas PDF"}
+                </button>
+              </div>
+            </div> */}
+
             <div className={styles.questionsHeader}>
               <h3>Daftar Pertanyaan ({formState.questions.length})</h3>
               <Button type="button" onClick={addQuestion} variant="secondary">

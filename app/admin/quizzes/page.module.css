@@ -531,3 +531,87 @@
     max-height: 60vh;
   }
 }
+
+/* AI Powered Quiz Importer Styles */
+.aiImportWrapper {
+  background-color: #f5f3ff;
+  border: 3px solid #000000;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.aiImportHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.aiImportHeader h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #4c1d95;
+  margin: 0;
+}
+
+.aiBadge {
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 0.15rem 0.5rem;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.aiHelpText {
+  font-size: 0.8rem;
+  color: #5b21b6;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.aiUploadZone {
+  display: flex;
+  justify-content: center;
+}
+
+.aiUploadBtn {
+  background-color: #a78bfa;
+  color: #ffffff;
+  font-weight: 800;
+  border: 3px solid #000000;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 3px 3px 0px #000000;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.9rem;
+}
+
+.aiUploadBtn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #000000;
+  background-color: #8b5cf6;
+}
+
+.aiUploadBtn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #000000;
+}
+
+.aiUploading {
+  background-color: #c084fc !important;
+  color: #000000;
+  cursor: not-allowed;
+  animation: pulse-ai 1.5s infinite;
+}
+
+@keyframes pulse-ai {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
