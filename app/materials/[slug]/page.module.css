@@ -8,6 +8,10 @@
   grid-template-columns: 350px 1fr;
   gap: 3rem;
   align-items: flex-start;
+
+  background-color: var(--bg-main);
+  /* background-image: radial-gradient(#bcbcbc 1px, transparent 1px); */
+  /* background-size: 20px 20px; */
 }
 
 .sidebar {

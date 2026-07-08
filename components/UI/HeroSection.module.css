@@ -221,3 +221,25 @@
     display: none;
   }
 }
+
+
+@media (max-width: 1300px) {
+   /* .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  } */
+
+  .content {
+    align-items: center;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  /* .visual {
+    display: none;
+  } */
+
+}

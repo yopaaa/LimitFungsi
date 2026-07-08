@@ -144,4 +144,12 @@
     align-items: flex-start;
     gap: 1rem;
   }
+
+}
+
+@media (max-width: 1300px) {
+  .container{
+    margin-top: 100px;
+  }
+
 }

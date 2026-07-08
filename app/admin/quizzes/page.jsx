@@ -357,7 +357,7 @@ const QuizzesAdminPage = () => {
                       <LuClipboardList size={14} />
                       {Array.isArray(quiz.questions) ? quiz.questions.length : 0} Pertanyaan
                     </span>
-                    {quiz.time_limit && (
+                  Waktu  {quiz.time_limit && (
                       <span className={styles.metaItem}>
                         <LuClock size={14} />
                         {quiz.time_limit} Menit
@@ -481,7 +481,7 @@ const QuizzesAdminPage = () => {
           </div>
 
           <div className={styles.questionsSection}>
-            {/* <div className={styles.aiImportWrapper}>
+             <div className={styles.aiImportWrapper}>
               <div className={styles.aiImportHeader}>
                 <span className={styles.aiBadge}>AI POWERED</span>
                 <h4>Impor Pertanyaan Otomatis (PDF)</h4>
@@ -508,7 +508,7 @@ const QuizzesAdminPage = () => {
                   {aiExtracting ? "Sedang Menganalisis Dokumen via Gemini AI..." : "Pilih Berkas PDF"}
                 </button>
               </div>
-            </div> */}
+            </div> 
 
             <div className={styles.questionsHeader}>
               <h3>Daftar Pertanyaan ({formState.questions.length})</h3>

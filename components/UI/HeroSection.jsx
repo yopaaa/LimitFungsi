@@ -23,7 +23,7 @@ const HeroSection = () => {
           <Link href="/auth/login" className={styles.primaryBtn}>
             Mulai Belajar Sekarang <LuArrowRight />
           </Link>
-          <Link href="/materials" className={styles.secondaryBtn}>
+          <Link href="/materials/kalkulus" className={styles.secondaryBtn}>
             <LuBookOpen /> Jelajahi Materi
           </Link>
         </div>
