@@ -7,6 +7,8 @@ import LecturerShowcase from "../components/Layout/LecturerShowcase";
 import MaterialList from "@/components/UI/MaterialList";
 import HeroSection from "@/components/UI/HeroSection";
 
+export const revalidate = 60 * 60; // Revalidate setiap 1 jam
+
 export default function RegisterLayout({ children }) {
   return (
     <div className={styles.pageWrapper}>

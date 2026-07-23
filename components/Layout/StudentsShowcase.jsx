@@ -1,9 +1,6 @@
 import PocketBase from "pocketbase";
 import StudentsShowcaseClient from "./StudentsShowcaseClient";
 
-// Konfigurasi ISR: Revalidasi cache data mahasiswa di server setiap 10 menit (600 detik)
-export const revalidate = 600;
-
 const getStudentsData = async () => {
   const pbUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || "http://localhost:8100";
   const pb = new PocketBase(pbUrl);

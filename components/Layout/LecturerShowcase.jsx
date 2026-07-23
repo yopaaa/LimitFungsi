@@ -2,9 +2,6 @@ import PocketBase from "pocketbase";
 import Image from "next/image";
 import styles from "./LecturerShowcase.module.css";
 
-// Konfigurasi ISR: Revalidasi cache data dosen di server setiap 10 menit (600 detik)
-export const revalidate = 600;
-
 const getLecturerData = async () => {
   const pbUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || "http://localhost:8100";
   const pb = new PocketBase(pbUrl);
